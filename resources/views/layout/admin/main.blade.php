@@ -49,14 +49,7 @@
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   @if(Request::is('admin/pariwisata/tambah'))
   <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
-  <script>
-    ClassicEditor
-      .create( document.querySelector( '#editor' ) )
-      .catch( error => {
-          console.error( error );
-      } );
-      
-  </script>
+  <script src="/assets/js/ckeditor.init.js"></script>
   <script>
     $(document).ready(function () {
       $('.select2').select2();

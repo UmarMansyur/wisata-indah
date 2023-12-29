@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.landing_page.main')
 @section('content')
 
 <!-- Page Header Start !-->
@@ -25,11 +25,11 @@
 <!-- Page Header End !-->
 
 <!-- About Us Area Start -->
-@include('layout.about')
+@include('layout.landing_page.about')
 <!-- About Us Area Start -->
 
 <!-- Process Step Area Start  -->
-@include('layout.step')
+@include('layout.landing_page.step')
 <!-- Process Step Area End  -->
 
 <!-- Video Modal Area  Start -->
