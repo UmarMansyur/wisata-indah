@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('description');
             $table->text('address');
             $table->string('cover_image')->nullable();
-            $table->string('map_location');
+            $table->text('map_location');
             $table->double('duration');
             $table->string('unit_duration');
             $table->timestamps();

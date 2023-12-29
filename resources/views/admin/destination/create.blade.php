@@ -7,44 +7,46 @@
 </div>
 <div class="row">
   <div class="col-12">
-    <form action="">
+    <form action="{{ route('Simpan Pariwisata') }}" method="POST" enctype="multipart/form-data">
+      @csrf
       <div class="row">
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body p-4">
               <div class="mb-3 row align-items-center">
-                <label for="destination_name" class="form-label fw-semibold col-sm-3 col-form-label">Nama
+                <label for="title" class="form-label fw-semibold col-sm-3 col-form-label">Nama
                   Pariwisata</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="destination_name" placeholder="Contoh: Pantai Gili">
+                  <input type="text" class="form-control" name="title" id="title" placeholder="Contoh: Pantai Gili" required autocomplete="name">
                 </div>
               </div>
 
               <div class="mb-3 row align-items-center">
-                <label for="exampleInputPassword1" class="form-label fw-semibold col-sm-3 col-form-label">Jenis
+                <label for="type_tour_id" class="form-label fw-semibold col-sm-3 col-form-label">Jenis
                   Pariwisata</label>
                 <div class="col-sm-9">
-                  <select name="type_destination" id="type_destination" class="form-select select2">
-                    <option value="">Pantai</option>
-                    <option value="">Pegunungan</option>
+                  <select id="type_tour_id" class="form-select select2" name="type_tour_id" required>
+                    <option value="">Pilih Jenis Pariwisata</option>
+                    @foreach ($type_tour as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
                   </select>
-
                 </div>
               </div>
               <div class="mb-3 row align-items-center">
-                <label for="exampleInputPassword1" class="form-label fw-semibold col-sm-3 col-form-label">Nama
+                <label for="username" class="form-label fw-semibold col-sm-3 col-form-label">Nama
                   Pemilik Pariwisata</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="exampleInputtext" placeholder="Nama Pemilik Wisata">
+                  <input type="text" class="form-control" id="username" name="username" placeholder="Nama Pemilik Wisata" required>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <div class="mb-3 row align-items-center">
-                    <label for="exampleInputPassword1"
+                    <label for="email"
                       class="form-label fw-semibold col-sm-3 col-form-label">Email: </label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="exampleInputtext" placeholder="Email">
+                      <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                     </div>
                   </div>
                 </div>
@@ -52,10 +54,10 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="mb-3 row align-items-center">
-                    <label for="exampleInputPassword1"
+                    <label for="phone"
                       class="form-label fw-semibold col-sm-3 col-form-label">Nomor Telepon</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="exampleInputtext" placeholder="Nomor Telepon">
+                      <input type="text" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" required>
                     </div>
                   </div>
                 </div>
@@ -63,17 +65,16 @@
               <div class="row align-items-center">
                 <div class="col-md-12">
                   <div class="row">
-                    <label for="exampleInputPassword1" class="form-label fw-semibold col-sm-3 col-form-label">
+                    <label for="adult" class="form-label fw-semibold col-sm-3 col-form-label">
                       Biaya Tiket</label>
                     <div class="col-sm-4 mb-3">
-                      <input type="text" class="form-control" id="exampleInputtext" placeholder="Rp. xxx.xxx">
+                      <input type="text" class="form-control" id="adult" name="adult" placeholder="Dewasa" required>
                     </div>
                     <div class="col-sm-1">
-                      <label for="satuan" class="form-label col-form-label">Anak: </label>
+                      <label for="child" class="form-label col-form-label">Anak: </label>
                     </div>
-
                     <div class="col-sm-4 mb-3">
-                      <input type="text" class="form-control" id="exampleInputtext" placeholder="Rp. xxx.xxx">
+                      <input type="text" class="form-control" id="child" name="child" placeholder="Anak-Anak" required>
                     </div>
                   </div>
                 </div>
@@ -81,39 +82,39 @@
               <div class="row align-items-center">
                 <div class="col-md-12">
                   <div class="row">
-                    <label for="exampleInputPassword1" class="form-label fw-semibold col-sm-3 col-form-label">
+                    <label for="duration" class="form-label fw-semibold col-sm-3 col-form-label">
                       Lama Berkunjung</label>
                     <div class="col-sm-4 mb-3">
-                      <input type="text" class="form-control" id="exampleInputtext" placeholder="Contoh. 1">
+                      <input type="text" class="form-control" id="duration" name="duration" placeholder="Contoh. 1" required>
                     </div>
                     <div class="col-sm-1">
-                      <label for="satuan" class="form-label col-form-label">Satuan: </label>
+                      <label for="unit_duration" class="form-label col-form-label">Satuan: </label>
                     </div>
                     <div class="col-sm-4 mb-3">
-                      <select name="type_time" id="type_time" class="form-select select2">
-                        <option value="">Menit</option>
-                        <option value="">Jam</option>
-                        <option value="">Hari</option>
+                      <select name="unit_duration" id="unit_duration" class="form-select select2" required>
+                        <option value="Menit">Menit</option>
+                        <option value="Jam">Jam</option>
+                        <option value="Hari">Hari</option>
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="mb-3 row align-items-center">
-                <label for="exampleInputPassword1" class="form-label fw-semibold col-sm-3 col-form-label">Cover Image:
+                <label for="cover_image" class="form-label fw-semibold col-sm-3 col-form-label">Cover Image:
                 </label>
                 <div class="col-sm-9">
                   <div class="input-group border rounded-1">
-                    <input type="file" class="form-control" placeholder="John Deo">
+                    <input type="file" class="form-control" id="cover_image" name="cover_image">
                   </div>
                 </div>
               </div>
               <div class="mb-3 row align-items-center">
-                <label for="exampleInputPassword1" class="form-label fw-semibold col-sm-3 col-form-label">Gambar Galeri:
+                <label for="imageGalleries{{time()}}" class="form-label fw-semibold col-sm-3 col-form-label">Gambar Galeri:
                 </label>
                 <div class="col-sm-9">
                   <div class="input-group border rounded-1">
-                    <input type="file" name="imageGalleries[]" class="form-control" placeholder="John Deo">
+                    <input type="file" name="imageGalleries[]" id="imageGalleries{{time()}}" class="form-control">
                     <button class="btn btn-primary" type="button" id="add-image-galleries">
                       <i class="bx bx-plus"></i>Tambah</button>
                   </div>
@@ -121,43 +122,48 @@
               </div>
               <div id="image-galleries"></div>
               <div class="mb-3 row align-items-center">
-                <label for="exampleInputPassword1" class="form-label fw-semibold col-sm-3 col-form-label">Lokasi Map:
+                <label for="map_location" class="form-label fw-semibold col-sm-3 col-form-label">Lokasi Map:
                 </label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" placeholder="Lokasi Map">
+                  <input type="text" class="form-control" placeholder="Lokasi Map" id="map_location" name="map_location">
                   <small>
                     Lokasi bisa diambil dari google maps, lalu copy paste ke sini
                   </small>
                 </div>
               </div>
               <div class="mb-3 row align-items-center">
-                <label for="exampleInputPassword1" class="form-label fw-semibold col-sm-3 col-form-label">Kabupaten:
+                <label for="district" class="form-label fw-semibold col-sm-3 col-form-label">Kabupaten:
                 </label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" placeholder="Kabupaten">
-                 
+                  <select name="district" id="district" class="form-select select2" required>
+                    <option value="">Pilih Kabupaten</option>
+                    <option value="Sumenep">Sumenep</option>
+                    <option value="Pamekasan">Pamekasan</option>
+                    <option value="Sampang">Sampang</option>
+                    <option value="Bangkalan">Bangkalan</option>
+                  </select>
                 </div>
               </div>
 
               <div class="mb-3 row align-items-center">
-                <label for="exampleInputPassword1" class="form-label fw-semibold col-sm-3 col-form-label">Alamat
+                <label for="address" class="form-label fw-semibold col-sm-3 col-form-label">Alamat
                   Lengkap</label>
                 <div class="col-sm-9">
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="10"></textarea>
+                  <textarea class="form-control" id="address" name="address" rows="10"></textarea>
                 </div>
               </div>
 
               <div class="mb-3 row align-items-center">
-                <label for="exampleInputPassword1"
+                <label for="editor"
                   class="form-label fw-semibold col-sm-3 col-form-label">Deskripsi</label>
                 <div class="col-sm-9">
-                  <textarea class="form-control" id="editor" rows="10"></textarea>
+                  <textarea class="form-control" id="editor" name="description" rows="10"></textarea>
                 </div>
               </div>
               <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-9">
-                  <button class="btn btn-primary"><i class="bx bx-plus"></i>Tambahkan</button>
+                  <button class="btn btn-primary" type="submit"><i class="bx bx-plus"></i>Tambahkan</button>
                 </div>
               </div>
             </div>

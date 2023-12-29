@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DestinationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,10 +43,8 @@ Route::group(['prefix' => 'admin'], function () {
         return view('admin.order.index');
     })->name('pemesanan');
 
-    Route::get('/pariwisata/tambah', function () {
-        return view('admin.destination.create');
-    })->name('Tambah Pariwisata');
-
+    Route::get('/pariwisata/tambah', [DestinationController::class, 'create'])->name('Tambah Pariwisata');
+    Route::post('/pariwisata/store', [DestinationController::class, 'store'])->name('Simpan Pariwisata');
 });
 
 
