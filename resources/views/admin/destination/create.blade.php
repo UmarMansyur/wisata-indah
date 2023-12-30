@@ -2,7 +2,7 @@
 @section('content')
 <div class="row">
   <div class="col-md-12 text-end mb-3">
-    <button class="btn btn-light"><i class="bx bx-arrow-back"></i>Kembali</button>
+    <a href="{{ route('Pariwisata') }}" class="btn btn-light"><i class="bx bx-arrow-back"></i> Kembali</a>
   </div>
 </div>
 <div class="row">
@@ -17,7 +17,8 @@
                 <label for="title" class="form-label fw-semibold col-sm-3 col-form-label">Nama
                   Pariwisata</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" name="title" id="title" placeholder="Contoh: Pantai Gili" required autocomplete="name">
+                  <input type="text" class="form-control" name="title" id="title" placeholder="Contoh: Pantai Gili"
+                    required autocomplete="name">
                 </div>
               </div>
 
@@ -37,14 +38,14 @@
                 <label for="username" class="form-label fw-semibold col-sm-3 col-form-label">Nama
                   Pemilik Pariwisata</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="username" name="username" placeholder="Nama Pemilik Wisata" required>
+                  <input type="text" class="form-control" id="username" name="username"
+                    placeholder="Nama Pemilik Wisata" required>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <div class="mb-3 row align-items-center">
-                    <label for="email"
-                      class="form-label fw-semibold col-sm-3 col-form-label">Email: </label>
+                    <label for="email" class="form-label fw-semibold col-sm-3 col-form-label">Email: </label>
                     <div class="col-sm-9">
                       <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                     </div>
@@ -54,10 +55,10 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="mb-3 row align-items-center">
-                    <label for="phone"
-                      class="form-label fw-semibold col-sm-3 col-form-label">Nomor Telepon</label>
+                    <label for="phone" class="form-label fw-semibold col-sm-3 col-form-label">Nomor Telepon</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" required>
+                      <input type="text" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon"
+                        required>
                     </div>
                   </div>
                 </div>
@@ -85,7 +86,8 @@
                     <label for="duration" class="form-label fw-semibold col-sm-3 col-form-label">
                       Lama Berkunjung</label>
                     <div class="col-sm-4 mb-3">
-                      <input type="text" class="form-control" id="duration" name="duration" placeholder="Contoh. 1" required>
+                      <input type="text" class="form-control" id="duration" name="duration" placeholder="Contoh. 1"
+                        required>
                     </div>
                     <div class="col-sm-1">
                       <label for="unit_duration" class="form-label col-form-label">Satuan: </label>
@@ -110,7 +112,8 @@
                 </div>
               </div>
               <div class="mb-3 row align-items-center">
-                <label for="imageGalleries{{time()}}" class="form-label fw-semibold col-sm-3 col-form-label">Gambar Galeri:
+                <label for="imageGalleries{{time()}}" class="form-label fw-semibold col-sm-3 col-form-label">Gambar
+                  Galeri:
                 </label>
                 <div class="col-sm-9">
                   <div class="input-group border rounded-1">
@@ -125,7 +128,8 @@
                 <label for="map_location" class="form-label fw-semibold col-sm-3 col-form-label">Lokasi Map:
                 </label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" placeholder="Lokasi Map" id="map_location" name="map_location">
+                  <input type="text" class="form-control" placeholder="Lokasi Map" id="map_location"
+                    name="map_location">
                   <small>
                     Lokasi bisa diambil dari google maps, lalu copy paste ke sini
                   </small>
@@ -154,8 +158,7 @@
               </div>
 
               <div class="mb-3 row align-items-center">
-                <label for="editor"
-                  class="form-label fw-semibold col-sm-3 col-form-label">Deskripsi</label>
+                <label for="editor" class="form-label fw-semibold col-sm-3 col-form-label">Deskripsi</label>
                 <div class="col-sm-9">
                   <textarea class="form-control" id="editor" name="description" rows="10"></textarea>
                 </div>

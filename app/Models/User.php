@@ -39,4 +39,9 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    public function tour()
+    {
+        return $this->hasMany(Tour::class, 'user_id');
+    }
 }

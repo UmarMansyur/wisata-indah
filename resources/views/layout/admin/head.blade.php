@@ -6,7 +6,12 @@
   <link rel="icon" type="image/png" href="/images/logo.png">
   <link rel="stylesheet" href="/assets/css/styles.css" />
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
+  <link rel="stylesheet" href="/assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="/assets/vendor/sweetalert2/dist/sweetalert2.min.css">
+  <script src="/assets/vendor/jquery/dist/jquery.min.js"></script>
+  <link href="
+https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css
+" rel="stylesheet">
   <style>
     #layer {
       position: fixed;
@@ -24,4 +29,5 @@
     }
   </style>
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script src="/assets/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
 </head>

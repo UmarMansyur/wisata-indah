@@ -10,4 +10,9 @@ class Passenger extends Model
     use HasFactory;
     protected $tables = 'passengers';
     protected $fillable = ['name'];
+
+    public function costTour()
+    {
+        return $this->hasMany(CostTour::class);
+    }
 }

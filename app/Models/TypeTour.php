@@ -12,4 +12,9 @@ class TypeTour extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function tours()
+    {
+        return $this->hasMany(Tour::class, 'type_tour_id');
+    }
 }

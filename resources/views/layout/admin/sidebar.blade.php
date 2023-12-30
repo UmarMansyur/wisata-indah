@@ -40,16 +40,16 @@
             <span class="hide-menu">Pemasanan</span>
           </a>
         </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="AppsKanban.html" aria-expanded="false">
+        <li class="sidebar-item {{ request()->is('admin/pariwisata/*') ? 'selected' : '' }}">
+          <a class="sidebar-link {{ request()->is('admin/pariwisata/*') ? 'active' : '' }}" href="/admin/pariwisata" aria-expanded="false">
             <span>
               <i class="ti ti-layout-kanban"></i>
             </span>
             <span class="hide-menu">Pariwisata</span>
           </a>
         </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link" href="AppChat.html" aria-expanded="false">
+        <li class="sidebar-item {{ request()->is('admin/karyawan/*') ? 'selected' : '' }}">
+          <a class="sidebar-link {{ request()->is('admin/karyawan/*') ? 'active' : '' }}" href="/admin/karyawan" aria-expanded="false">
             <span>
               <i class="ti ti-message-dots"></i>
             </span>

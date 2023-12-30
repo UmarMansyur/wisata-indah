@@ -3,8 +3,8 @@
   data-layout="vertical" data-card="shadow">
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 @include('layout.admin.head')
-
 <body>
+  @include('sweetalert::alert')
   <div class="preloader" id="layer">
     <img src="/images/spinner.svg" alt="loader" class="lds-ripple img-fluid" />
   </div>
@@ -35,7 +35,7 @@
       </div>
     </div>
   </div>
-  <script src="/assets/vendor/jquery/dist/jquery.min.js"></script>
+
   <script src="/assets/js/app.min.js"></script>
   <script src="/assets/js/app.init.js"></script>
   <script src="/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -47,7 +47,8 @@
   <script src="/assets/js/dashboards/dashboard2.js"></script>
   @endif
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  @if(Request::is('admin/pariwisata/tambah'))
+  <script src="/assets/vendor/sweetalert2/dist/sweetalert2.min.js"></script>
+  @if(Request::is('admin/pariwisata/tambah') || Request::is('admin/pariwisata/*'))
   <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
   <script src="/assets/js/ckeditor.init.js"></script>
   <script>
