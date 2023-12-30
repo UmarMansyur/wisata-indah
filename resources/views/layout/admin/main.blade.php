@@ -57,6 +57,15 @@
     });
   </script>
   @endif
+
+  @if(Request::is('admin/pemesanan'))
+  <script>
+    $(document).ready(function () {
+      $('.select2').select2();
+    });
+  </script>
+  @endif
+  <script src="/assets/js/main.js"></script>
 </body>
 
 </html>

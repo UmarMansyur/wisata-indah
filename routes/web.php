@@ -3,6 +3,7 @@
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\EmployeController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,9 +42,13 @@ Route::group(['prefix' => 'admin'], function () {
         return view('admin.dashboard.index');
     })->name('dashboard');
 
-    Route::get('/pemesanan', function () {
-        return view('admin.order.index');
-    })->name('pemesanan');
+    Route::group(['prefix' => 'pemesanan'], function () {
+        Route::get('/', [OrderController::class, 'index'])->name('Pemesanan');
+        Route::get('/data', [OrderController::class, 'getData'])->name('Data Pemesanan');
+        Route::post('/add-cart', [OrderController::class, 'addToCart'])->name('Tambah Keranjang Order');
+        Route::get('/tambah', [OrderController::class, 'create'])->name('Tambah Pemesanan');
+    });
+
     Route::group(['prefix' => 'pariwisata'], function () {
         Route::get('/', [DestinationController::class, 'index'])->name('Pariwisata');
         Route::get('/tambah', [DestinationController::class, 'create'])->name('Tambah Pariwisata');
@@ -61,6 +66,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix'  => 'karyawan'], function() {
         Route::get('/', [EmployeController::class, 'index'])->name('Karyawan');
         Route::get('/delete/{id}', [EmployeController::class, 'destroy'])->name('Hapus Karyawan');
+        Route::post('/store', [EmployeController::class, 'store'])->name('Simpan Karyawan');
     });
 });
 

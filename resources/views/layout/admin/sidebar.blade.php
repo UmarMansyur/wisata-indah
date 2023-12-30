@@ -48,10 +48,10 @@
             <span class="hide-menu">Pariwisata</span>
           </a>
         </li>
-        <li class="sidebar-item {{ request()->is('admin/karyawan/*') ? 'selected' : '' }}">
-          <a class="sidebar-link {{ request()->is('admin/karyawan/*') ? 'active' : '' }}" href="/admin/karyawan" aria-expanded="false">
+        <li class="sidebar-item {{ request()->is('admin/karyawan/*') || request()->is('admin/karyawan') ? 'selected' : '' }}">
+          <a class="sidebar-link {{ request()->is('admin/karyawan/*') || request()->is('admin/karyawan') ? 'active' : '' }}" href="/admin/karyawan" aria-expanded="false">
             <span>
-              <i class="ti ti-message-dots"></i>
+              <i class="ti ti-users"></i>
             </span>
             <span class="hide-menu">Karyawan</span>
           </a>
