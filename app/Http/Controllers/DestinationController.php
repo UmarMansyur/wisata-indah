@@ -96,7 +96,6 @@ class DestinationController extends Controller
             DB::beginTransaction();
 
             $existUser = User::where('email', $request->email)->first();
-
             if (empty($existUser)) {
                 $user = User::create([
                     'email' => $request->email,
@@ -144,13 +143,15 @@ class DestinationController extends Controller
                     'url' => Storage::put('upload/images', $imageGallery)
                 ]);
             }
+            
             DB::commit();
             Alert::success('Success', 'Pariwisata berhasil ditambahkan');
             return redirect()->route('Pariwisata');
-        } catch (\Exception $th) {
+        } catch (\Throwable $th) {
             DB::rollBack();
             Alert::error('Error', $th->getMessage());
             return redirect()->back();
+            
         }
     }
 
@@ -273,5 +274,21 @@ class DestinationController extends Controller
             Alert::error('Error', $th->getMessage());
             return redirect()->back();
         }
+    }
+
+
+    public function destinasi_landing()
+    {
+        $tours = Tour::with(['typeTour', 'user', 'costTour'])->with('costTour.passenger')->paginate(6);
+        $type_tour = TypeTour::all();
+        return view('destination.index', compact('tours', 'type_tour'));
+    }
+
+    public function showDetail($id)
+    {
+        $id = decrypt($id);
+        $tour = Tour::with(['typeTour', 'user', 'costTour', 'gallery'])->with('costTour.passenger')->find($id);
+        $type_tour = TypeTour::all();
+        return view('destination.detail', compact('tour'));
     }
 }

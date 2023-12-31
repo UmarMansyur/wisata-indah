@@ -30,27 +30,11 @@
                 <p class="desc">bersama kami anda dapat menikmati liburan dengan harga terjangkau</p>
               </div>
             </div>
+            @if(request()->is('/about'))
             <div class="meta-wrapper">
-              <a href="about.html" class="theme-btn">Selengkapnya</a>
-              <div class="meta-user">
-                <a href="#" class="image-inner">
-                  <img src="images/meta-user/meta-user-1.jpg" alt="User">
-                </a>
-                <a href="#" class="image-inner">
-                  <img src="images/meta-user/meta-user-2.jpg" alt="User">
-                </a>
-                <a href="#" class="image-inner">
-                  <img src="images/meta-user/meta-user-3.jpg" alt="User">
-                </a>
-                <a href="#" class="image-inner">
-                  <i class="fa-solid fa-plus"></i>
-                </a>
-              </div>
-              <div class="counter-wrapper">
-                <h6 class="counter-inner"><span class="counter">500</span>K+</h6>
-                <span class="customers">pengunjung</span>
-              </div>
+              <a href="/about" class="theme-btn">Selengkapnya</a>
             </div>
+            @endif
           </div>
         </div>
         <div class="col-xl-7 order-xl-2 order-1 wow fadeInRight" data-wow-delay=".4s">

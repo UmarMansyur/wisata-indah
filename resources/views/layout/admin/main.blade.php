@@ -42,10 +42,6 @@
   <script src="/assets/vendor/simplebar/dist/simplebar.min.js"></script>
   <script src="/assets/js/sidebarmenu.js"></script>
   <script src="/assets/js/theme.js"></script>
-  @if(Request::is('admin/dashboard'))
-  <script src="/assets/vendor/apexcharts/dist/apexcharts.min.js"></script>
-  <script src="/assets/js/dashboards/dashboard2.js"></script>
-  @endif
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script src="/assets/vendor/sweetalert2/dist/sweetalert2.min.js"></script>
   @if(Request::is('admin/pariwisata/tambah') || Request::is('admin/pariwisata/*'))

@@ -28,9 +28,9 @@
               </div>
               <div class="col-md-7 align-self-center order-1 order-md-2">
                 <div class="slider-image">
-                  <img src="images/home-2.jpg" alt="feature image"
-                    data-wow-delay="2.5s" width="615" height="798" class="d-none rouded-3 d-md-block wow slideInRight img-thumbnail p-4">
-                  </div>
+                  <img src="images/home-2.jpg" alt="feature image" data-wow-delay="2.5s" width="615" height="798"
+                    class="d-none rouded-3 d-md-block wow slideInRight img-thumbnail p-4">
+                </div>
               </div>
             </div>
           </div>
@@ -98,174 +98,22 @@
       </div>
     </div>
     <div class="location-slider-wrapper" id="location-slider-wrapper">
-      <!--- Single Location Start !-->
+      @foreach($tour as $t)
       <div class="location-card style-1 wow fadeInUp" data-wow-delay="0s">
         <div class="image-wrapper">
           <a class="image-inner" href="destination-details.html">
-            <img src="images/a.jpg" alt="Location Image">
+            <img src="{{ asset('storage/'.$t->thumbnail) }}" alt="Location Image">
           </a>
-          <div class="rating">
-            <div class="ratting-inner">
-              <span><i class="fa-solid fa-star"></i></span>
-              <span class="counter">3.5</span>
-            </div>
-          </div>
         </div>
         <div class="content-wrapper">
           <div class="content-inner">
-            <h3 class="content-title"><a href="destination-details.html">America – Grand canyon,</a></h3>
-            <a href="destination-details.html" class="icon"><i class="icon-up-arrow"></i></a>
+            <h3 class="content-title"><a href="destination-details.html">{{ $t->title }}</a></h3>
+            <a href="{{ route('detail destination', encrypt($t->id)) }}" class="btn-details">Selengkapnya</a>
+            ><i class="icon-up-arrow"></i></a>
           </div>
         </div>
       </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="location-card style-1 wow fadeInUp" data-wow-delay=".4s">
-        <div class="image-wrapper">
-          <a href="destination-details.html" class="image-inner">
-            <img src="images/b.jpg" alt="Location Image">
-          </a>
-          <div class="rating">
-            <div class="ratting-inner">
-              <span><i class="fa-solid fa-star"></i></span>
-              <span class="counter">3.5</span>
-            </div>
-          </div>
-        </div>
-        <div class="content-wrapper">
-          <div class="content-inner">
-            <h3 class="content-title"><a href="destination-details.html">America – Grand canyon,</a></h3>
-            <a href="destination-details.html" class="icon"><i class="icon-up-arrow"></i></a>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="location-card style-1 wow fadeInUp" data-wow-delay=".8s">
-        <div class="image-wrapper">
-          <a href="destination-details.html" class="image-inner">
-            <img src="images/c.jpg" alt="Location Image">
-          </a>
-          <div class="rating">
-            <div class="ratting-inner">
-              <span><i class="fa-solid fa-star"></i></span>
-              <span class="counter">3.5</span>
-            </div>
-          </div>
-        </div>
-        <div class="content-wrapper">
-          <div class="content-inner">
-            <h3 class="content-title"><a href="destination-details.html">America – Grand canyon,</a></h3>
-            <a href="destination-details.html" class="icon"><i class="icon-up-arrow"></i></a>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="location-card style-1 wow fadeInUp" data-wow-delay="1.2s">
-        <div class="image-wrapper">
-          <a href="destination-details.html" class="image-inner">
-            <img src="images/d.jpg" alt="Location Image">
-          </a>
-          <div class="rating">
-            <div class="ratting-inner">
-              <span><i class="fa-solid fa-star"></i></span>
-              <span class="counter">3.5</span>
-            </div>
-          </div>
-        </div>
-        <div class="content-wrapper">
-          <div class="content-inner">
-            <h3 class="content-title"><a href="destination-details.html">America – Grand canyon,</a></h3>
-            <a href="destination-details.html" class="icon"><i class="icon-up-arrow"></i></a>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="location-card style-1 wow fadeInUp" data-wow-delay="0s">
-        <div class="image-wrapper">
-          <a class="image-inner" href="destination-details.html">
-            <img src="images/e.jpg" alt="Location Image">
-          </a>
-          <div class="rating">
-            <div class="ratting-inner">
-              <span><i class="fa-solid fa-star"></i></span>
-              <span class="counter">3.5</span>
-            </div>
-          </div>
-        </div>
-        <div class="content-wrapper">
-          <div class="content-inner">
-            <h3 class="content-title"><a href="destination-details.html">America – Grand canyon,</a></h3>
-            <a href="destination-details.html" class="icon"><i class="icon-up-arrow"></i></a>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="location-card style-1 wow fadeInUp" data-wow-delay=".4s">
-        <div class="image-wrapper">
-          <a href="destination-details.html" class="image-inner">
-            <img src="images/f.jpg" alt="Location Image">
-          </a>
-          <div class="rating">
-            <div class="ratting-inner">
-              <span><i class="fa-solid fa-star"></i></span>
-              <span class="counter">3.5</span>
-            </div>
-          </div>
-        </div>
-        <div class="content-wrapper">
-          <div class="content-inner">
-            <h3 class="content-title"><a href="destination-details.html">America – Grand canyon,</a></h3>
-            <a href="destination-details.html" class="icon"><i class="icon-up-arrow"></i></a>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="location-card style-1 wow fadeInUp" data-wow-delay=".8s">
-        <div class="image-wrapper">
-          <a href="destination-details.html" class="image-inner">
-            <img src="images/g.jpg" alt="Location Image">
-          </a>
-          <div class="rating">
-            <div class="ratting-inner">
-              <span><i class="fa-solid fa-star"></i></span>
-              <span class="counter">3.5</span>
-            </div>
-          </div>
-        </div>
-        <div class="content-wrapper">
-          <div class="content-inner">
-            <h3 class="content-title"><a href="destination-details.html">America – Grand canyon,</a></h3>
-            <a href="destination-details.html" class="icon"><i class="icon-up-arrow"></i></a>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="location-card style-1 wow fadeInUp" data-wow-delay="1.2s">
-        <div class="image-wrapper">
-          <a href="destination-details.html" class="image-inner">
-            <img src="images/h.jpg" alt="Location Image">
-          </a>
-          <div class="rating">
-            <div class="ratting-inner">
-              <span><i class="fa-solid fa-star"></i></span>
-              <span class="counter">3.5</span>
-            </div>
-          </div>
-        </div>
-        <div class="content-wrapper">
-          <div class="content-inner">
-            <h3 class="content-title"><a href="destination-details.html">America – Grand canyon,</a></h3>
-            <a href="destination-details.html" class="icon"><i class="icon-up-arrow"></i></a>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
+      @endforeach
     </div>
   </div>
 </div>
@@ -284,210 +132,43 @@
       </div>
     </div>
     <div class="row gy-4">
-      <!--- Single Location Start !-->
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0s">
+      @foreach($tours as $item)
+      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="{{$loop->iteration}}s">
         <div class="location-card style-2">
           <div class="image-wrapper">
             <div class="image-inner">
-              <a href="tour-details.html"><img src="images/a.jpg" alt="Location Image"></a>
+              <a href="{{ route('detail destination', encrypt($item->id)) }}">
+                <img src="{{ asset('storage/'.$item->thumbnail) }}" alt="Location Image">
+              </a>
             </div>
-            <div class="rating">
-              <div class="ratting-inner">
-                <span><i class="fa-solid fa-star"></i></span>
-                <span class="counter">3.5</span>
-              </div>
+            <div class="favourite-icon">
+              <i class="fa-solid fa-heart"></i>
             </div>
-            <a href="#" class="favourite-icon active"><i class="fa-solid fa-heart"></i></a>
           </div>
           <div class="content-wrapper">
             <div class="content-inner">
-              <span class="price">Rp. 25.000</span>
-              <h3 class="content-title"><a href="tour-details.html">Pantai Sembilan</a></h3>
-              <div class="time-zone">
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-location-dot"></i>
-                  <p class="title">Sumenep, Madura</p>
+                @foreach ($item->costTour as $cost)
+                <p class="price mb-0">Rp.
+                    <span class="counter">{{ number_format($cost->price, 0, ',', '.') }}</span> 
+                    <small class="text-dark" style="font-size: 12px">{{ $cost->passenger->name }}</small>
+                </p>
+                @endforeach
+                <h3 class="content-title"><a href="{{ route('detail destination', encrypt($item->id)) }}">{{ $item->title }}</a></h3>
+                <div class="time-zone">
+                    <div class="time-zone-inner">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <p class="title">{{ $item->address }}</p>
+                    </div>
+                    <div class="time-zone-inner">
+                        <i class="fa-solid fa-clock"></i>
+                        <p class="title"> {{ $item->duration }} {{ $item->unit_duration }}</p>
+                    </div>
                 </div>
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-clock"></i>
-                  <p class="title">1 Days</p>
-                </div>
-              </div>
             </div>
-          </div>
+        </div>
         </div>
       </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".4s">
-        <div class="location-card style-2">
-          <div class="image-wrapper">
-            <div class="image-inner">
-              <a href="tour-details.html"><img src="images/b.jpg" alt="Location Image"></a>
-            </div>
-            <div class="rating">
-              <div class="ratting-inner">
-                <span><i class="fa-solid fa-star"></i></span>
-                <span class="counter">3.5</span>
-              </div>
-            </div>
-            <a href="#" class="favourite-icon"><i class="fa-solid fa-heart"></i></a>
-          </div>
-          <div class="content-wrapper">
-            <div class="content-inner">
-              <Span class="price">Rp. 15.000</Span>
-              <h3 class="content-title"><a href="tour-details.html">Pantai Lombang</a></h3>
-              <div class="time-zone">
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-location-dot"></i>
-                  <p class="title">Sumenep, Madura</p>
-                </div>
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-clock"></i>
-                  <p class="title">1 Days</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".8s">
-        <div class="location-card style-2">
-          <div class="image-wrapper">
-            <div class="image-inner">
-              <a href="tour-details.html"><img src="images/c.jpg" alt="Location Image"></a>
-            </div>
-            <div class="rating">
-              <div class="ratting-inner">
-                <span><i class="fa-solid fa-star"></i></span>
-                <span class="counter">3.5</span>
-              </div>
-            </div>
-            <a href="#" class="favourite-icon active"><i class="fa-solid fa-heart"></i></a>
-          </div>
-          <div class="content-wrapper">
-            <div class="content-inner">
-              <h5 class="price">Rp. 10.000</h5>
-              <span class="content-title"><a href="tour-details.html">Vihara Avalokitesvara</a></span>
-              <div class="time-zone">
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-location-dot"></i>
-                  <p class="title">Pamekasan, Madura</p>
-                </div>
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-clock"></i>
-                  <p class="title">1 Days</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".8s">
-        <div class="location-card style-2">
-          <div class="image-wrapper">
-            <div class="image-inner">
-              <a href="tour-details.html"><img src="images/d.jpg" alt="Location Image"></a>
-            </div>
-            <div class="rating">
-              <div class="ratting-inner">
-                <span><i class="fa-solid fa-star"></i></span>
-                <span class="counter">3.5</span>
-              </div>
-            </div>
-            <a href="#" class="favourite-icon"><i class="fa-solid fa-heart"></i></a>
-          </div>
-          <div class="content-wrapper">
-            <div class="content-inner">
-              <h5 class="price">Rp. 20.000</h5>
-              <h3 class="content-title"><a href="tour-details.html">Jembatan Mangrove</a></h3>
-              <div class="time-zone">
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-location-dot"></i>
-                  <p class="title">Pamekasan, Madura</p>
-                </div>
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-clock"></i>
-                  <p class="title">1 Days</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="1.2s">
-        <div class="location-card style-2">
-          <div class="image-wrapper">
-            <div class="image-inner">
-              <a href="tour-details.html"><img src="images/e.jpg" alt="Location Image"></a>
-            </div>
-            <div class="rating">
-              <div class="ratting-inner">
-                <span><i class="fa-solid fa-star"></i></span>
-                <span class="counter">3.5</span>
-              </div>
-            </div>
-            <a href="#" class="favourite-icon active"><i class="fa-solid fa-heart"></i></a>
-          </div>
-          <div class="content-wrapper">
-            <div class="content-inner">
-              <h5 class="price">Rp. 15.000</h5>
-              <h3 class="content-title"><a href="tour-details.html">Pantai Gili Labak</a></h3>
-              <div class="time-zone">
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-location-dot"></i>
-                  <p class="title">Sumenep, Madura</p>
-                </div>
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-clock"></i>
-                  <p class="title">1 Days</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
-      <!--- Single Location Start !-->
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="1.6s">
-        <div class="location-card style-2">
-          <div class="image-wrapper">
-            <div class="image-inner">
-              <a href="tour-details.html"><img src="images/f.jpg" alt="Location Image"></a>
-            </div>
-            <div class="rating">
-              <div class="ratting-inner">
-                <span><i class="fa-solid fa-star"></i></span>
-                <span class="counter">3.5</span>
-              </div>
-            </div>
-            <a href="#" class="favourite-icon"><i class="fa-solid fa-heart"></i></a>
-          </div>
-          <div class="content-wrapper">
-            <div class="content-inner">
-              <h5 class="price">Rp. 20.000</h5>
-              <h3 class="content-title"><a href="tour-details.html">Bukit Arosbaya</a></h3>
-              <div class="time-zone">
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-location-dot"></i>
-                  <p class="title">Bangkalan, Madura</p>
-                </div>
-                <div class="time-zone-inner">
-                  <i class="fa-solid fa-clock"></i>
-                  <p class="title">1 Days</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--- Single Location End !-->
+      @endforeach
     </div>
   </div>
 </div>
@@ -553,7 +234,7 @@
   </div>
 </div>
 @include('layout.landing_page.step')
-<div class="cta-area style-1" style="background-image: url('images/cta-area/bg-1.jpg')">
+<div class="cta-area style-1" style="background-image: url('images/cta-area/bg-1.jpg'); background-size: cover;">
   <div class="container">
     <div class="row">
       <div class="col-md-5 text-start wow fadeInLeft">
@@ -564,7 +245,8 @@
             <img class="bottom-shape" src="images/shape/bottom-bar.png" alt="Bottom Shape">
           </div>
           <div class="sec-desc">
-            <p class="desc">Platform digital kami akan memudahkan anda untuk memesan tiket pariwisata untuk pulau madura yang dapat anda booking dimanapun dan kapanpun</p>
+            <p class="desc">Platform digital kami akan memudahkan anda untuk memesan tiket pariwisata untuk pulau madura
+              yang dapat anda booking dimanapun dan kapanpun</p>
           </div>
           <div class="sec-btn">
             <a href="#" class="theme-btn">Cari Destinasi</a>
@@ -576,194 +258,13 @@
           <img class="wave-shape" src="images/shape/wave-black.png" alt="Shape">
           <img class="top-circle" src="images/shape/circle-1.png" alt="Shape">
           <img class="bottom-circle" src="images/shape/circle-2.png" alt="Shape">
-          <img class="side-img" src="images/mobile.png" alt="Phone VIew">
+          <img class="side-img img-inner" src="images/mobile.png" alt="Phone VIew">
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="testimonial-slider-area style-1">
-  <div class="container">
-    <div class="row">
-      <div class="col-xl-6 wow fadeInLeft">
-        <div class="testimonial-slider-image-wrapper">
-          <div class="single-img-wrapper style-1">
-            <div class="img-inner">
-              <div class="image">
-                <img src="images/testimonial/user-1.png" alt="User Image">
-              </div>
-              <div class="content">
-                <span class="desc"><i class="fa-solid fa-location-dot"></i>Colombia</span>
-              </div>
-            </div>
-          </div>
-          <div class="single-img-wrapper style-2">
-            <div class="img-inner">
-              <div class="image">
-                <img src="images/testimonial/user-3.png" alt="User Image">
-              </div>
-              <div class="content">
-                <span class="desc"><i class="fa-solid fa-location-dot"></i>Russia</span>
-              </div>
-            </div>
-          </div>
-          <div class="single-img-wrapper style-3">
-            <div class="img-inner">
-              <div class="image">
-                <img src="images/testimonial/user-2.png" alt="User Image">
-              </div>
-              <div class="content style-2">
-                <span class="desc"><i class="fa-solid fa-location-dot"></i>Istanbul</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-6 wow fadeInRight">
-        <div class="testimonial-content-wrapper">
-          <div class="section-title">
-            <div class="sec-content">
-              <span class="short-title">Testimoni Pelanggan</span>
-              <h2 class="title">Apa kata mereka tentang kami</h2>
-              <img class="bottom-shape" src="images/shape/bottom-bar.png" alt="Bottom Shape">
-            </div>
-          </div>
-          <div class="testimonial-slider-wrapper" id="testimonial_one">
-            <!-- Single Slider Content Start -->
-            <div>
-              <div class="testimonial-card style-1">
-                <div class="content-wrapper">
-                  <div class="content">
-                    <p class="text">“Saya sangat puas dengan layanan Madura Indah Wisata selama perjalanan saya di Pulau Madura. Tim mereka sangat profesional dan ramah, memberikan informasi yang jelas dan membantu kami menjelajahi keindahan Madura dengan nyaman. Pengalaman wisata kami menjadi lebih berkesan berkat perhatian dan layanan prima mereka.”</p>
-                  </div>
-                  <div class="user-rating">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Single Slider Content End -->
-            <!-- Single Slider Content Start -->
-            <div>
-              <div class="testimonial-card style-1">
-                <div class="content-wrapper">
-                  <div class="content">
-                    <p class="text">“Madura Indah Wisata menawarkan beragam paket wisata yang menarik. Mulai dari kunjungan ke tempat-tempat wisata terkenal hingga acara budaya lokal, setiap paket didesain dengan baik dan sesuai dengan keinginan pelanggan. Pengalaman wisata kami menjadi lebih berwarna berkat pilihan paket yang menarik.”</p>
-                  </div>
-                  <div class="user-rating">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Single Slider Content End -->
-            <!-- Single Slider Content Start -->
-            <div>
-              <div class="testimonial-card style-1">
-                <div class="content-wrapper">
-                  <div class="content">
-                    <p class="text">“Saya ingin mengapresiasi pemandu wisata dari Madura Indah Wisata yang sangat ahli dan ramah. Mereka tidak hanya memberikan informasi yang informatif tetapi juga membuat perjalanan kami menjadi lebih menyenangkan dengan humor dan keramahan mereka. Sungguh pengalaman yang menyenangkan!.”</p>
-                  </div>
-                  <div class="user-rating">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Single Slider Content End -->
-            <!-- Single Slider Content Start -->
-            <div>
-              <div class="testimonial-card style-1">
-                <div class="content-wrapper">
-                  <div class="content">
-                    <p class="text">“Madura Indah Wisata memiliki kelebihan dalam fleksibilitas. Mereka dengan mudah menyesuaikan itinerary sesuai dengan keinginan kami dan memberikan rekomendasi yang sesuai dengan preferensi kami. Hal ini membuat perjalanan kami menjadi lebih personal dan sesuai dengan ekspektas.”</p>
-                  </div>
-                  <div class="user-rating">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Single Slider Content End -->
-            <!-- Single Slider Content Start -->
-            <div>
-              <div class="testimonial-card style-1">
-                <div class="content-wrapper">
-                  <div class="content">
-                    <p class="text">“Keamanan dan kenyamanan selalu menjadi prioritas utama Madura Indah Wisata. Saya merasa aman sepanjang perjalanan, dan mereka memberikan perhatian khusus terhadap detail seperti transportasi yang nyaman dan akomodasi yang bersih. Ini memberikan kami kedamaian pikiran untuk menikmati liburan tanpa khawatir.”</p>
-                  </div>
-                  <div class="user-rating">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Single Slider Content End -->
-          </div>
-          <div class="testimonial-user-slider">
-            <div class="testimonial-user-wrapper ">
-              <!-- Single User Wrapper Start -->
-              <div class="single-user">
-                <img src="images/testimonial/user-4.png" alt="user" />
-              </div>
-              <!-- Single User Wrapper End -->
 
-              <!-- Single User Wrapper Start -->
-              <div class="single-user">
-                <img src="images/testimonial/user-5.png" alt="user" />
-              </div>
-              <!-- Single User Wrapper End -->
-
-              <!-- Single User Wrapper Start -->
-              <div class="single-user">
-                <img src="images/testimonial/user-6.png" alt="user" />
-              </div>
-              <!-- Single User Wrapper End -->
-
-              <!-- Single User Wrapper Start -->
-              <div class="single-user">
-                <img src="images/testimonial/user-7.png" alt="user" />
-              </div>
-              <!-- Single User Wrapper End -->
-
-              <!-- Single User Wrapper Start -->
-              <div class="single-user">
-                <img src="images/testimonial/user-8.png" alt="user" />
-              </div>
-              <!-- Single User Wrapper End -->
-            </div>
-
-            <!-- Single User Wrapper Start -->
-            <div class="arrow-btn" id="user-slider-arrow">
-              <i class="fa-regular fa-arrow-right"></i>
-            </div>
-            <!-- Single User Wrapper End -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 <div class="location-area style-2">
   <img class="bg-bottom-shape" src="images/shape/bottom-shape.png" alt="Shape">
   <div class="container">
@@ -784,7 +285,7 @@
             </a>
             <div class="content-inner">
               <h6 class="city"><a href="destination-details.html">Bangkalan</a></h6>
-              <p class="duration">12 Wisata</p>
+              <p class="duration">{{ $data['bangkalan'] }} Wisata</p>
             </div>
           </div>
         </div>
@@ -795,7 +296,7 @@
             </a>
             <div class="content-inner">
               <h6 class="city"><a href="destination-details.html">Sampang</a></h6>
-              <p class="duration">10 Wisata</p>
+              <p class="duration">{{ $data['sampang'] }} Wisata</p>
             </div>
           </div>
         </div>
@@ -806,7 +307,7 @@
             </a>
             <div class="content-inner">
               <h6 class="city"><a href="destination-details.html">Pamekasan</a></h6>
-              <p class="duration">12 Wisata</p>
+              <p class="duration">{{ $data['pamekasan'] }} Wisata</p>
             </div>
           </div>
         </div>
@@ -817,7 +318,7 @@
             </a>
             <div class="content-inner">
               <h6 class="city"><a href="destination-details.html">Sumenep</a></h6>
-              <p class="duration">15 Wisata</p>
+              <p class="duration">{{ $data['sumenep'] }} Wisata</p>
             </div>
           </div>
         </div>

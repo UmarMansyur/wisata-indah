@@ -32,6 +32,7 @@
 </head>
 
 <body>
+  @include('sweetalert::alert')
   <div class="preloader" id="layer">
     <img src="/images/spinner.svg" alt="loader" class="lds-ripple img-fluid" />
   </div>
@@ -59,14 +60,15 @@
                   </p>
                   <span class="border-top w-100 position-absolute top-50 start-50 translate-middle"></span>
                 </div>
-                <form>
+                <form action="{{ route('authenticate') }}" method="POST">
+                  @csrf
                   <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Username</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="Masukkan Email Anda" name="email" value="{{ old('email') }}">
                   </div>
                   <div class="mb-4">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Masukkan Password Anda" name="password">
                   </div>
                   <div class="d-flex align-items-center justify-content-between mb-4">
                     <div class="form-check">
@@ -77,9 +79,9 @@
                     </div>
                     <a class="text-primary fw-medium" href="AuthenticationForgotPassword.html">Lupa Password ?</a>
                   </div>
-                  <a href="../index.html" class="btn btn-primary w-100 py-8 mb-4 rounded-2">
+                  <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">
                     <i class="bx bxs-lock-open"></i> Masuk
-                  </a>
+                  </button>
                 </form>
               </div>
             </div>

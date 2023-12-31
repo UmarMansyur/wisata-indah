@@ -15,4 +15,9 @@ class Passenger extends Model
     {
         return $this->hasMany(CostTour::class);
     }
+
+    public function detailTransaction()
+    {
+        return $this->hasMany(DetailTransaction::class);
+    }
 }

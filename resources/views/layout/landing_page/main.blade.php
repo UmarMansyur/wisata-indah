@@ -6,7 +6,7 @@
 <body>
   <div id="preloader" style="background: rgba(0, 0, 0, 0.9);">
     <div id="layer">
-      <img src="images/spinner.svg" alt="Preloader" width="100px" height="100px" />
+      <img src="/images/spinner.svg" alt="Preloader" width="100px" height="100px" />
     </div>
   </div>
   @include('layout.landing_page.header')
@@ -37,22 +37,22 @@
     </div>
   </div>
 
-  <script src="js/jquery.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/jquery.nice-select.min.js"></script>
-  <script src="js/slick.min.js"></script>
-  <script src="js/jquery.counterup.min.js"></script>
-  <script src="js/waypoints.js"></script>
-  <script src="js/jquery.meanmenu.min.js"></script>
-  <script src="js/jquery.magnific-popup.min.js"></script>
-  <script src="js/inview.min.js"></script>
-  <script src="js/wow.js"></script>
-  <script src="js/tilt.jquery.js"></script>
-  <script src="js/isotope.min.js"></script>
-  <script src="js/jquery.imagesloaded.min.js"></script>
-  <script src="js/select2.min.js"></script>
-  <script src="js/jquery-ui.min.js"></script>
-  <script src="js/custom.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.nice-select.min.js"></script>
+  <script src="/js/slick.min.js"></script>
+  <script src="/js/jquery.counterup.min.js"></script>
+  <script src="/js/waypoints.js"></script>
+  <script src="/js/jquery.meanmenu.min.js"></script>
+  <script src="/js/jquery.magnific-popup.min.js"></script>
+  <script src="/js/inview.min.js"></script>
+  <script src="/js/wow.js"></script>
+  <script src="/js/tilt.jquery.js"></script>
+  <script src="/js/isotope.min.js"></script>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+  <script src="/js/select2.min.js"></script>
+  <script src="/js/jquery-ui.min.js"></script>
+  <script src="/js/custom.js"></script>
 </body>
 
 </html>

@@ -1,3 +1,60 @@
+var html = '';
+var no = 1;
+var totalPrice = 0;
+var dataCart = [];
+async function getData() {
+  let Params = window.location.href.split("/");
+  if(Params.includes("edit")){
+    let id = Params[Params.length - 1];
+    const response = await fetch(`/admin/pemesanan/update/data/${id}`);
+    const data = await response.json();
+    data.detail_transaction.forEach((item, index) => {
+      const costTour = item.tour.cost_tour.find(x => x.passenger_id == item.passenger_id).id;
+      dataCart.push(costTour);
+    html = `
+    <tr>
+      <td class="text-center">${no} </td>
+      <td>
+        <span>${item.tour.title}</span>
+        <input type="hidden" name="destination_id[]" value="${item.tour.id}">
+      </td>
+      <td>
+        <span class="badge bg-success" style="font-size: 11px">${item.tour.type_tour.name}</span>
+      </td>
+      <td>
+        <span>${item.passenger.name}</span>
+        <input type="hidden" name="passenger_id[]" value="${item.passenger.id}">
+      </td>
+      <td class="text-center">
+        <span id="amount-${costTour}">${item.amount}</span>
+        <input type="hidden" name="amount[]" value="${item.amount}" id="amount-v-${costTour}">
+      </td>
+      <td>
+        <span id="total-${costTour}">Rp. ${convertToRp(item.price)}</span>
+        <input type="hidden" name="total[]" value="${item.price}" id="total-v-${costTour}">
+      </td>
+      <td class="text-center">
+        <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteRow(this)">
+          <i class="ti ti-trash"></i>
+        </button>
+      </td>
+    </tr>
+    `;
+    no++;
+
+
+    document.getElementById("table").innerHTML += html;
+    document.getElementById('btn-checkout').disabled = false;
+  });
+  totalPrice += data.total_price;
+  document.getElementById("total-price").innerHTML = `Rp. ${convertToRp(totalPrice)}`;
+  }
+
+}
+
+window.addEventListener("load", async function () {
+  await getData();
+});
 
 var data = "";
 function getDestination(item) {
@@ -41,13 +98,7 @@ function getTotalCostTicket(item) {
   document.getElementById('amount').value = convertToRp(amount);
 }
 
-
-var html = '';
-var no = 1;
-var totalPrice = 0;
-
-var dataCart = [];
-function addToCart() {
+async function addToCart() {
   if (!data) {
     Swal.fire({
       icon: 'error',
@@ -61,19 +112,20 @@ function addToCart() {
   let total = costTour.price * convertToNominal(document.getElementById("amount").value);
   totalPrice += total;
   document.getElementById("total-price").innerHTML = `Rp. ${convertToRp(totalPrice)}`;
-
-
   // if data already exist in cart then update the data
   let dataExist = dataCart.find(x => x == costTour.id);
+
   if (dataExist) {
     let amount = convertToNominal(document.getElementById("amount-" + costTour.id).innerHTML);
     let newAmount = parseInt(amount) + parseInt(convertToNominal(document.getElementById("amount").value));
     let newTotal = costTour.price * newAmount;
     document.getElementById("amount-" + costTour.id).innerHTML = newAmount;
     document.getElementById("total-" + costTour.id).innerHTML = `Rp. ${convertToRp(newTotal)}`;
-
+    document.getElementById("amount-v-" + costTour.id).value = newAmount;
+    document.getElementById("total-v-" + costTour.id).value = newTotal;
     return;
   }
+
 
 
   html = `
@@ -92,11 +144,11 @@ function addToCart() {
       </td>
       <td class="text-center">
         <span id="amount-${costTour.id}">${document.getElementById("amount").value}</span>
-        <input type="hidden" name="amount[]" value="${document.getElementById("amount").value}">  
+        <input type="hidden" name="amount[]" value="${document.getElementById("amount").value}" id="amount-v-${costTour.id}">
       </td>
       <td>
         <span id="total-${costTour.id}">Rp. ${convertToRp(total)}</span>
-        <input type="hidden" name="total[]" value="${total}">
+        <input type="hidden" name="total[]" value="${total}" id="total-v-${costTour.id}">
       </td>
       <td class="text-center">
         <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteRow(this)">
@@ -107,6 +159,7 @@ function addToCart() {
     `;
   no++;
   document.getElementById("table").innerHTML += html;
+  document.getElementById('btn-checkout').disabled = false;
   dataCart.push(costTour.id);
   clearForm();
 }
@@ -130,6 +183,13 @@ function deleteRow(item) {
   document.getElementById("total-price").innerHTML = `Rp. ${convertToRp(totalPrice)}`;
   row.parentNode.removeChild(row);
   no--;
+  if(no == 0) {
+    document.getElementById('btn-checkout').disabled = true;
+    document.getElementById("total-price").innerHTML = `Rp. 0`;
+  }
+  if(no == 1){
+    document.getElementById('btn-checkout').disabled = true;
+  }
 }
 
 function convertToRp(value) {

@@ -1,14 +1,15 @@
 @if ($paginator->hasPages())
     <nav>
-        <ul class="pagination">
+        <ul class="justify-content-center">
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
-                <li class="disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
-                    <span aria-hidden="true">&lsaquo;</span>
+                <li class="disabled" aria-disabled="true">
+                    <a class="previous page-numbers" href="#"><i class="fa fa-arrow-right"></i></a>
                 </li>
             @else
                 <li>
-                    <a href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')">&lsaquo;</a>
+                    <a href="{{ $paginator->previousPageUrl() }}" rel="prev">&lsaquo;</a>
+                    <a class="previous page-numbers" href="#"><i class="fa fa-arrow-right"></i></a>
                 </li>
             @endif
 

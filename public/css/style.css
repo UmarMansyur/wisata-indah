@@ -64,6 +64,18 @@ body {
   direction: ltr;
 }
 
+.tour-details .sidebar .widget_booking_form .input-wrapper select {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: #A3A3A3;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 170%;
+  padding: 15px 24px;
+  border-radius: 8px;
+  border: 1px solid #E7E7E7;
+  background-color: #FAFAFA;
+}
+
 p {
   margin: 0 0 15px;
 }

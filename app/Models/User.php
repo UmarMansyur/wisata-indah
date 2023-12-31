@@ -44,4 +44,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tour::class, 'user_id');
     }
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class, 'user_id');
+    }
 }

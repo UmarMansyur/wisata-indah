@@ -4,10 +4,10 @@
       <div class="row">
         <div class="col-xl-2 col-lg-2 col-md-6 col-6 d-flex align-items-center">
           <div class="logo">
-            <a href="index-2.html" class="standard-logo"><img src="images/logo.png" alt="logo"
+            <a href="/" class="standard-logo"><img src="/images/logo.png" alt="logo"
                 style="width: 70px" /></a>
-            <a href="index-2.html" class="sticky-logo"><img src="images/logo.png" alt="logo" style="width: 70px" /></a>
-            <a href="index-2.html" class="retina-logo"><img src="images/logo.png" alt="logo" style="width: 70px" /></a>
+            <a href="/" class="sticky-logo"><img src="/images/logo.png" alt="logo" style="width: 70px" /></a>
+            <a href="/" class="retina-logo"><img src="/images/logo.png" alt="logo" style="width: 70px" /></a>
           </div>
         </div>
         <div class="col-xl-10 col-lg-10 col-md-6 col-6 d-flex align-items-center justify-content-end">
@@ -57,8 +57,8 @@
     </div>
     <div class="menu-sidebar-content">
       <div class="menu-sidebar-logo">
-        <a href="index-2.html">
-          <img src="images/logo/nav-logo.png" alt="logo" />
+        <a href="/">
+          <img src="/images/logo/nav-logo.png" alt="logo" />
         </a>
       </div>
       <div class="mobile-nav-menu"></div>

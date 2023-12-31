@@ -32,4 +32,9 @@ class Tour extends Model
     {
         return $this->hasMany(Gallery::class);
     }
+
+    public function detailTransaction()
+    {
+        return $this->hasMany(DetailTransaction::class);
+    }
 }
