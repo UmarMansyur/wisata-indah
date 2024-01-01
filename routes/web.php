@@ -50,6 +50,7 @@ Route::get('/about', function () {
 Route::group(['prefix' => 'destination'], function () {
     Route::get('/', [DestinationController::class, 'destinasi_landing'])->name('destination');
     Route::get('/detail/{id}', [DestinationController::class, 'showDetail'])->name('detail destination');
+    Route::post('/send-mail', [DestinationController::class, 'sendMail'])->name('send mail');
 });
 
 Route::get('/contact', function () {

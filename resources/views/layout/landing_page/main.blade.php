@@ -4,6 +4,7 @@
 
 
 <body>
+  @include('sweetalert::alert')
   <div id="preloader" style="background: rgba(0, 0, 0, 0.9);">
     <div id="layer">
       <img src="/images/spinner.svg" alt="Preloader" width="100px" height="100px" />
@@ -53,6 +54,8 @@
   <script src="/js/select2.min.js"></script>
   <script src="/js/jquery-ui.min.js"></script>
   <script src="/js/custom.js"></script>
+  <script src="/assets/vendor/sweetalert2/dist/sweetalert2.min.js"></script>
+
 </body>
 
 </html>

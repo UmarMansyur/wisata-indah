@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailSender;
 use App\Models\CostTour;
 use App\Models\Gallery;
 use App\Models\Tour;
@@ -9,8 +10,10 @@ use App\Models\TypeTour;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
@@ -51,7 +54,7 @@ class DestinationController extends Controller
                 return '<a href="/admin/pariwisata/' . Crypt::encryptString($tour->id) . '" class="btn btn-warning btn-sm">
                 <i class="bx bx-pencil"></i> Edit
                 </a>
-                <a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="confirmDelete('. $tour->id .')">
+                <a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="confirmDelete(' . $tour->id . ')">
                 <i class="bx bx-trash"></i> Hapus
                 </a>';
             })
@@ -109,7 +112,7 @@ class DestinationController extends Controller
                     'address' => $request->address,
                 ]);
             }
-            
+
             $tour = Tour::create([
                 'type_tour_id' => $request->type_tour_id,
                 'user_id' => empty($existUser) ? $user->id : $existUser->id,
@@ -143,7 +146,7 @@ class DestinationController extends Controller
                     'url' => Storage::put('upload/images', $imageGallery)
                 ]);
             }
-            
+
             DB::commit();
             Alert::success('Success', 'Pariwisata berhasil ditambahkan');
             return redirect()->route('Pariwisata');
@@ -151,7 +154,6 @@ class DestinationController extends Controller
             DB::rollBack();
             Alert::error('Error', $th->getMessage());
             return redirect()->back();
-            
         }
     }
 
@@ -290,5 +292,29 @@ class DestinationController extends Controller
         $tour = Tour::with(['typeTour', 'user', 'costTour', 'gallery'])->with('costTour.passenger')->find($id);
         $type_tour = TypeTour::all();
         return view('destination.detail', compact('tour'));
+    }
+
+    public function sendMail(Request $request)
+    {
+        try {;
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'gender' => $request->gender,
+                'phone' => $request->phone,
+                'date_departure' => $request->date_departure,
+                'date' => $request->date,
+                'child' => $request->child,
+                'adult' => $request->adult,
+                'destination' => $request->destination,
+            ];
+            $user = User::where('role', 'admin')->get();
+            foreach ($user as $key => $value) {
+                Mail::to($value->email)->send(new MailSender($data));
+            }
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

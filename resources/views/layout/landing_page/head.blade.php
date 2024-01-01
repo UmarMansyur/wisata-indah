@@ -47,4 +47,6 @@
       overflow: hidden;
     }
   </style>
+    <link rel="stylesheet" href="/assets/vendor/sweetalert2/dist/sweetalert2.min.css">
+    <script src="/assets/vendor/jquery/dist/jquery.min.js"></script>
 </head>

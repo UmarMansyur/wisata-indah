@@ -138,7 +138,7 @@
           <div class="image-wrapper">
             <div class="image-inner">
               <a href="{{ route('detail destination', encrypt($item->id)) }}">
-                <img src="{{ asset('storage/'.$item->thumbnail) }}" alt="Location Image">
+                <img src="{{ asset('storage/'.$item->cover_image) }}" alt="Location Image">
               </a>
             </div>
             <div class="favourite-icon">

@@ -6,7 +6,7 @@
           <div class="footer-widget">
             <div class="footer-widget-logo">
               <div class="footer-logo">
-                <a href="/"><img src="images/logo-dark.png" alt="Footer Logo" style="width: 200px"/></a>
+                <a href="/"><img src="/images/logo-dark.png" alt="Footer Logo" style="width: 200px"/></a>
               </div>
             </div>
           </div>

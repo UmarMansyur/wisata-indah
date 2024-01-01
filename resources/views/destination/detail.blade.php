@@ -77,9 +77,10 @@
                                     <h6>Biaya Tiket {{ $item->passenger->name }}</h6>
                                     <ul>
                                         <li>
-                                            <h6 class="text-primary">Rp. {{ number_format($item->price, 0, ',', '.') }}</h6>
+                                            <h6 class="text-primary">Rp. {{ number_format($item->price, 0, ',', '.') }}
+                                            </h6>
                                         </li>
-                                        
+
                                     </ul>
                                 </div>
                                 @endforeach
@@ -89,14 +90,15 @@
                             <div class="post-gallery">
                                 @foreach ($tour->gallery as $item)
                                 <div class="post-gallery-item">
-                                    <img src="{{ url('storage/'.$item->url) }}" alt="image" style="width: 100%; height: 100%">
+                                    <img src="{{ url('storage/'.$item->url) }}" alt="image"
+                                        style="width: 100%; height: 100%">
                                 </div>
                                 @endforeach
                             </div>
                             <div class="post-card-divider mt-0"></div>
                             <h4>Tour map</h4>
                             <div class="map-wedget">
-                               {!! $tour->map_location !!}
+                                {!! $tour->map_location !!}
                             </div>
                         </div>
                     </div>
@@ -109,11 +111,13 @@
                 <div class="sidebar">
                     <div class="widget widget_booking_form">
                         <h3 class="title">Pesan Sekarang</h3>
-                        <form action="#" method="post" class="comment-form">
+                        <form action="{{ route('send mail') }}" method="post" class="comment-form">
+                            @csrf
                             <div class="row g-4">
                                 <div class="col-xl-12">
                                     <div class="contacts-name input-wrapper">
                                         <label>Nama Lengkap:</label>
+                                        <input name="destination" type="hidden" value="{{ $tour->title }}">
                                         <input name="username" type="text" placeholder="Nama Lengkap" required>
                                     </div>
                                 </div>
@@ -127,8 +131,8 @@
                                     <div class="input-wrapper">
                                         <label>Jenis Kelamin:</label>
                                         <select name="gender" required>
-                                            <option value="1">Laki-Laki</option>
-                                            <option value="2">Perempuan</option>
+                                            <option value="male">Laki-Laki</option>
+                                            <option value="female">Perempuan</option>
                                         </select>
                                     </div>
                                 </div>
@@ -147,20 +151,20 @@
                                 <div class="col-xl-12">
                                     <div class="contacts-tour input-wrapper">
                                         <label>Jumlah Orang:</label>
-                                        <input name="amount" type="text" placeholder="Dewasa">
+                                        <input name="adult" type="text" placeholder="Dewasa">
                                     </div>
                                 </div>
                                 <div class="col-xl-12">
                                     <div class="contacts-tour input-wrapper">
                                         <label>Jumlah Orang:</label>
-                                        <input name="child_amount" type="text" placeholder="Anak-Anak">
+                                        <input name="child" type="text" placeholder="Anak-Anak">
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="theme-btn" type="submit">
+                                    <button class="theme-btn" type="button" onclick="confirm()">
                                         <span class="swip">
                                             <span class="title-wrapper">
-                                                <span class="title-1">Book now</span>
+                                                <span class="title-1">Pesan Sekarang</span>
                                             </span>
                                         </span>
                                     </button>
@@ -174,4 +178,41 @@
         </div>
     </div>
 </div>
+<script>
+    // onload isi form dari local storage
+    window.onload = function () {
+    $('input[name="username"]').val(localStorage.getItem('username'));
+    $('input[name="email"]').val(localStorage.getItem('email'));
+    $('input[name="gender"]').val(localStorage.getItem('gender'));
+    $('input[name="phone"]').val(localStorage.getItem('phone'));
+    $('input[name="date"]').val(localStorage.getItem('date'));
+    $('input[name="child"]').val(localStorage.getItem('child'));
+    $('input[name="adult"]').val(localStorage.getItem('adult'));
+};
+
+    function confirm() {
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Anda akan mengirimkan permintaan kunjungan ke {{ $tour->title }}",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#preloader').show();
+                localStorage.setItem('username', $('input[name="username"]').val());
+                localStorage.setItem('email', $('input[name="email"]').val());
+                localStorage.setItem('gender', $('input[name="gender"]').val());
+                localStorage.setItem('phone', $('input[name="phone"]').val());
+                localStorage.setItem('date', $('input[name="date"]').val());
+                localStorage.setItem('child', $('input[name="child"]').val());
+                localStorage.setItem('adult', $('input[name="adult"]').val());
+                setTimeout(function() {
+                    $('.comment-form').submit();
+                }, 2000);
+            }
+        })
+    }
+</script>
 @endsection
