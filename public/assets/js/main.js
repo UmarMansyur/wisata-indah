@@ -92,7 +92,7 @@ function getTotalCostTicket(item) {
   let amount = convertToNominal(item);
   let costTour = cost.find(x => x.passenger_id == document.getElementById("passenger_id").value);
   document.getElementById("total_cost_ticket").value = "Rp. " + convertToRp(costTour.price * amount);
-  if (amount <= 0) {
+  if (amount <= 0 && amount != "") {
     document.getElementById('amount').value = 1;
   }
   document.getElementById('amount').value = convertToRp(amount);
