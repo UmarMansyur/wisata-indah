@@ -11,7 +11,7 @@
 
       <ul class="navbar-nav quick-links d-none d-lg-flex">
         <li class="nav-item dropdown-hover d-none d-lg-block">
-          <a class="nav-link" href="AppEmail.html">Email</a>
+          <a class="nav-link" href="/admin/karyawan">Email</a>
         </li>
       </ul>
 
@@ -37,7 +37,7 @@
                 aria-expanded="false">
                 <div class="d-flex align-items-center">
                   <div class="user-profile-img">
-                    <img src="{{ file_exists(url('storage/' . Auth::user()->thumbnail)) ? url('storage/' . Auth::user()->thumbnail) :  Auth::user()->thumbnail }}" class="rounded-circle" width="35" height="35" alt="" />
+                    <img src="{{ file_exists(storage_path('app/public/' . Auth::user()->thumbnail)) ? asset('storage/' . Auth::user()->thumbnail) :  Auth::user()->thumbnail }}" class="rounded-circle" width="35" height="35" alt="" />
                   </div>
                 </div>
               </a>
@@ -47,7 +47,7 @@
                     <h5 class="mb-0 fs-5 fw-semibold">User Profile</h5>
                   </div>
                   <div class="d-flex align-items-center py-9 mx-7 border-bottom">
-                    <img src="{{ file_exists(url('storage/' . Auth::user()->thumbnail)) ? url('storage/' . Auth::user()->thumbnail) :  Auth::user()->thumbnail }}" class="rounded-circle" width="80" height="80" alt="" />
+                    <img src="{{ file_exists(storage_path('app/public/' . Auth::user()->thumbnail)) ? asset('storage/' . Auth::user()->thumbnail) :  Auth::user()->thumbnail }}" class="rounded-circle" width="80" height="80" alt="" />
                     <div class="ms-3">
                       <h5 class="mb-1 fs-3">{{ Auth::user()->username }}</h5>
                       <span class="mb-1 d-block">Administrator</span>
@@ -154,7 +154,7 @@
                     <h5 class="mb-0 fs-5 fw-semibold">User Profile</h5>
                   </div>
                   <div class="d-flex align-items-center py-9 mx-7 border-bottom">
-                    <img src="{{ file_exists(url('storage/' . Auth::user()->thumbnail)) ? url('storage/' . Auth::user()->thumbnail) :  Auth::user()->thumbnail }}" class="rounded-circle" width="80" height="80" alt="" />
+                    <img src="{{ file_exists(storage_path('app/public/' . Auth::user()->thumbnail)) ? asset('storage/' . Auth::user()->thumbnail) :  Auth::user()->thumbnail }}" class="rounded-circle" width="80" height="80" alt="" />
                     <div class="ms-3">
                       <h5 class="mb-1 fs-3">{{ Auth::user()->username }}</h5>
                       <span class="mb-1 d-block">Administrator</span>

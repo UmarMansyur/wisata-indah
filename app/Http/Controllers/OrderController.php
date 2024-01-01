@@ -72,7 +72,7 @@ class OrderController extends Controller
             Alert::error('Error', 'Masukkan Data Pariwisata Terlebih Dahulu');
             return redirect()->route('Pariwisata');
         }
-        return view('admin.order.index', compact('destination'));
+        return view('admin.order.create', compact('destination'));
     }
 
     public function store(Request $request)

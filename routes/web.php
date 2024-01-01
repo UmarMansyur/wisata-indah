@@ -64,6 +64,10 @@ Route::get('/login/admin', function () {
 })->name('login');
 
 Route::get('/logout/admin', [AuthenticationController::class, 'logout'])->name('logout');
+Route::get('/forgot-password/admin', [AuthenticationController::class, 'forgot_password'])->name('forgot');
+Route::post('/forgot-password/admin', [AuthenticationController::class, 'sendVerificationPassword'])->name('forgot');
+Route::get('/reset-password/{id}', [AuthenticationController::class, 'reset_password'])->name('reset-password');
+Route::post('/change-password', [AuthenticationController::class, 'update_password'])->name('reset-password');
 
 Route::post('/login/admin', [AuthenticationController::class, 'authenticate'])->name('authenticate');
 

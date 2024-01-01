@@ -53,37 +53,34 @@
             <div class="authentication-login min-vh-100 bg-body row justify-content-center align-items-center p-4">
               <div class="col-sm-8 col-md-6 col-xl-9">
                 <h2 class="mb-3 fs-7 fw-bolder">Selamat Datang di Madura Indah Wisata</h2>
-                <p class=" mb-9">Halaman Administrator</p>
+                <p class=" mb-9">Halaman Reset Password</p>
                 <div class="position-relative text-center my-4">
                   <p class="mb-0 fs-4 px-3 d-inline-block text-bg-white text-dark z-index-5 position-relative">
-                    Tekan Masuk Untuk Melanjutkan
+                    Tekan Reset Untuk Melanjutkan
                   </p>
                   <span class="border-top w-100 position-absolute top-50 start-50 translate-middle"></span>
                 </div>
-                <form action="{{ route('authenticate') }}" method="POST">
+                <form action="{{ route('reset-password') }}" method="POST">
                   @csrf
                   <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email"
-                      placeholder="Masukkan Email Anda" name="email" value="{{ old('email') }}">
+                    <input type="hidden" name="user_id" value="{{ $token }}">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" aria-describedby="password"
+                      name="password" placeholder="Masukkan Password anda" name="password" value="{{ old('password') }}"
+                      required autocomplete="current-password">
                   </div>
                   <div class="mb-4">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Masukkan Password Anda"
-                      name="password">
+                    <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                    <input type="password" class="form-control" id="password_confirmation"
+                      placeholder="Masukkan Password anda" name="password_confirmation" required
+                      autocomplete="new-password" value="{{ old('password_confirmation') }}">
                   </div>
-                  <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="form-check">
-                      <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
-                      <label class="form-check-label text-dark" for="flexCheckChecked">
-                        Ingat Saya
-                      </label>
-                    </div>
-                    <a class="text-primary fw-medium" href="{{route('forgot')}}">Lupa Password ?</a>
-                  </div>
-                  <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">
-                    <i class="bx bxs-lock-open"></i> Masuk
+                  <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2" onclick="loader()">
+                    <i class="bx bxs-lock-open"></i> Reset Password
                   </button>
+                  <p class="mb-0 text-center">
+                    <a href="{{ route('login') }}" class="text-primary">Kembali ke halaman login</a>
+                  </p>
                 </form>
               </div>
             </div>
@@ -102,6 +99,11 @@
   <script src="/assets/vendor/simplebar/dist/simplebar.min.js"></script>
   <script src="/assets/js/sidebarmenu.js"></script>
   <script src="/assets/js/theme.js"></script>
+  <script>
+    function loader() {
+      document.getElementById("layer").style.display = "none";
+    }
+  </script>
 </body>
 
 </html>

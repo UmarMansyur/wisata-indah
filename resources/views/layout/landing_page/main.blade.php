@@ -16,14 +16,13 @@
   <div class="search-form-wrapper">
     <div class="search-form-inner">
       <div class="search-content-filed">
-        <form role="search" method="get" class="search-form" action="#">
-          <input type="hidden" name="post_type" value="post" />
+        <form role="search" method="get" class="search-form" action="{{ route('destination') }}">
           <div class="search-form-input">
             <div class="search-icon">
               <i class="icon-search"></i>
             </div>
-            <input type="search" placeholder="Search" />
-            <button class="theme-btn" type="submit" title="Search" aria-label="Search">Search</button>
+            <input type="search" placeholder="Search" name="destination" />
+            <button class="theme-btn" type="submit" title="Search" aria-label="Search">Cari Wisata</button>
           </div>
         </form>
         <span class="search-close">

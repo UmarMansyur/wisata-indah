@@ -1,8 +1,10 @@
 @extends('layout.admin.main')
 @section('content')
 <div class="row">
-  <div class="col-12">
-    <a href="{{route('Tambah Pemesanan')}}" class="btn btn-primary">Tambah</a>
+  <div class="col-12 mb-3 text-end">
+    <a href="{{route('Tambah Pemesanan')}}" class="btn btn-primary">
+    <i class="bx bx-plus"></i> Tambah Pemesanan
+    </a>
   </div>
 </div>
 <div class="row">

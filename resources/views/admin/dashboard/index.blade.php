@@ -8,9 +8,9 @@
           <div class="col-sm-7">
             <div class="d-flex align-items-center mb-7">
               <div class="rounded-circle overflow-hidden me-6">
-                <img src="/assets/images/profile/user-1.jpg" alt="" width="40" height="40">
+                <img src="{{ file_exists(storage_path('app/public/' . Auth::user()->thumbnail)) ? asset('storage/' . Auth::user()->thumbnail) :  Auth::user()->thumbnail }}" alt="" width="80" height="80">
               </div>
-              <h5 class="fw-semibold mb-0 fs-5">Welcome back Mathew Anderson!</h5>
+              <h5 class="fw-semibold mb-0 fs-5">Welcome back {{ Auth::user()->username }}!</h5>
             </div>
           </div>
           <div class="col-sm-5">

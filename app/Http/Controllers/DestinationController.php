@@ -71,6 +71,7 @@ class DestinationController extends Controller
     public function create()
     {
         $type_tour = TypeTour::all();
+
         return view('admin.destination.create', compact('type_tour'));
     }
 
@@ -279,10 +280,31 @@ class DestinationController extends Controller
     }
 
 
-    public function destinasi_landing()
+    public function destinasi_landing(Request $request)
     {
-        $tours = Tour::with(['typeTour', 'user', 'costTour'])->with('costTour.passenger')->paginate(6);
+        $minPrice = $request->minPrice;
+        $maxPrice = $request->maxPrice;
+        $tours = null;
         $type_tour = TypeTour::all();
+
+        if ($request->destination != null) {
+            $tours = Tour::with(['typeTour', 'user', 'costTour'])->with('costTour.passenger')->where('title', 'like', '%' . $request->destination . '%')->paginate(6);
+        } else {
+            if ($request->location == null && $request->destination == null) {
+                $tours = Tour::with(['typeTour', 'user', 'costTour'])->with('costTour.passenger')->paginate(6);
+            } else {
+                if ($minPrice == null && $maxPrice == null) {
+                    $tours = Tour::with(['typeTour', 'user', 'costTour'])->with('costTour.passenger')->where('district', $request->location)->paginate(6);
+                } else {
+                    $tour = Tour::join('cost_tours', 'cost_tours.tour_id', '=', 'tours.id')
+                        ->where('district', $request->location)
+                        ->whereBetween('cost_tours.price', [$minPrice, $maxPrice])
+                        ->get();
+                    $tours = Tour::with(['typeTour', 'user', 'costTour'])->with('costTour.passenger')->whereIn('id', $tour->pluck('id'))->paginate(6);
+                }
+            }
+        }
+
         return view('destination.index', compact('tours', 'type_tour'));
     }
 

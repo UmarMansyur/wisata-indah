@@ -32,8 +32,8 @@
           <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
           <span class="hide-menu">Apps</span>
         </li>
-        <li class="sidebar-item {{ request()->is('admin/pemesanan') ? 'selected' : '' }}">
-          <a class="sidebar-link {{ request()->is('admin/pemesanan') ? 'active' : '' }}" href="/admin/pemesanan" aria-expanded="false">
+        <li class="sidebar-item {{ request()->is('admin/pemesanan/*') ? 'selected' : '' }}">
+          <a class="sidebar-link {{ request()->is('admin/pemesanan/*') ? 'active' : '' }}" href="/admin/pemesanan" aria-expanded="false">
             <span>
               <i class="ti ti-browser-check"></i>
             </span>
@@ -88,7 +88,7 @@
     <div class="fixed-profile p-3 mx-4 mb-2 bg-secondary-subtle rounded sidebar-ad mt-3">
       <div class="hstack gap-3">
         <div class="john-img">
-          <img src="{{ file_exists(url('storage/' . Auth::user()->thumbnail)) ? url('storage/' . Auth::user()->thumbnail) :  Auth::user()->thumbnail }}" class="rounded-circle" width="40" height="40" alt="" />
+          <img src="{{ file_exists(storage_path('app/public/' . Auth::user()->thumbnail)) ? asset('storage/' . Auth::user()->thumbnail) :  Auth::user()->thumbnail }}" class="rounded-circle" width="40" height="40" alt="" />
         </div>
         <div class="john-title">
           <h6 class="mb-0 fs-4 fw-semibold">{{ Auth::user()->username }}</h6>

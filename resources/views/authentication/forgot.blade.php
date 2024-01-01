@@ -50,41 +50,29 @@
             </div>
           </div>
           <div class="col-xl-5 col-xxl-4">
-            <div class="authentication-login min-vh-100 bg-body row justify-content-center align-items-center p-4">
-              <div class="col-sm-8 col-md-6 col-xl-9">
-                <h2 class="mb-3 fs-7 fw-bolder">Selamat Datang di Madura Indah Wisata</h2>
-                <p class=" mb-9">Halaman Administrator</p>
-                <div class="position-relative text-center my-4">
-                  <p class="mb-0 fs-4 px-3 d-inline-block text-bg-white text-dark z-index-5 position-relative">
-                    Tekan Masuk Untuk Melanjutkan
-                  </p>
-                  <span class="border-top w-100 position-absolute top-50 start-50 translate-middle"></span>
-                </div>
-                <form action="{{ route('authenticate') }}" method="POST">
-                  @csrf
-                  <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email"
-                      placeholder="Masukkan Email Anda" name="email" value="{{ old('email') }}">
+            <div class="card mb-0 shadow-none rounded-0 min-vh-100 h-100">
+              <div class="d-flex align-items-center w-100 h-100">
+                <div class="card-body">
+                  <div class="mb-5">
+                    <h2 class="fw-bolder fs-7 mb-3">Forgot your password?</h2>
+                    <p class="mb-0 ">
+                      Masukkan email yang terdaftar untuk mengatur ulang kata sandi Anda. Anda akan menerima email
+                      dengan tautan untuk mengatur ulang kata sandi Anda.
+                    </p>
                   </div>
-                  <div class="mb-4">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Masukkan Password Anda"
-                      name="password">
-                  </div>
-                  <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="form-check">
-                      <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
-                      <label class="form-check-label text-dark" for="flexCheckChecked">
-                        Ingat Saya
-                      </label>
+                  <form action="{{ route('forgot') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Email:</label>
+                      <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email"
+                        placeholder="Masukkan Email Anda" name="email" value="{{ old('email') }}">
                     </div>
-                    <a class="text-primary fw-medium" href="{{route('forgot')}}">Lupa Password ?</a>
-                  </div>
-                  <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">
-                    <i class="bx bxs-lock-open"></i> Masuk
-                  </button>
-                </form>
+                    <button type="submit" class="btn bg-primary text-primary w-100 py-8 text-white mb-3"
+                      onclick="loader()">Reset Password</button>
+                    <a href="{{ route('login') }}" class="btn bg-primary-subtle text-primary w-100 py-8">Back to
+                      Login</a>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
@@ -102,6 +90,12 @@
   <script src="/assets/vendor/simplebar/dist/simplebar.min.js"></script>
   <script src="/assets/js/sidebarmenu.js"></script>
   <script src="/assets/js/theme.js"></script>
+  <script>
+    function loader() {
+      var layer = document.getElementById("layer");
+      layer.style.display = "none";
+    }
+  </script>
 </body>
 
 </html>
