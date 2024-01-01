@@ -2,6 +2,11 @@
 @section('content')
 <div class="row">
   <div class="col-12">
+    <a href="{{route('Tambah Pemesanan')}}" class="btn btn-primary">Tambah</a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
     <div class="table-responsive">
       <table class="table border table-striped table-bordered text-nowrap" id="table">
         <thead>
