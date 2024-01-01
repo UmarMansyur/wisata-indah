@@ -17,7 +17,7 @@
 
         <p style="color: #666666;">Untuk melanjutkan proses reset password, silakan klik link di bawah ini:</p>
 
-        <a href="{{route('reset-password', $token)}} " style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 3px; margin-bottom: 20px;">Reset Password</a>
+        <a href="{{env('APP_URL'). '/reset-password' . '/' . $token}}" style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 3px; margin-bottom: 20px;">Reset Password</a>
 
         <p style="color: #666666;">Jika Anda tidak meminta reset password, abaikan email ini.</p>
 

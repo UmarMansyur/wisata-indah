@@ -93,7 +93,7 @@
   <script>
     function loader() {
       var layer = document.getElementById("layer");
-      layer.style.display = "none";
+      layer.style.display = "block";
     }
   </script>
 </body>
