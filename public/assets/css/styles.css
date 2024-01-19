@@ -26282,3 +26282,7 @@ table.footable thead tr.footable-filtering th ul.dropdown-menu li .checkbox labe
     display: none !important;
   }
 }
+
+.ck-editor__editable {
+  min-height: 300px;
+}

@@ -24,7 +24,7 @@
                     <li><a href="/destination?location=Bangkalan">Bangkalan</a></li>
                   </ul>
                 </li>
-                <li class="dropdown {{ request()->is('destination') ? 'active' : '' }}">
+                <li class="dropdown {{ request()->is('') ? 'active' : '' }}">
                   <a href="{{ route('destination') }}">Paket Pariwisata</a>
                   <ul class="submenu">
                     <li><a href="/destination?location=Sumenep">Wisata Madura</a></li>

@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tours', function (Blueprint $table) {
+        Schema::create('detail_packet_destinations', function (Blueprint $table) {
             $table->id();
-            $table->string('district');
-            $table->string('title');
-            $table->longText('description');
-            $table->text('address');
-            $table->string('cover_image')->nullable();
-            $table->text('map_location');
+            $table->foreignId('packet_destination_id')->constrained('packet_destinations')->onDelete('cascade');
+            $table->string('tour_id');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tours');
+        Schema::dropIfExists('detail_packet_destinations');
     }
 };

@@ -1,41 +1,43 @@
 @extends('layout.admin.main')
 @section('content')
+
 <div class="row">
-  <div class="col-12 text-end mb-3">
-    <a href="/admin/pariwisata/tambah" class="btn btn-primary">
-      <i class="bx bx-plus"></i> Tambah Pariwisata
-    </a>
+  <div class="col-12 mb-3 text-end">
+    <a href="{{ route('Tambah Paket Wisata')}}" class="btn btn-primary"><i class="ti ti-plus"></i> Tambah Paket Wisata</a>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
+  <div class="col-12">
     <div class="table-responsive">
-      <table id="zero_config" class="table table-striped table-bordered text-nowrap font-size-12">
+      <table class="table table-bordered table-responsive table-hover" id="table">
         <thead>
           <tr>
-            <th>Nama Pariwisata</th>
-            <th>Alamat</th>
-            <th>Kategori</th>
+            <th class="text-center">No</th>
+            <th>Nama Paket</th>
+            <th>Biaya Per Orang</th>
+            <th>Minimal Jumlah Pemesan</th>
+            <th>Durasi Pariwisata</th>
             <th>Aksi</th>
           </tr>
         </thead>
-        <tbody></tbody>
       </table>
     </div>
   </div>
 </div>
 <script>
   $(function () {
-    $('#zero_config').DataTable({
-      processing: true,
+    $('#table').DataTable({
       serverSide: true,
-      ajax: '{!! route('Data Pariwisata') !!}',
+      processing: true,
+      ajax: "{{ route('Get Data Paket Wisata') }}",
+      scrollCollapse: true,
       columns: [
-        { data: 'title', name: 'title' },
-        { data: 'address', name: 'address' },
-        { data: 'type_tour_id', name: 'type_tour_id' },
-        { data: 'action', name: 'action' }
+        {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+        {data: 'name', name: 'name'},
+        {data: 'price', name: 'price'},
+        {data: 'min_person', name: 'min_person'},
+        {data: 'duration', name: 'duration'},
+        {data: 'action', name: 'action', orderable: false, searchable: false},
       ],
+      // ubah bahasa
       language: {
         "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
         "sProcessing": "Sedang memproses...",
@@ -53,14 +55,15 @@
           "sNext": "Selanjutnya",
           "sLast": "Terakhir"
         }
-      }
+      },
+      
     });
   });
 
   function confirmDelete(id) {
     Swal.fire({
       title: 'Apakah anda yakin?',
-      text: "Gambar akan dihapus secara permanen!",
+      text: "Data yang dihapus tidak dapat dikembalikan!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#536de6',
@@ -69,10 +72,10 @@
       cancelButtonText: 'Batal'
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(id);
-        window.location = '/admin/pariwisata/delete/' + id;
+        window.location = "/admin/pemesanan/delete/" + id;
       }
     })
   }
+
 </script>
 @endsection

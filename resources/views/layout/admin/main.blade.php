@@ -3,6 +3,7 @@
   data-layout="vertical" data-card="shadow">
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 @include('layout.admin.head')
+
 <body>
   @include('sweetalert::alert')
   <div class="preloader" id="layer">
@@ -44,12 +45,51 @@
   <script src="/assets/js/theme.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script src="/assets/vendor/sweetalert2/dist/sweetalert2.min.js"></script>
+  @if(Request::is('admin/paket-pariwisata/create') || Request::is('admin/paket-pariwisata/*'))
+  <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+  <script src="/assets/js/ckeditor.init.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('.select2').select2({
+        placeholder: "Pilih Destinasi",
+        allowClear: true
+      });
+      const value = "{{empty($tour_packet) ? '' : $tour_packet->detailTourPacket->pluck('tour_id')}}";
+
+     
+        if(value.includes('&quot;')) {
+          const sliceFirst = value.slice(1, -1);
+          const data = sliceFirst.split('&quot;');
+          $('.select2').val(data).trigger('change');
+        } else {
+          const sliceFirst = value.slice(1, -1);
+          const data = sliceFirst.split(',');
+          $('.select2').val(data).trigger('change');
+        }
+
+    });
+  </script>
+  @endif
   @if(Request::is('admin/pariwisata/tambah') || Request::is('admin/pariwisata/*'))
   <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
   <script src="/assets/js/ckeditor.init.js"></script>
   <script>
     $(document).ready(function () {
-      $('.select2').select2();
+      $('.select2').select2({
+        placeholder: "Pilih Jenis Pariwisata",
+        allowClear: true
+      });
+      const value = "{{ empty($tour) ? '' : $tour->detailTour->pluck('type_tour_id') }}";
+      if(value.includes('&quot;')) {
+          const sliceFirst = value.slice(1, -1);
+          const data = sliceFirst.split('&quot;');
+          $('.select2').val(data).trigger('change');
+        } else {
+          const sliceFirst = value.slice(1, -1);
+          const data = sliceFirst.split(',');
+          $('.select2').val(data).trigger('change');
+        }
+
     });
   </script>
   @endif

@@ -24,4 +24,19 @@ $(function () {
     </div>`
     );
   });
+
+  $("#add-image-destination-galleries").on("click", function () {
+    let imageGalleries = $("#image-destination-galleries").children().length;
+    $("#image-destination-galleries").append(
+      `<div class="mb-3 row align-items-center">
+      <label for="image-destination-galleries{{time()}}" class="form-label">Gambar Galeri ${imageGalleries + 1}
+:      </label>
+      <div class="col-sm-12">
+        <div class="input-group border rounded-1">
+          <input type="file" name="image-destination-galleries[]" id="image-destination-galleries{{time()}}" class="form-control" placeholder="John Deo">
+        </div>
+      </div>
+    </div>`
+    );
+  });
 });

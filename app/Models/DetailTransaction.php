@@ -9,7 +9,12 @@ class DetailTransaction extends Model
 {
     use HasFactory;
     protected $tables = 'detail_transactions';
-    protected $fillable = ['transaction_id', 'tour_id', 'passenger_id', 'amount', 'price'];
+    protected $fillable = [
+        'transaction_id',
+        'destination_packet_id',
+        'qty',
+        'price'
+    ];
 
     public function transaction()
     {
@@ -21,8 +26,9 @@ class DetailTransaction extends Model
         return $this->belongsTo(Tour::class, 'tour_id', 'id');
     }
 
-    public function passenger()
+    public function destination_packet()
     {
-        return $this->belongsTo(Passenger::class, 'passenger_id', 'id');
+        return $this->belongsTo(TourPacket::class, 'destination_packet_id', 'id');
     }
+
 }

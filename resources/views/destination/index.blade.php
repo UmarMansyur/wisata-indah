@@ -48,7 +48,7 @@
             <div class="isotope-grid">
                 <div class="row gy-4">
                     @foreach ($tours as $item)
-                    <div class="col-lg-4 col-md-6 masonry-portfolio-item {{ $item->typeTour->name }} beach wow fadeInUp" data-wow-delay="0s">
+                    <div class="col-lg-4 col-md-6 masonry-portfolio-item {{ $item->detailTour->pluck('typeTour.name')->implode(' ') }} beach wow fadeInUp" data-wow-delay="0s">
                         <div class="location-card style-2">
                             <div class="image-wrapper">
                                 <a href="{{ route('detail destination', encrypt($item->id)) }}" class="image-inner">
@@ -73,8 +73,8 @@
                                             <p class="title">{{ $item->address }}</p>
                                         </div>
                                         <div class="time-zone-inner">
-                                            <i class="fa-solid fa-clock"></i>
-                                            <p class="title"> {{ $item->duration }} {{ $item->unit_duration }}</p>
+                                            <i class="fa-solid fa-envelope"></i>
+                                            <p class="title">{{ $item->detailTour->pluck('typeTour.name')->implode(',') }}</p>
                                         </div>
                                     </div>
                                 </div>

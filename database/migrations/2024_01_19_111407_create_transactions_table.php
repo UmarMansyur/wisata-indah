@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tours', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('district');
-            $table->string('title');
-            $table->longText('description');
-            $table->text('address');
-            $table->string('cover_image')->nullable();
-            $table->text('map_location');
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
+            $table->date('departure_date');
+            $table->enum('status', ['Menunggu Konfirmasi', 'Dibatalkan', 'Selesai', 'Ditolak']);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tours');
+        Schema::dropIfExists('transactions');
     }
 };

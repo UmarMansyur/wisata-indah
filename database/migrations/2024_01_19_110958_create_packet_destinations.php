@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detail_transactions', function (Blueprint $table) {
+        Schema::create('packet_destinations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaction_id')->constrained('transactions')->onDelete('cascade');
-            $table->foreignId('passenger_id')->constrained('passengers')->onDelete('cascade');
-            $table->foreignId('tour_id')->constrained('tours')->onDelete('cascade');
-            $table->integer('amount');
+            $table->string('name');
+            $table->boolean('is_madura')->default(false);
+            $table->longText('description')->nullable()->default(null);
+            $table->string('cover_image')->nullable()->default(null);
+            $table->integer('min_person');
             $table->double('price');
+            $table->float('duration');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('detail_transactions');
+        Schema::dropIfExists('packet_destinations');
     }
 };

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\MailSender;
 use App\Models\CostTour;
+use App\Models\DetailTour;
 use App\Models\Gallery;
 use App\Models\Tour;
 use App\Models\TypeTour;
@@ -22,30 +23,13 @@ class DestinationController extends Controller
 {
     public function getData()
     {
-        $tours = Tour::with(['typeTour', 'user', 'costTour'])->with('costTour.passenger')->get();
+        $tours = Tour::with(['detailTour', 'detailTour.typeTour'])->get();
         return FacadesDataTables::of($tours)
             ->addIndexColumn()
-            ->editColumn('duration', function ($tour) {
-                return $tour->duration . ' ' . $tour->unit_duration;
-            })
             ->editColumn('type_tour_id', function ($tour) {
-                return $tour->typeTour->name;
-            })
-            ->editColumn('user_id', function ($tour) {
-                return $tour->user->username;
-            })
-            ->editColumn('costTour', function ($tour) {
-                $cost = '';
-                foreach ($tour->costTour as $key => $value) {
-                    $cost .= $value->passenger->name . ' : ' . $value->price . '<br>';
-                }
-                return $cost;
-            })
-            ->addColumn('adult', function ($tour) {
-                return "Rp." . number_format($tour->costTour[0]->price, 0, ',', '.');
-            })
-            ->addColumn('child', function ($tour) {
-                return "Rp." . number_format($tour->costTour[1]->price, 0, ',', '.');
+               return $tour->detailTour->map(function ($item) {
+                    return $item->typeTour->name;
+                })->implode(', ');
             })
             ->editColumn('cover_image', function ($tour) {
                 return '<img src="' . asset('upload/images/' . $tour->cover_image) . '" width="100px" height="100px">';
@@ -82,13 +66,6 @@ class DestinationController extends Controller
             $request->validate([
                 'type_tour_id' => 'required',
                 'title' => 'required',
-                'username' => 'required',
-                'email' => 'required',
-                'phone' => 'required',
-                'adult' => 'required',
-                'child' => 'required',
-                'duration' => 'required',
-                'unit_duration' => 'required',
                 'map_location' => 'required',
                 'district' => 'required',
                 'address' => 'required',
@@ -97,54 +74,30 @@ class DestinationController extends Controller
                 'imageGalleries' => 'required|array',
             ]);
 
+            // dd(request()->all());
+
             DB::beginTransaction();
 
-            $existUser = User::where('email', $request->email)->first();
-            if (empty($existUser)) {
-                $user = User::create([
-                    'email' => $request->email,
-                    'username' => $request->username,
-                    'password' => Hash::make('owner123'),
-                    'role' => 'owner',
-                    'gender' => 'other',
-                    'phone' => $request->phone,
-                    'address' => $request->address,
-                    'thumbnail' => 'https://www.creativefabrica.com/wp-content/uploads/2022/02/21/Nature-Beach-Vacation-Illustration-Graphics-25637556-2-580x387.png',
-                    'address' => $request->address,
-                ]);
-            }
-
             $tour = Tour::create([
-                'type_tour_id' => $request->type_tour_id,
-                'user_id' => empty($existUser) ? $user->id : $existUser->id,
                 'district' => $request->district,
                 'title' => $request->title,
                 'description' => $request->description,
                 'address' => $request->address,
                 'cover_image' => Storage::put('upload/images', $request->file('cover_image')),
-                'map_location' => $request->map_location,
-                'duration' => $request->duration,
-                'unit_duration' => $request->unit_duration,
+                'map_location' => $request->map_location
             ]);
-
-            CostTour::create([
-                'tour_id' => $tour->id,
-                'adult' => $request->adult,
-                'passenger_id' => 1,
-                'price' => $request->adult,
-            ]);
-
-            CostTour::create([
-                'tour_id' => $tour->id,
-                'passenger_id' => 2,
-                'price' => $request->child,
-            ]);
-
 
             foreach ($request->file('imageGalleries') as $imageGallery) {
                 Gallery::create([
                     'tour_id' => $tour->id,
                     'url' => Storage::put('upload/images', $imageGallery)
+                ]);
+            }
+
+            foreach($request->type_tour_id as $value){
+                DetailTour::create([
+                    'tour_id' => $tour->id,
+                    'type_tour_id' => $value
                 ]);
             }
 
@@ -154,6 +107,7 @@ class DestinationController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             Alert::error('Error', $th->getMessage());
+            // throw $th;
             return redirect()->back();
         }
     }
@@ -162,7 +116,7 @@ class DestinationController extends Controller
     {
         try {
             $id = Crypt::decryptString($id);
-            $tour = Tour::with(['typeTour', 'user', 'costTour', 'gallery'])->with('costTour.passenger')->find($id);
+            $tour = Tour::with(['detailTour', 'detailTour.typeTour'])->with('gallery')->find($id);
             $type_tour = TypeTour::all();
             confirmDelete('Hapus Data!', 'Apakah anda yakin ingin menghapus data ini?');
             return view('admin.destination.edit', compact('tour', 'type_tour'));
@@ -177,15 +131,9 @@ class DestinationController extends Controller
     {
         try {
             $request->validate([
-                'type_tour_id' => 'required',
+                
                 'title' => 'required',
-                'username' => 'required',
-                'email' => 'required',
-                'phone' => 'required',
-                'adult' => 'required',
-                'child' => 'required',
-                'duration' => 'required',
-                'unit_duration' => 'required',
+                'type_tour_id' => 'required',
                 'map_location' => 'required',
                 'district' => 'required',
                 'address' => 'required',
@@ -196,32 +144,14 @@ class DestinationController extends Controller
 
             DB::beginTransaction();
 
-            $existUser = User::where('email', $request->email)->first();
 
-            if (empty($existUser)) {
-                $user = User::create([
-                    'email' => $request->email,
-                    'username' => $request->username,
-                    'password' => Hash::make('owner123'),
-                    'role' => 'owner',
-                    'gender' => 'other',
-                    'phone' => $request->phone,
-                    'address' => $request->address,
-                    'thumbnail' => 'https://www.creativefabrica.com/wp-content/uploads/2022/02/21/Nature-Beach-Vacation-Illustration-Graphics-25637556-2-580x387.png',
-                    'address' => $request->address,
-                ]);
-            }
 
             $tour = Tour::find($id);
-            $tour->type_tour_id = $request->type_tour_id;
-            $tour->user_id = empty($existUser) ? $user->id : $existUser->id;
             $tour->district = $request->district;
             $tour->title = $request->title;
             $tour->description = $request->description;
             $tour->address = $request->address;
             $tour->map_location = $request->map_location;
-            $tour->duration = $request->duration;
-            $tour->unit_duration = $request->unit_duration;
 
             if ($request->hasFile('cover_image')) {
                 if (file_exists(storage_path('app/public/' . $tour->cover_image))) {
@@ -230,12 +160,6 @@ class DestinationController extends Controller
                 $tour->cover_image = Storage::put('upload/images', $request->file('cover_image'));
             }
             $tour->save();
-
-            $costTour = CostTour::where('tour_id', $tour->id)->get();
-            $costTour[0]->price = $request->adult;
-            $costTour[1]->price = $request->child;
-            $costTour[0]->save();
-            $costTour[1]->save();
 
 
             if ($request->hasFile('imageGalleries')) {
@@ -246,6 +170,17 @@ class DestinationController extends Controller
                     ]);
                 }
             }
+
+
+            DetailTour::where('tour_id', $tour->id)->delete();
+
+            foreach($request->type_tour_id as $value){
+                DetailTour::create([
+                    'tour_id' => $tour->id,
+                    'type_tour_id' => $value
+                ]);
+            }
+
             DB::commit();
             Alert::success('Success', 'Parawisata berhasil diubah');
             return redirect()->route('Pariwisata');
@@ -291,10 +226,10 @@ class DestinationController extends Controller
             $tours = Tour::with(['typeTour', 'user', 'costTour'])->with('costTour.passenger')->where('title', 'like', '%' . $request->destination . '%')->paginate(6);
         } else {
             if ($request->location == null && $request->destination == null) {
-                $tours = Tour::with(['typeTour', 'user', 'costTour'])->with('costTour.passenger')->paginate(6);
+                $tours = Tour::with(['detailTour', 'detailTour.typeTour'])->paginate(6);
             } else {
                 if ($minPrice == null && $maxPrice == null) {
-                    $tours = Tour::with(['typeTour', 'user', 'costTour'])->with('costTour.passenger')->where('district', $request->location)->paginate(6);
+                    $tours = Tour::with(['detailTour', 'detailTour.typeTour'])->paginate(6);
                 } else {
                     $tour = Tour::join('cost_tours', 'cost_tours.tour_id', '=', 'tours.id')
                         ->where('district', $request->location)
@@ -339,4 +274,5 @@ class DestinationController extends Controller
             throw $th;
         }
     }
+
 }

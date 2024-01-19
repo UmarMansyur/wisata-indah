@@ -58,11 +58,9 @@
                       <div class="priceSlider">
                         <div class="min-max-range">
                           <label for="min">Harga Terendah</label>
-                          <input type="range" min="0" max="100000"
-                            class="range" id="min" name="minPrice">
+                          <input type="range" min="0" max="100000" class="range" id="min" name="minPrice">
                           <label for="min">Harga Tertinggi</label>
-                          <input type="range" min="100000" max="10000000"
-                            class="range" id="max" name="maxPrice">
+                          <input type="range" min="100000" max="10000000" class="range" id="max" name="maxPrice">
                         </div>
                       </div>
                     </div>
@@ -147,25 +145,28 @@
           </div>
           <div class="content-wrapper">
             <div class="content-inner">
-                @foreach ($item->costTour as $cost)
-                <p class="price mb-0">Rp.
-                    <span class="counter">{{ number_format($cost->price, 0, ',', '.') }}</span> 
-                    <small class="text-dark" style="font-size: 12px">{{ $cost->passenger->name }}</small>
-                </p>
-                @endforeach
-                <h3 class="content-title"><a href="{{ route('detail destination', encrypt($item->id)) }}">{{ $item->title }}</a></h3>
-                <div class="time-zone">
-                    <div class="time-zone-inner">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <p class="title">{{ $item->address }}</p>
-                    </div>
-                    <div class="time-zone-inner">
-                        <i class="fa-solid fa-clock"></i>
-                        <p class="title"> {{ $item->duration }} {{ $item->unit_duration }}</p>
-                    </div>
+              <h3 class="content-title"><a href="{{ route('detail destination', encrypt($item->id)) }}">{{ $item->title
+                  }}</a></h3>
+              <div class="time-zone">
+                <div class="time-zone-inner">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <p class="title">{{ $item->address }}</p>
                 </div>
+                <div class="time-zone-inner">
+                  <i class="fa-solid fa-envelope"></i>
+                  <p class="title">
+
+                    @foreach($item->detailTour as $detailTour)
+                    {{ $detailTour->typeTour->name }}
+                    @if(!$loop->last)
+                    ,
+                    @endif
+                    @endforeach
+                  </p>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
         </div>
       </div>
       @endforeach
@@ -280,44 +281,44 @@
 
         <div class="col-lg-3 col-md-6 col-sm-6 wow fadeInUp" data-wow-delay="1.2s">
           <div class="location-image-card">
-            <a href="destination-details.html" class="img-wrapper">
+            <a href="/destination?location=Bangkalan" class="img-wrapper">
               <img src="/images/bangkalan.jpg" alt="Place Image">
             </a>
             <div class="content-inner">
-              <h6 class="city"><a href="destination-details.html">Bangkalan</a></h6>
+              <h6 class="city"><a href="/destination?location=Bangkalan">Bangkalan</a></h6>
               <p class="duration">{{ $data['bangkalan'] }} Wisata</p>
             </div>
           </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6 wow fadeInUp" data-wow-delay=".8s">
           <div class="location-image-card">
-            <a href="destination-details.html" class="img-wrapper">
+            <a href="/destination?location=Sampang" class="img-wrapper">
               <img src="/images/sampang.jpg" alt="Place Image">
             </a>
             <div class="content-inner">
-              <h6 class="city"><a href="destination-details.html">Sampang</a></h6>
+              <h6 class="city"><a href="/destination?location=Sampang">Sampang</a></h6>
               <p class="duration">{{ $data['sampang'] }} Wisata</p>
             </div>
           </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6 wow fadeInUp" data-wow-delay=".4s">
           <div class="location-image-card">
-            <a href="destination-details.html" class="img-wrapper">
+            <a href="/destination?location=Pamekasan" class="img-wrapper">
               <img src="/images/pamekasan.jpg" alt="Place Image">
             </a>
             <div class="content-inner">
-              <h6 class="city"><a href="destination-details.html">Pamekasan</a></h6>
+              <h6 class="city"><a href="/destination?location=Pamekasan">Pamekasan</a></h6>
               <p class="duration">{{ $data['pamekasan'] }} Wisata</p>
             </div>
           </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-6 wow fadeInUp" data-wow-delay="0s">
           <div class="location-image-card">
-            <a href="destination-details.html" class="img-wrapper">
+            <a href="/destination?location=Sumenep" class="img-wrapper">
               <img src="/images/sumenep.jpg" alt="Place Image">
             </a>
             <div class="content-inner">
-              <h6 class="city"><a href="destination-details.html">Sumenep</a></h6>
+              <h6 class="city"><a href="/destination?location=Sumenep">Sumenep</a></h6>
               <p class="duration">{{ $data['sumenep'] }} Wisata</p>
             </div>
           </div>

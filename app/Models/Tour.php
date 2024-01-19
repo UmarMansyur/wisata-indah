@@ -10,18 +10,8 @@ class Tour extends Model
     use HasFactory;
     protected $table = 'tours';
     protected $fillable = [
-        'type_tour_id', 'user_id', 'district', 'title', 'description', 'address', 'cover_image', 'map_location', 'duration', 'unit_duration'
+        'district', 'title', 'description', 'address', 'cover_image', 'map_location'
     ];
-
-    public function typeTour()
-    {
-        return $this->belongsTo(TypeTour::class, 'type_tour_id');
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
 
     public function costTour()
     {
@@ -36,5 +26,10 @@ class Tour extends Model
     public function detailTransaction()
     {
         return $this->hasMany(DetailTransaction::class);
+    }
+
+    public function detailTour()
+    {
+        return $this->hasMany(DetailTour::class);
     }
 }

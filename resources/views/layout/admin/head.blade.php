@@ -9,9 +9,7 @@
   <link rel="stylesheet" href="/assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="/assets/vendor/sweetalert2/dist/sweetalert2.min.css">
   <script src="/assets/vendor/jquery/dist/jquery.min.js"></script>
-  <link href="
-https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css
-" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
   <style>
     #layer {
       position: fixed;

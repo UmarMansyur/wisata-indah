@@ -9,12 +9,13 @@ class Transaction extends Model
 {
     use HasFactory;
     protected $tables = 'transactions';
-    protected $fillable = ['user_id', 'total_price', 'status', 'date'];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'departure_date',
+        'status'
+    ];
 
     public function detailTransaction()
     {

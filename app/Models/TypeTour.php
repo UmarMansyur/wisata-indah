@@ -17,4 +17,9 @@ class TypeTour extends Model
     {
         return $this->hasMany(Tour::class, 'type_tour_id');
     }
+
+    public function detailTour()
+    {
+        return $this->hasMany(DetailTour::class);
+    }
 }

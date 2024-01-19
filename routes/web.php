@@ -6,6 +6,7 @@ use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\EmployeController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaketWisataController;
 use App\Http\Controllers\SettingController;
 use App\Models\DetailTransaction;
 use App\Models\Team;
@@ -25,9 +26,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $tour_id = DetailTransaction::select('tour_id')->groupBy('tour_id')->orderBy('tour_id', 'desc')->paginate(10);
-    $tour = Tour::whereIn('id', $tour_id->pluck('tour_id'))->orderBy('id', 'desc')->paginate(10);
-    $tours = Tour::with(['typeTour', 'user', 'costTour'])->with('costTour.passenger')->paginate(10);
+    // count detail packet destination
+    $packet_destination = DetailTransaction::select('destination_packet_id')
+        ->groupBy('destination_packet_id')
+        ->orderByRaw('COUNT(*) DESC')
+        ->limit(10)
+        ->get();
+    $tour = [];
+   foreach ($packet_destination as $key => $value) {
+      $tour= Tour::join('detail_packet_destinations', 'detail_packet_destinations.tour_id', '=', 'tours.id')
+            ->where('detail_packet_destinations.packet_destination_id', $value->destination_packet_id)->get();
+    }
+    $tours = Tour::with(['detailTour', 'detailTour', 'detailTour.typeTour'])->orderBy('id', 'desc')->paginate(10);
     $sumenep = Tour::where('district', 'Sumenep')->count();
     $pamekasan = Tour::where('district', 'Pamekasan')->count();
     $sampang = Tour::where('district', 'Sampang')->count();
@@ -40,6 +50,8 @@ Route::get('/', function () {
     ];
     return view('home.index', compact('tour', 'tours', 'data'));
 })->name('home');
+
+Route::get('/paket-wisata', [PaketWisataController::class, 'index'])->name('Detail Paket Wisata');
 
 Route::get('/about', function () {
     $team = Team::orderBy('id', 'desc')->paginate(10);
@@ -73,8 +85,6 @@ Route::post('/login/admin', [AuthenticationController::class, 'authenticate'])->
 
 Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-
     Route::group(['prefix' => 'pemesanan'], function () {
         Route::get('/', [OrderController::class, 'index'])->name('Pemesanan');
         Route::get('/detail/{id}', [OrderController::class, 'show'])->name('Detail Pemesanan');
@@ -86,6 +96,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
         Route::post('/update-cart/${id}', [OrderController::class, 'changeOrder'])->name('Ganti Order');
         Route::get('/tambah', [OrderController::class, 'create'])->name('Tambah Pemesanan');
     });
+
     Route::group(['prefix' => 'pariwisata'], function () {
         Route::get('/', [DestinationController::class, 'index'])->name('Pariwisata');
         Route::get('/tambah', [DestinationController::class, 'create'])->name('Tambah Pariwisata');
@@ -98,7 +109,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
     Route::group(['prefix' => 'galeri'], function () {
         Route::get('/delete/{id}', [GalleryController::class, 'destroy'])->name('Hapus Galeri');
     });
-    Route::group(['prefix'  => 'karyawan'], function() {
+    Route::group(['prefix'  => 'karyawan'], function () {
         Route::get('/', [EmployeController::class, 'index'])->name('Karyawan');
         Route::get('/delete/{id}', [EmployeController::class, 'destroy'])->name('Hapus Karyawan');
         Route::post('/store', [EmployeController::class, 'store'])->name('Simpan Karyawan');
@@ -113,8 +124,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
         Route::get('/testimonial/delete/{id}', [SettingController::class, 'destroyTestimonial'])->name('Hapus Testimonial');
         Route::post('/store/testimonial', [SettingController::class, 'storeTestimonial'])->name('Simpan Testimonial');
     });
+
+    Route::group(['prefix' => 'paket-pariwisata'], function () {
+        Route::get('/', [PaketWisataController::class, 'adminIndex'])->name('Manajamen Paket Wisata');
+        Route::get('/create', [PaketWisataController::class, 'adminTambah'])->name('Tambah Paket Wisata');
+        Route::post('/store', [PaketWisataController::class, 'adminStore'])->name('Simpan Paket Wisata');
+        Route::get('/data-json', [PaketWisataController::class, 'getData'])->name('Get Data Paket Wisata');
+        Route::get('/{id}', [PaketWisataController::class, 'adminEdit'])->name('Edit Paket Wisata');
+        Route::get('/gallery/delete/{id}', [PaketWisataController::class, 'destroyGallery'])->name('Hapus Galeri Paket Wisata');
+        Route::POST('/update/data/{id}', [PaketWisataController::class, 'adminEditStore'])->name('Ubah Paket Wisata');
+    });
 });
-
-
-
-

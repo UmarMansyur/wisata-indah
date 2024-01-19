@@ -23,7 +23,7 @@
         <li class="sidebar-item {{ request()->is('admin/dashboard') ? 'selected' : '' }}">
           <a class="sidebar-link {{ request()->is('admin/dashboard') ? 'active' : '' }}" href="/admin/dashboard" aria-expanded="false">
             <span>
-              <i class="ti ti-home"></i>
+              <i class="ti ti-dashboard"></i>
             </span>
             <span class="hide-menu">Dashboard</span>
           </a>
@@ -40,10 +40,18 @@
             <span class="hide-menu">Pemasanan</span>
           </a>
         </li>
+        <li class="sidebar-item {{ request()->is('admin/paket-pariwisata/*') ? 'selected' : '' }}">
+          <a class="sidebar-link {{ request()->is('admin/paket-pariwisata/*') ? 'active' : '' }}" href="/admin/paket-pariwisata" aria-expanded="false">
+            <span>
+              <i class="ti ti-map-2"></i>
+            </span>
+            <span class="hide-menu">Paket Wisata</span>
+          </a>
+        </li>
         <li class="sidebar-item {{ request()->is('admin/pariwisata/*') ? 'selected' : '' }}">
           <a class="sidebar-link {{ request()->is('admin/pariwisata/*') ? 'active' : '' }}" href="/admin/pariwisata" aria-expanded="false">
             <span>
-              <i class="ti ti-map-2"></i>
+              <i class="ti ti-files"></i>
             </span>
             <span class="hide-menu">Pariwisata</span>
           </a>

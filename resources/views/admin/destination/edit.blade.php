@@ -25,84 +25,13 @@
         <label for="type_tour_id" class="form-label fw-semibold col-sm-3 col-form-label">Jenis
           Pariwisata</label>
         <div class="col-sm-9">
-          <select id="type_tour_id" class="form-select select2" name="type_tour_id" required>
-            <option value="">Pilih Jenis Pariwisata</option>
+          <select id="type_tour_id" class="form-select select2" name="type_tour_id[]" required value="1"
+            multiple="multiple">
             @foreach ($type_tour as $item)
-            <option value="{{ $item->id }}" {{ $tour->type_tour_id == $item->id ? 'selected' : '' }}>{{
+            <option value="{{ $item->id }}">{{
               $item->name }}</option>
             @endforeach
           </select>
-        </div>
-      </div>
-      <div class="mb-3 row align-items-center">
-        <label for="username" class="form-label fw-semibold col-sm-3 col-form-label">Nama
-          Pemilik Pariwisata</label>
-        <div class="col-sm-9">
-          <input type="text" class="form-control" id="username" name="username" placeholder="Nama Pemilik Wisata"
-            required value="{{ $tour->user['username']}}">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="mb-3 row align-items-center">
-            <label for="email" class="form-label fw-semibold col-sm-3 col-form-label">Email: </label>
-            <div class="col-sm-9">
-              <input type="email" class="form-control" id="email" name="email" placeholder="Email" required
-                value="{{ $tour->user['email']}}">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="mb-3 row align-items-center">
-            <label for="phone" class="form-label fw-semibold col-sm-3 col-form-label">Nomor Telepon</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="phone" name="phone" placeholder="Nomor Telepon" required
-                value="{{ $tour->user['phone']}}">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row align-items-center">
-        <div class="col-md-12">
-          <div class="row">
-            <label for="adult" class="form-label fw-semibold col-sm-3 col-form-label">
-              Biaya Tiket</label>
-            <div class="col-sm-4 mb-3">
-              <input type="text" class="form-control" id="adult" name="adult" placeholder="Dewasa" required
-                value="{{ $tour->costTour[0]['price']}}">
-            </div>
-            <div class="col-sm-1">
-              <label for="child" class="form-label col-form-label">Anak: </label>
-            </div>
-            <div class="col-sm-4 mb-3">
-              <input type="text" class="form-control" id="child" name="child" placeholder="Anak-Anak" required
-                value="{{ $tour->costTour[1]['price']}}">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row align-items-center">
-        <div class="col-md-12">
-          <div class="row">
-            <label for="duration" class="form-label fw-semibold col-sm-3 col-form-label">
-              Lama Berkunjung</label>
-            <div class="col-sm-4 mb-3">
-              <input type="text" class="form-control" id="duration" name="duration" placeholder="Contoh. 1" required
-                value="{{ $tour->duration}}">
-            </div>
-            <div class="col-sm-1">
-              <label for="unit_duration" class="form-label col-form-label">Satuan: </label>
-            </div>
-            <div class="col-sm-4 mb-3">
-              <select name="unit_duration" id="unit_duration" class="form-select select2" required>
-                <option value="Menit" {{ $tour->unit_duration == 'Menit' ? 'selected' : '' }}>Menit</option>
-                <option value="Jam" {{ $tour->unit_duration == 'Jam' ? 'selected' : '' }}>Jam</option>
-                <option value="Hari" {{ $tour->unit_duration == 'Hari' ? 'selected' : '' }}>Hari</option>
-              </select>
-            </div>
-          </div>
         </div>
       </div>
       <div class="mb-3 row align-items-center">
@@ -223,4 +152,3 @@
     })
   }
 </script>
-
