@@ -53,6 +53,8 @@ Route::get('/', function () {
 
 Route::get('/paket-wisata', [PaketWisataController::class, 'index'])->name('Paket Wisata');
 Route::get('/paket-wisata/{id}', [PaketWisataController::class, 'show'])->name('Detail Paket Wisata');
+Route::get('/keranjang', [PaketWisataController::class, 'cart'])->name('Keranjang');
+
 
 Route::get('/about', function () {
     $team = Team::orderBy('id', 'desc')->paginate(10);

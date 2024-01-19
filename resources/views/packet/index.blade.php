@@ -31,7 +31,7 @@
                 @foreach($packet_destination as $item)
                 <article class="single-post-item format-image">
                     <div class="post-thumbnail">
-                        <a href="blog-details.html">
+                        <a href="{{ route('Detail Paket Wisata', Crypt::encrypt($item->id)) }}">
                             <img src="{{ asset('storage/'.$item->cover_image) }}" alt="Blog Image">
                         </a>
                     </div>
@@ -45,7 +45,8 @@
                                 </div>
                             </div>
                             <div class="badge">
-                                <a class="badge-btn" href="#">
+                                <a class="badge-btn" href="{{ route('Detail Paket Wisata', Crypt::encrypt($item->id)) }}">
+
                                     {{
                                         $item->is_madura == 0 ? 'Madura' : 'Luar Madura'
                                     }}
@@ -54,7 +55,7 @@
                         </div>
                         <div class="post-card-divider"></div>
                         <h3 class="post-title">
-                            <a href="blog-details.html">
+                            <a href="{{ route('Detail Paket Wisata', Crypt::encrypt($item->id)) }}">
                                 {{ $item->name }}
                             </a>
                         </h3>
@@ -62,7 +63,7 @@
                             {!! html_entity_decode($item->description) !!}
                         </div>
                         <div class="read-more">
-                            <a href="blog-details.html" class="theme-btn">Selengkapnya<i class="fa-solid fa-angle-right"></i></a>
+                            <a href="{{ route('Detail Paket Wisata', Crypt::encrypt($item->id)) }}" class="theme-btn">Selengkapnya<i class="fa-solid fa-angle-right"></i></a>
                         </div>
                     </div>
                 </article>
@@ -94,7 +95,7 @@
                                 </div>
                                 <div class="latest-post-desc">
                                     <h3 class="latest-post-title">
-                                        <a href="blog-details.html">
+                                        <a href="{{ route('Detail Paket Wisata', Crypt::encrypt($item->id)) }}">
                                             {{ $item->name }}
                                         </a>
                                     </h3>
@@ -112,7 +113,7 @@
                         </div>
                         <ul>
                             @foreach($type_tour as $item)
-                            <li><a href="#">{{$item->name}}</a>({{$item->total}})</li>
+                            <li><a href="/paket-wisata?jenis={{$item->name}}">{{$item->name}}</a>({{$item->total}})</li>
                             @endforeach
                         </ul>
                     </div>

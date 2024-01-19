@@ -24,15 +24,16 @@
                     <li><a href="/destination?location=Bangkalan">Bangkalan</a></li>
                   </ul>
                 </li>
-                <li class="dropdown {{ request()->is('') ? 'active' : '' }}">
-                  <a href="{{ route('destination') }}">Paket Pariwisata</a>
+                <li class="dropdown {{ request()->is('Paket Wisata') ? 'active' : '' }}">
+                  <a href="{{ route('Paket Wisata') }}">Paket Pariwisata</a>
                   <ul class="submenu">
-                    <li><a href="/destination?location=Sumenep">Wisata Madura</a></li>
-                    <li><a href="/destination?location=Pamekasan">Wisata Luar Madura</a></li>
+                    <li><a href="/paket-wisata?is_madura=true">Wisata Madura</a></li>
+                    <li><a href="/paket-wisata?is_madura=false">Wisata Luar Madura</a></li>
                   </ul>
                 </li>
                 <li class="{{ request()->is('contact') ? 'active' : '' }}"><a href="/contact">Contact</a>
                 </li>
+                <li class="{{ request()->is('/keranjang') ? 'active' : '' }}"><a href="{{ route('Keranjang') }}">Keranjang</a></li>
               </ul>
             </nav>
           </div>

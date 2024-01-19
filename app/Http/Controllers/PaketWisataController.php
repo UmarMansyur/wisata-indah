@@ -18,7 +18,20 @@ class PaketWisataController extends Controller
 {
     public function index()
     {
-        $packet_destination = TourPacket::with(['detailTourPacket'])->paginate(10);
+        $packet_destination = TourPacket::with(['detailTourPacket']);
+        if (request()->get('is_madura') == 'true') {
+            $packet_destination = $packet_destination->where('is_madura', false);
+        } 
+         if (request()->get('is_madura') == 'false') {
+            $packet_destination = $packet_destination->where('is_madura', true);
+        }
+        if (request()->get('type_tour_id')) {
+            $packet_destination = $packet_destination->whereHas('detailTourPacket', function ($query) {
+                $query->where('type_tour_id', request()->get('type_tour_id'));
+            });
+        }
+
+        $packet_destination = $packet_destination->paginate(10);
         $tour = TourPacket::with(['detailTourPacket'])->orderBy('id', 'desc')->limit(3)->get();
         $type_tour = DB::select("
             SELECT COUNT(*) as total, type_tours.name FROM tours JOIN detail_packet_destinations ON detail_packet_destinations.tour_id = tours.id JOIN detail_tours ON detail_tours.tour_id = tours.id JOIN type_tours ON type_tours.id = detail_tours.type_tour_id GROUP BY type_tours.id, type_tours.name
@@ -27,16 +40,35 @@ class PaketWisataController extends Controller
         return view('packet.index', compact('packet_destination', 'tour', 'type_tour', 'galleries'));
     }
 
+    public function cart() 
+    {
+        return view('packet.cart');
+    }
+
     public function show($id)
     {
-        // $id = Crypt::decryptString($id);
+        $id = Crypt::decrypt($id);
         $tour_packet = TourPacket::with(['detailTourPacket', 'galleryPacket'])->find($id);
+        $packet_destination = TourPacket::with(['detailTourPacket']);
+        if (request()->get('is_madura') == 'true') {
+            $packet_destination = $packet_destination->where('is_madura', false);
+        } 
+         if (request()->get('is_madura') == 'false') {
+            $packet_destination = $packet_destination->where('is_madura', true);
+        }
+        if (request()->get('type_tour_id')) {
+            $packet_destination = $packet_destination->whereHas('detailTourPacket', function ($query) {
+                $query->where('type_tour_id', request()->get('type_tour_id'));
+            });
+        }
+
+        $packet_destination = $packet_destination->paginate(10);
         $type_tour = DB::select("
-            SELECT COUNT(*) as total, type_tours.name FROM tours JOIN detail_packet_destinations ON detail_packet_destinations.tour_id = tours.id JOIN detail_tours ON detail_tours.tour_id = tours.id JOIN type_tours ON type_tours.id = detail_tours.type_tour_id WHERE detail_packet_destinations.packet_destination_id = $id GROUP BY type_tours.id, type_tours.name
+            SELECT COUNT(*) as total, type_tours.name FROM tours JOIN detail_packet_destinations ON detail_packet_destinations.tour_id = tours.id JOIN detail_tours ON detail_tours.tour_id = tours.id JOIN type_tours ON type_tours.id = detail_tours.type_tour_id GROUP BY type_tours.id, type_tours.name
         ");
         $galleries = TourPacketGalleries::orderBy('id', 'desc')->limit(6)->get();
-
-        return view('packet.detail', compact('tour_packet', 'type_tour', 'galleries'));
+        $tour = TourPacket::with(['detailTourPacket'])->orderBy('id', 'desc')->limit(3)->get();
+        return view('packet.detail', compact('tour_packet', 'type_tour', 'galleries', 'tour', 'packet_destination'));
     }
 
     public function adminIndex()
