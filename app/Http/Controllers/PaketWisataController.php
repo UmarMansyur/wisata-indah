@@ -6,6 +6,7 @@ use App\Models\Tour;
 use App\Models\TourPacket;
 use App\Models\TourPacketDetail;
 use App\Models\TourPacketGalleries;
+use App\Models\TypeTour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,25 @@ class PaketWisataController extends Controller
 {
     public function index()
     {
-        return view('packet.index');
+        $packet_destination = TourPacket::with(['detailTourPacket'])->paginate(10);
+        $tour = TourPacket::with(['detailTourPacket'])->orderBy('id', 'desc')->limit(3)->get();
+        $type_tour = DB::select("
+            SELECT COUNT(*) as total, type_tours.name FROM tours JOIN detail_packet_destinations ON detail_packet_destinations.tour_id = tours.id JOIN detail_tours ON detail_tours.tour_id = tours.id JOIN type_tours ON type_tours.id = detail_tours.type_tour_id GROUP BY type_tours.id, type_tours.name
+        ");
+        $galleries = TourPacketGalleries::orderBy('id', 'desc')->limit(6)->get();
+        return view('packet.index', compact('packet_destination', 'tour', 'type_tour', 'galleries'));
+    }
+
+    public function show($id)
+    {
+        // $id = Crypt::decryptString($id);
+        $tour_packet = TourPacket::with(['detailTourPacket', 'galleryPacket'])->find($id);
+        $type_tour = DB::select("
+            SELECT COUNT(*) as total, type_tours.name FROM tours JOIN detail_packet_destinations ON detail_packet_destinations.tour_id = tours.id JOIN detail_tours ON detail_tours.tour_id = tours.id JOIN type_tours ON type_tours.id = detail_tours.type_tour_id WHERE detail_packet_destinations.packet_destination_id = $id GROUP BY type_tours.id, type_tours.name
+        ");
+        $galleries = TourPacketGalleries::orderBy('id', 'desc')->limit(6)->get();
+
+        return view('packet.detail', compact('tour_packet', 'type_tour', 'galleries'));
     }
 
     public function adminIndex()
@@ -135,7 +154,7 @@ class PaketWisataController extends Controller
                 'cover_image' => 'image|mimes:jpeg,png,jpg,gif,svg,JPEG,PNG,JPG,GIF,SVG|max:2048',
                 'description' => 'required'
             ]);
-            
+
             DB::beginTransaction();
             $tour_packet = TourPacket::with(['detailTourPacket', 'galleryPacket'])->find($id);
 

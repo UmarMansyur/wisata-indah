@@ -51,7 +51,8 @@ Route::get('/', function () {
     return view('home.index', compact('tour', 'tours', 'data'));
 })->name('home');
 
-Route::get('/paket-wisata', [PaketWisataController::class, 'index'])->name('Detail Paket Wisata');
+Route::get('/paket-wisata', [PaketWisataController::class, 'index'])->name('Paket Wisata');
+Route::get('/paket-wisata/{id}', [PaketWisataController::class, 'show'])->name('Detail Paket Wisata');
 
 Route::get('/about', function () {
     $team = Team::orderBy('id', 'desc')->paginate(10);
@@ -96,7 +97,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
         Route::post('/update-cart/${id}', [OrderController::class, 'changeOrder'])->name('Ganti Order');
         Route::get('/tambah', [OrderController::class, 'create'])->name('Tambah Pemesanan');
     });
-
     Route::group(['prefix' => 'pariwisata'], function () {
         Route::get('/', [DestinationController::class, 'index'])->name('Pariwisata');
         Route::get('/tambah', [DestinationController::class, 'create'])->name('Tambah Pariwisata');
@@ -114,7 +114,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
         Route::get('/delete/{id}', [EmployeController::class, 'destroy'])->name('Hapus Karyawan');
         Route::post('/store', [EmployeController::class, 'store'])->name('Simpan Karyawan');
     });
-
     Route::group(['prefix' => 'setting'], function () {
         Route::get('/about', [SettingController::class, 'about'])->name('Team');
         Route::get('/team/delete/{id}', [SettingController::class, 'destroy'])->name('Hapus Team');
@@ -124,7 +123,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
         Route::get('/testimonial/delete/{id}', [SettingController::class, 'destroyTestimonial'])->name('Hapus Testimonial');
         Route::post('/store/testimonial', [SettingController::class, 'storeTestimonial'])->name('Simpan Testimonial');
     });
-
     Route::group(['prefix' => 'paket-pariwisata'], function () {
         Route::get('/', [PaketWisataController::class, 'adminIndex'])->name('Manajamen Paket Wisata');
         Route::get('/create', [PaketWisataController::class, 'adminTambah'])->name('Tambah Paket Wisata');

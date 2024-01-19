@@ -60,12 +60,6 @@
                             </div>
                             <div class="content-wrapper">
                                 <div class="content-inner">
-                                    @foreach ($item->costTour as $cost)
-                                    <p class="price mb-0">Rp.
-                                        <span class="counter">{{ number_format($cost->price, 0, ',', '.') }}</span> 
-                                        <small class="text-dark" style="font-size: 12px">{{ $cost->passenger->name }}</small>
-                                    </p>
-                                    @endforeach
                                     <h3 class="content-title"><a href="{{ route('detail destination', encrypt($item->id)) }}">{{ $item->title }}</a></h3>
                                     <div class="time-zone">
                                         <div class="time-zone-inner">
@@ -73,8 +67,8 @@
                                             <p class="title">{{ $item->address }}</p>
                                         </div>
                                         <div class="time-zone-inner">
-                                            <i class="fa-solid fa-envelope"></i>
-                                            <p class="title">{{ $item->detailTour->pluck('typeTour.name')->implode(',') }}</p>
+                                            <i class="fa-solid fa-map"></i>
+                                            <p class="title">{{ $item->detailTour->pluck('typeTour.name')->implode(', ') }}</p>
                                         </div>
                                     </div>
                                 </div>

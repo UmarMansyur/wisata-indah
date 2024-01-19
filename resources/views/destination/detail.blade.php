@@ -30,26 +30,15 @@
                 <article class="single-post-item">
                     <div class="post-title-wrapper">
                         <h3 class="post-title">
-                            <a href="blog-details.html"> {{ $tour->title }} </a>
+                            <a href="/destination/detail/{{ Crypt::encrypt($tour->id) }}">
+                                {{ $tour->title }} </a>
                         </h3>
-                        {{-- <div class="rating">
-                            <div class="ratting-inner">
-                                <span>
-                                    <i class="fa-solid fa-star"></i>
-                                </span>
-                                <span class="counter">3.5</span>
-                            </div>
-                        </div> --}}
                     </div>
                     <div class="post-meta style-2">
                         <div class="post-meta-inner">
                             <div class="date-info">
                                 <i class="fa-solid fa-location-dot"></i>
                                 <p class="date"> {{ $tour->address }} </p>
-                            </div>
-                            <div class="time-info">
-                                <i class="fa-solid fa-clock"></i>
-                                <p class="time"> {{ $tour->duration }} {{ $tour->unit_duration }} </p>
                             </div>
                         </div>
                         <div class="post-meta-inner">
@@ -70,21 +59,6 @@
                         <div class="post-content">
                             <h4>Overview</h4>
                             <div> {!! html_entity_decode($tour->description) !!} </div>
-                            <div class="post-card-divider"></div>
-                            <div class="list-item-wrapper">
-                                @foreach ($tour->costTour as $item)
-                                <div class="single-item-list">
-                                    <h6>Biaya Tiket {{ $item->passenger->name }}</h6>
-                                    <ul>
-                                        <li>
-                                            <h6 class="text-primary">Rp. {{ number_format($item->price, 0, ',', '.') }}
-                                            </h6>
-                                        </li>
-
-                                    </ul>
-                                </div>
-                                @endforeach
-                            </div>
                             <div class="post-card-divider"></div>
                             <h4 class="mb-5">Galeri</h4>
                             <div class="post-gallery">
@@ -128,15 +102,6 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-12">
-                                    <div class="input-wrapper">
-                                        <label>Jenis Kelamin:</label>
-                                        <select name="gender" required>
-                                            <option value="male">Laki-Laki</option>
-                                            <option value="female">Perempuan</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-xl-12">
                                     <div class="contacts-phone input-wrapper">
                                         <label>Nomer Hp:</label>
                                         <input name="phone" type="text" placeholder="Nomer Hp" required>
@@ -151,13 +116,7 @@
                                 <div class="col-xl-12">
                                     <div class="contacts-tour input-wrapper">
                                         <label>Jumlah Orang:</label>
-                                        <input name="adult" type="text" placeholder="Dewasa">
-                                    </div>
-                                </div>
-                                <div class="col-xl-12">
-                                    <div class="contacts-tour input-wrapper">
-                                        <label>Jumlah Orang:</label>
-                                        <input name="child" type="text" placeholder="Anak-Anak">
+                                        <input name="adult" type="text" placeholder="Jumlah Orang">
                                     </div>
                                 </div>
                                 <div class="col-12">

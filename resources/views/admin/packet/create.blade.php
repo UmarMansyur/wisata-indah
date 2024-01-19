@@ -60,7 +60,6 @@
           <h6 class="fw-bold">Destinasi: </h6>
           <label for="" class="d-none"></label>
           <select id="destination_id" class="form-select select2" name="destination_id[]" multiple="multiple" required>
-            <option value="">Pilih Destinasi</option>
             @foreach ($tours as $destination)
             <option value="{{ $destination->id }}">{{ $destination->title }}</option>
             @endforeach

@@ -246,7 +246,7 @@ class DestinationController extends Controller
     public function showDetail($id)
     {
         $id = decrypt($id);
-        $tour = Tour::with(['typeTour', 'user', 'costTour', 'gallery'])->with('costTour.passenger')->find($id);
+        $tour = Tour::with(['detailTour', 'detailTour.typeTour'])->with('gallery')->find($id);
         $type_tour = TypeTour::all();
         return view('destination.detail', compact('tour'));
     }

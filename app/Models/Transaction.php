@@ -14,7 +14,8 @@ class Transaction extends Model
         'email',
         'phone',
         'departure_date',
-        'status'
+        'status',
+        'total_price'
     ];
 
     public function detailTransaction()
