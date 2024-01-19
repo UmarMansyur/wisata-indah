@@ -4,8 +4,7 @@
       <div class="row">
         <div class="col-xl-2 col-lg-2 col-md-6 col-6 d-flex align-items-center">
           <div class="logo">
-            <a href="/" class="standard-logo"><img src="/images/logo.png" alt="logo"
-                style="width: 70px" /></a>
+            <a href="/" class="standard-logo"><img src="/images/logo.png" alt="logo" style="width: 70px" /></a>
             <a href="/" class="sticky-logo"><img src="/images/logo.png" alt="logo" style="width: 70px" /></a>
             <a href="/" class="retina-logo"><img src="/images/logo.png" alt="logo" style="width: 70px" /></a>
           </div>
@@ -16,11 +15,24 @@
               <ul>
                 <li class="{{ request()->is('/') ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a></li>
                 <li class="{{ request()->is('about') ? 'active' : '' }}"><a href="{{ route('about') }}">About</a></li>
-                <li class="{{ request()->is('destination') ? 'active' : '' }}"><a
-                    href="{{ route('destination') }}">Destinasi</a></li>
+                <li class="dropdown {{ request()->is('destination') ? 'active' : '' }}">
+                  <a href="{{ route('destination') }}">Destinasi</a>
+                  <ul class="submenu">
+                    <li><a href="/destination?location=Sumenep">Sumenep</a></li>
+                    <li><a href="/destination?location=Pamekasan">Pamekasan</a></li>
+                    <li><a href="/destination?location=Sampang">Sampang</a></li>
+                    <li><a href="/destination?location=Bangkalan">Bangkalan</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown {{ request()->is('destination') ? 'active' : '' }}">
+                  <a href="{{ route('destination') }}">Paket Pariwisata</a>
+                  <ul class="submenu">
+                    <li><a href="/destination?location=Sumenep">Wisata Madura</a></li>
+                    <li><a href="/destination?location=Pamekasan">Wisata Luar Madura</a></li>
+                  </ul>
+                </li>
                 <li class="{{ request()->is('contact') ? 'active' : '' }}"><a href="/contact">Contact</a>
                 </li>
-
               </ul>
             </nav>
           </div>

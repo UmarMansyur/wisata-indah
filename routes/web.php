@@ -73,6 +73,8 @@ Route::post('/login/admin', [AuthenticationController::class, 'authenticate'])->
 
 Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
     Route::group(['prefix' => 'pemesanan'], function () {
         Route::get('/', [OrderController::class, 'index'])->name('Pemesanan');
         Route::get('/detail/{id}', [OrderController::class, 'show'])->name('Detail Pemesanan');
