@@ -92,13 +92,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
     Route::group(['prefix' => 'pemesanan'], function () {
         Route::get('/', [OrderController::class, 'index'])->name('Pemesanan');
         Route::get('/detail/{id}', [OrderController::class, 'show'])->name('Detail Pemesanan');
-        Route::get('/delete/{id}', [OrderController::class, 'destroy'])->name('Hapus Pemesanan');
-        Route::get('/edit/{id}', [OrderController::class, 'edit'])->name('Edit Pemesanan');
-        Route::get('/update/data/{id}', [OrderController::class, 'getDataEdit'])->name('Get Data Pemesanan');
         Route::get('/data', [OrderController::class, 'getData'])->name('Data Pemesanan');
-        Route::post('/add-cart', [OrderController::class, 'store'])->name('Tambah Order');
-        Route::post('/update-cart/${id}', [OrderController::class, 'changeOrder'])->name('Ganti Order');
-        Route::get('/tambah', [OrderController::class, 'create'])->name('Tambah Pemesanan');
+        Route::get('/detail/reject/{id}', [OrderController::class, 'reject']);
+        Route::get('/detail/approve/{id}', [OrderController::class, 'approve']);
+        Route::get('/detail/cancel/{id}', [OrderController::class, 'cancel']);
     });
     Route::group(['prefix' => 'pariwisata'], function () {
         Route::get('/', [DestinationController::class, 'index'])->name('Pariwisata');

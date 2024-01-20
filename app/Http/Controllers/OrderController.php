@@ -21,45 +21,92 @@ class OrderController extends Controller
         return view('admin.order.index');
     }
 
+    public function approve($id)
+    {
+        try {
+            DB::beginTransaction();
+            Transaction::where('id', $id)->update([
+                'status' => 'Disetujui',
+            ]);
+            DB::commit();
+            Alert::success('Berhasil', 'Pemesanan berhasil disetujui');
+            return redirect()->route('Pemesanan');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            Alert::error('Error', $th->getMessage());
+           throw $th;
+            return redirect()->back();
+
+        }
+    }
+    public function reject($id)
+    {
+        try {
+            DB::beginTransaction();
+            Transaction::where('id', $id)->update([
+                'status' => 'Ditolak',
+            ]);
+            DB::commit();
+            Alert::success('Berhasil', 'Pemesanan berhasil disetujui');
+            return redirect()->route('Pemesanan');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            Alert::error('Error', $th->getMessage());
+           throw $th;
+            return redirect()->back();
+        }
+    }
+
+    public function cancel($id)
+    {
+        try {
+            DB::beginTransaction();
+            Transaction::where('id', $id)->update([
+                'status' => 'Dibatalkan',
+            ]);
+            DB::commit();
+            Alert::success('Berhasil', 'Pemesanan berhasil disetujui');
+            return redirect()->route('Pemesanan');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            Alert::error('Error', $th->getMessage());
+           throw $th;
+            return redirect()->back();
+        }
+    }
+
     public function getData() {
-        $data = Transaction::with(['user', 'detailTransaction'])->get();
+        $data = Transaction::with(['detailTransaction', 'detailTransaction.destination_packet'])->get();
 
         return FacadesDataTables::of($data)
             ->addColumn('action', function($data) {
                 return '
-                    <a href="'.route('Detail Pemesanan', Crypt::encryptString($data->id)).'" class="text-center btn btn-sm waves-effect waves-light bg-primary-subtle text-primary">
-                        <i class="ti ti-eye"></i> Lihat
-                    </a>
-                    <a href=" '.route('Edit Pemesanan', Crypt::encryptString($data->id)).'
-                    " class="text-center btn btn-sm waves-effect waves-light bg-warning-subtle text-warning mx-2">
-                        <i class="ti ti-pencil"></i> Edit
-                    </a>
-                    <a href="javascript:void(0)" onclick="confirmDelete('. $data->id .')" class="text-center btn btn-sm waves-effect waves-light bg-danger-subtle text-danger">
-                        <i class="ti ti-trash"></i> Hapus
-                    </a>
-
+                     <a href="'.route('Detail Pemesanan', Crypt::encryptString($data->id)).'" class="btn btn-sm btn-primary">Detail</a>
                 ';
             })
             ->editColumn('created_at', function($data) {
                 return date('d F Y', strtotime($data->created_at));
             })
-            ->editColumn('user_id', function($data) {
-                return $data->user->username;
-            })
             ->editColumn('total_price', function($data) {
                 return 'Rp. '.number_format($data->total_price, 0, ',', '.');
             })
             ->editColumn('status', function($data) {
-                if($data->status == 'pending'){
-                    return '<span class="badge bg-warning" style="font-size: 10px;">Pending</span>';
-                }else if($data->status == 'success'){
+                if($data->status == 'Menunggu Konfirmasi'){
+                    return '<span class="badge bg-warning" style="font-size: 10px;">Menunggu Konfirmasi</span>';
+                }
+                if($data->status == 'Selesai' || $data->status == 'Desetujui'){
                     return '<span class="badge bg-success" style="font-size: 10px;">Sukses</span>';
-                }else{
+                }
+                if($data->status == 'Dibatalkan'){
                     return '<span class="badge bg-danger" style="font-size: 10px;">Dibatalkan</span>';
                 }
+                if($data->status == 'Ditolak'){
+                    return '<span class="badge bg-danger" style="font-size: 10px;">Ditolak</span>';
+                }
+
             })
             ->editColumn('date', function($data) {
-                return date('d F Y', strtotime($data->date));
+                return date('d F Y', strtotime($data->departure_date));
             })
             ->rawColumns(['action', 'status'])
             ->make(true);
@@ -132,7 +179,7 @@ class OrderController extends Controller
     public function show($id)
     {
         $id = Crypt::decryptString($id);
-        $data = Transaction::with(['user', 'detailTransaction', 'detailTransaction.tour', 'detailTransaction.passenger'])->find($id);
+        $data = Transaction::with(['detailTransaction'])->find($id);
         return view('admin.order.detail', compact('data'));
     }
 

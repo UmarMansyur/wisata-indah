@@ -30,8 +30,8 @@
       scrollCollapse: true,
 
       columns: [{
-          data: 'user_id',
-          name: 'user_id'
+          data: 'name',
+          name: 'name'
         },
         {
           data: 'date',

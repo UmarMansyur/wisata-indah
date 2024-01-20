@@ -62,21 +62,18 @@
     </div>
   </div>
 </div>
-<div class="row mt-3">
-  <div class="col-12">
-
-    <div class="cart-container">
-      <h4 id="title-cart">Keranjang</h4>
-      <div class="cart-items"></div>
-      <div class="cart-total" id="display-cart">
-        <p id="total"></p>
-      </div>
-      <div class="text-center mt-3" id="checkout">
-        <button class="btn btn-primary" id="pesan" data-bs-toggle="modal" onclick="checkout()"
-          data-bs-target="#modal-pesan">
-          <i class="fas fa-shopping-cart"></i> Checkout sekarang
-        </button>
-      </div>
+<div class="row mt-3 justify-content-center">
+  <div class="col-md-10 px-3">
+    <h4 id="title-cart">Keranjang</h4>
+    <div class="cart-items"></div>
+    <div class="cart-total" id="display-cart">
+      <h4 id="total"></h4>
+    </div>
+    <div class="text-end mt-3" id="checkout">
+      <button class="btn btn-primary mb-3" id="pesan" data-bs-toggle="modal" onclick="checkout()"
+        data-bs-target="#modal-pesan">
+        <i class="fas fa-shopping-cart"></i> Checkout sekarang
+      </button>
     </div>
   </div>
 
