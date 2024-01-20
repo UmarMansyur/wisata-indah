@@ -54,6 +54,7 @@ Route::get('/', function () {
 Route::get('/paket-wisata', [PaketWisataController::class, 'index'])->name('Paket Wisata');
 Route::get('/paket-wisata/{id}', [PaketWisataController::class, 'show'])->name('Detail Paket Wisata');
 Route::get('/keranjang', [PaketWisataController::class, 'cart'])->name('Keranjang');
+Route::post('/pesan', [PaketWisataController::class, 'checkout'])->name('Pesan');
 
 
 Route::get('/about', function () {

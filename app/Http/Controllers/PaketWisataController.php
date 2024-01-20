@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailTransaction;
 use App\Models\Tour;
 use App\Models\TourPacket;
 use App\Models\TourPacketDetail;
 use App\Models\TourPacketGalleries;
+use App\Models\Transaction;
 use App\Models\TypeTour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -252,6 +254,52 @@ class PaketWisataController extends Controller
             Alert::success('Success', 'Gambar berhasil dihapus');
             return redirect()->back();
         } catch (\Throwable $th) {
+            Alert::error('Error', $th->getMessage());
+            return redirect()->back();
+        }
+    }
+
+    public function checkout(Request $request)
+    {
+        try {
+            $request->validate([
+                'name' => 'required',
+                'phone' => 'required',
+                'email' => 'required',
+                'departure_date' => 'required',
+                'packet_id' => 'required',
+                'total_price' => 'required',
+                'qty' => 'required'
+            ]);
+
+            DB::beginTransaction();
+            $transaction = Transaction::create([
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'departure_date' => $request->departure_date,
+                'packet_id' => $request->packet_id,
+                'status' => 'Menunggu Konfirmasi',
+                'total_price' => $request->total_price
+            ]);
+            $total = 0;
+            foreach ($request->packet_id as $key => $value) {
+                $packet = TourPacket::find($value);
+                $total += ceil($request->quantity / $packet->min_person) * $packet->price;
+                DetailTransaction::create([
+                    'transaction_id' => $transaction->id,
+                    'destination_packet_id' => $value,
+                    'qty' => $request->qty[$key],
+                    'price' => $packet->price * $request->qty[$key]
+                ]);
+            }
+
+
+            DB::commit();
+            Alert::success('Success', 'Paket wisata berhasil dipesan');
+            return redirect()->route('Paket Wisata');
+        } catch (\Throwable $th) {
+            throw $th;
             Alert::error('Error', $th->getMessage());
             return redirect()->back();
         }

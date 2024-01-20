@@ -1,6 +1,6 @@
 @extends('layout.landing_page.main')
 @section('content')
-<div class="page-breadcrumb-area page-bg" style="background-image: url('images/cover-about.jpg')">
+<div class="page-breadcrumb-area page-bg" style="background-image: url('/images/cover-about.jpg')">
     <!-- <div class="page-overlay"></div> -->
     <div class="container">
         <div class="row">
@@ -78,7 +78,8 @@
                                             image: '{{ $tour_packet->cover_image }}',
                                             name: '{{ $tour_packet->name }}',
                                             price: {{ $tour_packet->price }},
-                                            qty: 1,
+                                            min_person: {{ $tour_packet->min_person }},
+                                            qty: {{ $tour_packet->min_person }},
                                             total: {{ $tour_packet->price }}
                                         });
                                         localStorage.setItem('cart', JSON.stringify(cart));
@@ -91,7 +92,8 @@
                                                 name: '{{ $tour_packet->name }}',
                                                 image: '{{ $tour_packet->cover_image }}',
                                                 price: {{ $tour_packet->price }},
-                                                qty: 1,
+                                                min_person: {{ $tour_packet->min_person }},
+                                                qty: {{ $tour_packet->min_person }},
                                                 total: {{ $tour_packet->price }}
                                             });
                                         } else {
@@ -99,9 +101,7 @@
                                                 icon: 'error',
                                                 title: 'Oops...',
                                                 text: 'Paket sudah ada di keranjang!',
-
-                                            }
-                                            )
+                                            })
                                             return
                                         }
                                         localStorage.setItem('cart', JSON.stringify(cart));
