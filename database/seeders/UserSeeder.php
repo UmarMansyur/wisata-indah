@@ -22,13 +22,13 @@ class UserSeeder extends Seeder
             'password' => Hash::make('admin'),
             'role' => 'admin',
             'gender' => 'male',
-            'phone' => '08123456789',
-            'address' => 'Jl. Raya Cipadung No. 9',
-            'thumbnail' => 'https://ik.imagekit.io/8zmr0xxik/70986579_uN4Oeq6SV.png'
+            'phone' => '6287771162011',
+            'address' => 'Jl. Murtajih, Pamekasan',
+            'thumbnail' => 'https://api.unira.ac.id/img/profil/mhs/c5ff6062a0ab2e83f6b3e3bf4c29302e.jpg'
             
         ]);
         User::factory(3)->create();
-        $type = ['Pantai', 'Gunung', 'Kota', 'Hutan', 'Laut', 'Pulau'];
+        $type = ['Pantai', 'Gunung', 'Kota', 'Hutan', 'Pulau', 'Bukit', 'Air Terjun', 'Danau', 'Kolam Renang', 'Taman'];
         foreach ($type as $key => $value) {
             TypeTour::create([
                 'name' => $value
