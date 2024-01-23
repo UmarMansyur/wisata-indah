@@ -31,8 +31,8 @@ class OrderController extends Controller
 
             $transaction = Transaction::where('id', $id)->first();
             $client = new \GuzzleHttp\Client();
-            $apiKey = env('API_KEY_WA');
-            $waSender = env('WA_SENDER');
+            $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
+            $waSender = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
 
             $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, '.', '0') . ' telah disetujui, silahkan untuk melakukan pembayaran ke rekening BCA 1234567890 a/n PT. Wisata Indah Madura, setelah melakukan pembayaran silahkan untuk mengirimkan bukti pembayaran ke nomor 081234567890';
             $url = 'https://connect.labelin.co/send-message';
@@ -65,8 +65,8 @@ class OrderController extends Controller
 
             $transaction = Transaction::where('id', $id)->first();
             $client = new \GuzzleHttp\Client();
-            $apiKey = env('API_KEY_WA');
-            $waSender = env('WA_SENDER');
+            $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
+            $waSender = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
 
             $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, '.', '0') . ' telah ditolak, silahkan untuk menghubungi admin untuk informasi lebih lanjut';
             $url = 'https://connect.labelin.co/send-message';
@@ -100,8 +100,8 @@ class OrderController extends Controller
 
             $transaction = Transaction::where('id', $id)->first();
             $client = new \GuzzleHttp\Client();
-            $apiKey = env('API_KEY_WA');
-            $waSender = env('WA_SENDER');
+            $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
+            $waSender = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
 
             $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, '.', '0') . ' telah dibatalkan, silahkan untuk menghubungi admin untuk informasi lebih lanjut';
             $url = 'https://connect.labelin.co/send-message';

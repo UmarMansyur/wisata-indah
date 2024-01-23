@@ -300,8 +300,8 @@ class PaketWisataController extends Controller
             $user = User::where('role', 'admin')->get();
             foreach ($user as $value) {
                 $client = new \GuzzleHttp\Client();
-                $apiKey = env('API_KEY_WA');
-                $waSender = env('WA_SENDER');
+                $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
+                $waSender = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
                 $message = 'Halo Admin, ada pesanan baru dari ' . $request->name . ' dengan total harga Rp. ' . number_format($request->total_price, 0, '.', '0') . ' Silahkan untuk memvalidasi, untuk memvalidasi silahkan cek di admin > pemesanan paket wisata';
 
                 $url = 'https://connect.labelin.co/send-message';
