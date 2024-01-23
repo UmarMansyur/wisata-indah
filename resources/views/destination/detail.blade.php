@@ -25,7 +25,7 @@
 <div class="blog-area tour-details">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 blog-details-wrapper">
+            <div class="col-lg-12 blog-details-wrapper">
                 <!-- Post Details Start -->
                 <article class="single-post-item">
                     <div class="post-title-wrapper">
@@ -80,60 +80,6 @@
 
                 <!-- Post Details End -->
             </div>
-            <!-- Blog Sidebar Start -->
-            <div class="col-lg-4 order-1 order-lg-2">
-                <div class="sidebar">
-                    <div class="widget widget_booking_form">
-                        <h3 class="title">Pesan Sekarang</h3>
-                        <form action="{{ route('send mail') }}" method="post" class="comment-form">
-                            @csrf
-                            <div class="row g-4">
-                                <div class="col-xl-12">
-                                    <div class="contacts-name input-wrapper">
-                                        <label>Nama Lengkap:</label>
-                                        <input name="destination" type="hidden" value="{{ $tour->title }}">
-                                        <input name="username" type="text" placeholder="Nama Lengkap" required>
-                                    </div>
-                                </div>
-                                <div class="col-xl-12">
-                                    <div class="contacts-email input-wrapper">
-                                        <label>Email:</label>
-                                        <input name="email" type="text" placeholder="Email" required>
-                                    </div>
-                                </div>
-                                <div class="col-xl-12">
-                                    <div class="contacts-phone input-wrapper">
-                                        <label>Nomer Hp:</label>
-                                        <input name="phone" type="text" placeholder="Nomer Hp" required>
-                                    </div>
-                                </div>
-                                <div class="col-xl-12">
-                                    <div class="contacts-date input-wrapper">
-                                        <label>Tanggal: </label>
-                                        <input name="date" type="date" placeholder="Tanggal" required>
-                                    </div>
-                                </div>
-                                <div class="col-xl-12">
-                                    <div class="contacts-tour input-wrapper">
-                                        <label>Jumlah Orang:</label>
-                                        <input name="adult" type="text" placeholder="Jumlah Orang">
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button class="theme-btn" type="button" onclick="confirm()">
-                                        <span class="swip">
-                                            <span class="title-wrapper">
-                                                <span class="title-1">Pesan Sekarang</span>
-                                            </span>
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- Blog Sidebar Start -->
         </div>
     </div>
 </div>

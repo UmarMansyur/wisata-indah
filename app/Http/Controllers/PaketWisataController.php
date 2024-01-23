@@ -9,11 +9,14 @@ use App\Models\TourPacketDetail;
 use App\Models\TourPacketGalleries;
 use App\Models\Transaction;
 use App\Models\TypeTour;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
+// use guzzlehttp\guzzle\src\Client;
+use GuzzleHttp\Client;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class PaketWisataController extends Controller
@@ -23,8 +26,8 @@ class PaketWisataController extends Controller
         $packet_destination = TourPacket::with(['detailTourPacket']);
         if (request()->get('is_madura') == 'true') {
             $packet_destination = $packet_destination->where('is_madura', false);
-        } 
-         if (request()->get('is_madura') == 'false') {
+        }
+        if (request()->get('is_madura') == 'false') {
             $packet_destination = $packet_destination->where('is_madura', true);
         }
         if (request()->get('type_tour_id')) {
@@ -42,7 +45,7 @@ class PaketWisataController extends Controller
         return view('packet.index', compact('packet_destination', 'tour', 'type_tour', 'galleries'));
     }
 
-    public function cart() 
+    public function cart()
     {
         return view('packet.cart');
     }
@@ -54,8 +57,8 @@ class PaketWisataController extends Controller
         $packet_destination = TourPacket::with(['detailTourPacket']);
         if (request()->get('is_madura') == 'true') {
             $packet_destination = $packet_destination->where('is_madura', false);
-        } 
-         if (request()->get('is_madura') == 'false') {
+        }
+        if (request()->get('is_madura') == 'false') {
             $packet_destination = $packet_destination->where('is_madura', true);
         }
         if (request()->get('type_tour_id')) {
@@ -293,6 +296,26 @@ class PaketWisataController extends Controller
                     'price' => $packet->price * $request->qty[$key]
                 ]);
             }
+
+            $user = User::where('role', 'admin')->get();
+            foreach ($user as $value) {
+                $client = new \GuzzleHttp\Client();
+                $apiKey = env('API_KEY_WA');
+                $waSender = env('WA_SENDER');
+                $message = 'Halo Admin, ada pesanan baru dari ' . $request->name . ' dengan total harga Rp. ' . number_format($request->total_price, 0, '.', '0') . ' Silahkan untuk memvalidasi, untuk memvalidasi silahkan cek di admin > pemesanan paket wisata';
+
+                $url = 'https://connect.labelin.co/send-message';
+                $client->post($url, [
+                    'json' => [
+                        'api_key' => $apiKey,
+                        'sender' => $waSender,
+                        'number' => $value->phone,
+                        'message' => $message,
+                    ],
+                ]);
+            }
+
+
 
 
             DB::commit();

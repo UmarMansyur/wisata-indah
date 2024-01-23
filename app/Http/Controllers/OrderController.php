@@ -28,15 +28,31 @@ class OrderController extends Controller
             Transaction::where('id', $id)->update([
                 'status' => 'Disetujui',
             ]);
+
+            $transaction = Transaction::where('id', $id)->first();
+            $client = new \GuzzleHttp\Client();
+            $apiKey = env('API_KEY_WA');
+            $waSender = env('WA_SENDER');
+
+            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, '.', '0') . ' telah disetujui, silahkan untuk melakukan pembayaran ke rekening BCA 1234567890 a/n PT. Wisata Indah Madura, setelah melakukan pembayaran silahkan untuk mengirimkan bukti pembayaran ke nomor 081234567890';
+            $url = 'https://connect.labelin.co/send-message';
+            $client->post($url, [
+                'json' => [
+                    'api_key' => $apiKey,
+                    'sender' => $waSender,
+                    'number' => $transaction->phone,
+                    'message' => $message,
+                ],
+            ]);
+
             DB::commit();
             Alert::success('Berhasil', 'Pemesanan berhasil disetujui');
             return redirect()->route('Pemesanan');
         } catch (\Throwable $th) {
             DB::rollback();
             Alert::error('Error', $th->getMessage());
-           throw $th;
+            throw $th;
             return redirect()->back();
-
         }
     }
     public function reject($id)
@@ -46,13 +62,30 @@ class OrderController extends Controller
             Transaction::where('id', $id)->update([
                 'status' => 'Ditolak',
             ]);
+
+            $transaction = Transaction::where('id', $id)->first();
+            $client = new \GuzzleHttp\Client();
+            $apiKey = env('API_KEY_WA');
+            $waSender = env('WA_SENDER');
+
+            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, '.', '0') . ' telah ditolak, silahkan untuk menghubungi admin untuk informasi lebih lanjut';
+            $url = 'https://connect.labelin.co/send-message';
+            $client->post($url, [
+                'json' => [
+                    'api_key' => $apiKey,
+                    'sender' => $waSender,
+                    'number' => $transaction->phone,
+                    'message' => $message,
+                ],
+            ]);
+
             DB::commit();
-            Alert::success('Berhasil', 'Pemesanan berhasil disetujui');
+            Alert::success('Berhasil', 'Pemesanan berhasil ditolak');
             return redirect()->route('Pemesanan');
         } catch (\Throwable $th) {
             DB::rollback();
             Alert::error('Error', $th->getMessage());
-           throw $th;
+            throw $th;
             return redirect()->back();
         }
     }
@@ -64,48 +97,65 @@ class OrderController extends Controller
             Transaction::where('id', $id)->update([
                 'status' => 'Dibatalkan',
             ]);
+
+            $transaction = Transaction::where('id', $id)->first();
+            $client = new \GuzzleHttp\Client();
+            $apiKey = env('API_KEY_WA');
+            $waSender = env('WA_SENDER');
+
+            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, '.', '0') . ' telah dibatalkan, silahkan untuk menghubungi admin untuk informasi lebih lanjut';
+            $url = 'https://connect.labelin.co/send-message';
+            $client->post($url, [
+                'json' => [
+                    'api_key' => $apiKey,
+                    'sender' => $waSender,
+                    'number' => $transaction->phone,
+                    'message' => $message,
+                ],
+            ]);
+
             DB::commit();
             Alert::success('Berhasil', 'Pemesanan berhasil disetujui');
             return redirect()->route('Pemesanan');
         } catch (\Throwable $th) {
             DB::rollback();
             Alert::error('Error', $th->getMessage());
-           throw $th;
+            throw $th;
             return redirect()->back();
         }
     }
 
-    public function getData() {
+    public function getData()
+    {
         $data = Transaction::with(['detailTransaction', 'detailTransaction.destination_packet'])->get();
 
         return FacadesDataTables::of($data)
-            ->addColumn('action', function($data) {
+            ->addColumn('action', function ($data) {
                 return '
-                     <a href="'.route('Detail Pemesanan', Crypt::encryptString($data->id)).'" class="btn btn-sm btn-primary">Detail</a>
+                     <a href="' . route('Detail Pemesanan', Crypt::encryptString($data->id)) . '" class="btn btn-sm btn-primary">Detail</a>
                 ';
             })
-            ->editColumn('created_at', function($data) {
+            ->editColumn('created_at', function ($data) {
                 return date('d F Y', strtotime($data->created_at));
             })
-            ->editColumn('total_price', function($data) {
-                return 'Rp. '.number_format($data->total_price, 0, ',', '.');
+            ->editColumn('total_price', function ($data) {
+                return 'Rp. ' . number_format($data->total_price, 0, ',', '.');
             })
-            ->editColumn('status', function($data) {
-                if($data->status == 'Menunggu Konfirmasi'){
+            ->editColumn('status', function ($data) {
+                if ($data->status == 'Menunggu Konfirmasi') {
                     return '<span class="badge bg-warning" style="font-size: 10px;">Menunggu Konfirmasi</span>';
                 }
-                if($data->status == 'Selesai' || $data->status == 'Desetujui'){
-                    return '<span class="badge bg-success" style="font-size: 10px;">Sukses</span>';
+                if ($data->status == 'Disetujui') {
+                    return '<span class="badge bg-success" style="font-size: 10px;">Disetujui</span>';
                 }
-                if($data->status == 'Dibatalkan'){
+                if ($data->status == 'Dibatalkan') {
                     return '<span class="badge bg-danger" style="font-size: 10px;">Dibatalkan</span>';
                 }
-                if($data->status == 'Ditolak'){
+                if ($data->status == 'Ditolak') {
                     return '<span class="badge bg-danger" style="font-size: 10px;">Ditolak</span>';
                 }
-
             })
-            ->editColumn('date', function($data) {
+            ->editColumn('date', function ($data) {
                 return date('d F Y', strtotime($data->departure_date));
             })
             ->rawColumns(['action', 'status'])
@@ -115,7 +165,7 @@ class OrderController extends Controller
     public function create()
     {
         $destination = Tour::with(['gallery', 'costTour', 'typeTour', 'costTour.passenger'])->get();
-        if($destination->isEmpty()){
+        if ($destination->isEmpty()) {
             Alert::error('Error', 'Masukkan Data Pariwisata Terlebih Dahulu');
             return redirect()->route('Pariwisata');
         }
@@ -136,7 +186,7 @@ class OrderController extends Controller
             $existUser->save();
 
             $user = null;
-            if(empty($existUser)){
+            if (empty($existUser)) {
                 $user = User::create([
                     'username' => $request->name,
                     'email' => $request->email,
@@ -155,7 +205,7 @@ class OrderController extends Controller
                 'date' => $request->date,
             ]);
 
-            foreach($request->destination_id as $key => $value){
+            foreach ($request->destination_id as $key => $value) {
                 DetailTransaction::create([
                     'transaction_id' => $transaction->id,
                     'passenger_id' => $request->passenger_id[$key],
@@ -170,9 +220,8 @@ class OrderController extends Controller
         } catch (\Throwable $th) {
             DB::rollback();
             Alert::error('Error', $th->getMessage());
-           throw $th;
+            throw $th;
             return redirect()->back();
-
         }
     }
 
@@ -187,7 +236,7 @@ class OrderController extends Controller
     {
         $id = Crypt::decryptString($id);
         $destination = Tour::with(['gallery', 'costTour', 'typeTour', 'costTour.passenger'])->get();
-        if($destination->isEmpty()){
+        if ($destination->isEmpty()) {
             Alert::error('Error', 'Masukkan Data Pariwisata Terlebih Dahulu');
             return redirect()->route('Pariwisata');
         }
@@ -199,8 +248,10 @@ class OrderController extends Controller
     public function getDataEdit($id)
     {
         $id = Crypt::decryptString($id);
-        $data = Transaction::with(['user', 'detailTransaction', 'detailTransaction.tour', 'detailTransaction.tour.typeTour',
-        'detailTransaction.tour.costTour','detailTransaction.passenger'])->find($id);
+        $data = Transaction::with([
+            'user', 'detailTransaction', 'detailTransaction.tour', 'detailTransaction.tour.typeTour',
+            'detailTransaction.tour.costTour', 'detailTransaction.passenger'
+        ])->find($id);
         return response()->json($data);
     }
 
@@ -213,7 +264,7 @@ class OrderController extends Controller
                 'status' => $request->date > date('Y-m-d') ? 'pending' : 'success',
             ]);
             DetailTransaction::where('transaction_id', $id)->delete();
-            foreach($request->destination_id as $key => $value){
+            foreach ($request->destination_id as $key => $value) {
                 DetailTransaction::create([
                     'transaction_id' => $id,
                     'passenger_id' => $request->passenger_id[$key],
@@ -228,9 +279,8 @@ class OrderController extends Controller
         } catch (\Throwable $th) {
             DB::rollback();
             Alert::error('Error', $th->getMessage());
-           throw $th;
+            throw $th;
             return redirect()->back();
-
         }
     }
 
@@ -241,18 +291,15 @@ class OrderController extends Controller
             DB::beginTransaction();
             DetailTransaction::where('transaction_id', $id)->delete();
             Transaction::find($id)->delete();
-            
+
             DB::commit();
             Alert::success('Berhasil', 'Pemesanan berhasil dihapus');
             return redirect()->route('Pemesanan');
         } catch (\Throwable $th) {
             DB::rollback();
             Alert::error('Error', $th->getMessage());
-           throw $th;
+            throw $th;
             return redirect()->back();
-
         }
     }
-
-    
 }

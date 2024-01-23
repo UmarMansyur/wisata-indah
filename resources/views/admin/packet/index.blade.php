@@ -30,12 +30,12 @@
       ajax: "{{ route('Get Data Paket Wisata') }}",
       scrollCollapse: true,
       columns: [
-        {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+        {data: 'DT_RowIndex', name: 'DT_RowIndex', class: 'text-center'},
         {data: 'name', name: 'name'},
         {data: 'price', name: 'price'},
         {data: 'min_person', name: 'min_person'},
         {data: 'duration', name: 'duration'},
-        {data: 'action', name: 'action', orderable: false, searchable: false},
+        {data: 'action', name: 'action', orderable: false, searchable: false, class: 'text-center'},
       ],
       // ubah bahasa
       language: {

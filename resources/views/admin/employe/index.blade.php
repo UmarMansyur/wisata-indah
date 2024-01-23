@@ -72,8 +72,8 @@
                   <div class="col-md-6">
                     <div class="mb-3 contact-phone">
                       <label for="c-phone" class="form-label">Nomor HP: </label>
-                      <input type="text" id="c-phone" class="form-control" placeholder="Phone" name="phone" required>
-                      <span class="validation-text text-danger" style="display: none;"></span>
+                      <input type="text" id="c-phone" class="form-control" placeholder="62" name="phone" required>
+                      <span class="validation-text text-danger">Mulai dengan 62</span>
                     </div>
                   </div>
                 </div>

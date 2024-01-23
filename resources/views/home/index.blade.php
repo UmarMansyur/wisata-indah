@@ -97,15 +97,16 @@
     </div>
     <div class="location-slider-wrapper" id="location-slider-wrapper">
       @foreach($tour as $t)
+
       <div class="location-card style-1 wow fadeInUp" data-wow-delay="0s">
         <div class="image-wrapper">
-          <a class="image-inner" href="destination-details.html">
-            <img src="{{ asset('storage/'.$t->thumbnail) }}" alt="Location Image">
+          <a class="image-inner" href="{{ route('detail destination', encrypt($t->id)) }}">
+            <img src="{{ asset('storage/'.$t->cover_image) }}" alt="Location Image">
           </a>
         </div>
         <div class="content-wrapper">
           <div class="content-inner">
-            <h3 class="content-title"><a href="destination-details.html">{{ $t->title }}</a></h3>
+            <h3 class="content-title"><a href="{{ route('detail destination', encrypt($t->id)) }}">{{ $t->title }}</a></h3>
             <a href="{{ route('detail destination', encrypt($t->id)) }}" class="btn-details">Selengkapnya</a>
             ><i class="icon-up-arrow"></i></a>
           </div>

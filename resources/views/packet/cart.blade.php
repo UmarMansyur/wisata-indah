@@ -45,8 +45,8 @@
 <div class="page-breadcrumb-area page-bg" style="background-image: url('images/cover-about.jpg')">
   <!-- <div class="page-overlay"></div> -->
   <div class="container">
-    <div class="row">
-      <div class="col-md-12">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
         <div class="breadcrumb-wrapper">
           <div class="page-heading">
             <h3 class="page-title">Keranjang</h3>
@@ -82,41 +82,45 @@
   <script>
     // ambil data dari local storage
   let cart = JSON.parse(localStorage.getItem('cart'));
-  if(cart.length == [] || !cart) {
+  if(cart === null) {
       document.getElementById('checkout').style.display = 'none';
       document.getElementById('display-cart').style.display = 'none';
       document.getElementById('title-cart').innerHTML = 'Keranjang anda kosong';
 
-  }
-  const html = cart.map(item => {
-    return `
-    <div class="cart-item">
-    <div class="cart-item-image">
-      <img src="{{ asset('storage/'. '${item.image}') }}" alt="" width="200px">
-    </div>
-    <div class="cart-item-details ms-2">
-      <p class="cart-item-title mb-0">${item.name}</p>
-      <p class="cart-item-price mb-0">${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR'
-        }).format(item.price).slice(0, -3)} / Orang</p>
-      <p class="cart-item-price mb-0" id="price-${item.id}">
-        ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price * item.qty).slice(0, -3)}
-        </p>
-      <p class="cart-item-quantity" id="quantity-${item.id}">Jumlah: ${item.qty}</p>
-      <div class="row">
-        <div class="col-7">
-          <input type="number" class="form-control" value="${item.qty}" min="${item.min_person}"
-            onChange="changeQty(${item.id}, this.value)">
-        </div>
-        <div class="col-5">
-          <button class="btn btn-light" onClick="remoteItem(${item.id})">
-            <i class="text-danger fas fa-trash"></i>
-          </button>
+  } else {
+    const html = cart.map(item => {
+      return `
+      <div class="cart-item">
+      <div class="cart-item-image">
+        <img src="{{ asset('storage/'. '${item.image}') }}" alt="" width="200px">
+      </div>
+      <div class="cart-item-details ms-2">
+        <p class="cart-item-title mb-0">${item.name}</p>
+        <p class="cart-item-price mb-0">${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR'
+          }).format(item.price).slice(0, -3)} / Orang</p>
+        <p class="cart-item-price mb-0" id="price-${item.id}">
+          ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price * item.qty).slice(0, -3)}
+          </p>
+        <p class="cart-item-quantity" id="quantity-${item.id}">Jumlah: ${item.qty}</p>
+        <div class="row">
+          <div class="col-7">
+            <input type="number" class="form-control" value="${item.qty}" min="${item.min_person}"
+              onChange="changeQty(${item.id}, this.value)">
+          </div>
+          <div class="col-5">
+            <button class="btn btn-light" onClick="remoteItem(${item.id})">
+              <i class="text-danger fas fa-trash"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-    `
-  }).join('');
+      `
+    }).join('');
+    document.getElementById('total').innerHTML = `Total: ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(cart.reduce((acc, item) => acc + item.price * item.qty, 0)).slice(0, -3)}`;
+
+document.querySelector('.cart-items').innerHTML = html;
+  }
 
   function changeQty(id, qty) {
     cart = cart.map(item => {
@@ -133,9 +137,7 @@
     
   }
 
-  document.getElementById('total').innerHTML = `Total: ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(cart.reduce((acc, item) => acc + item.price * item.qty, 0)).slice(0, -3)}`;
 
-  document.querySelector('.cart-items').innerHTML = html;
 
   function remoteItem(id) {
     Swal.fire({
@@ -168,6 +170,9 @@
     document.getElementsByName('total_price')[0].value = toal_price;
     document.getElementById('packet_id').value = paket_id;
     document.getElementById('qty').value = qty;
+
+    localStorage.removeItem('cart');
+
   }
 
   </script>
