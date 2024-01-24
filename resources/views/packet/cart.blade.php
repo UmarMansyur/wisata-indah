@@ -27,7 +27,8 @@
             </div>
             <div class="col-12 mb-3">
               <label for="phone" class="form-label">Nomer Hp: </label>
-              <input type="text" class="form-control" id="phone" placeholder="Masukkan nomer hp" name="phone" required>
+              <input type="text" class="form-control" id="phone" placeholder="62xxxxxxxxxx" name="phone" required>
+              <small>Jangan mengawali dengan huruf 0, ganti kode negara(62) tanpa plus.</small>
             </div>
             <div class="col-12 mb-3">
               <label for="departure_date" class="form-label">Tanggal: </label>

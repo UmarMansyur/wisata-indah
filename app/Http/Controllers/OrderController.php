@@ -33,8 +33,7 @@ class OrderController extends Controller
             $client = new \GuzzleHttp\Client();
             $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
             $waSender = "6285230648617";
-
-            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, '.', '0') . ' telah disetujui, silahkan untuk melakukan pembayaran ke rekening BCA 1234567890 a/n PT. Wisata Indah Madura, setelah melakukan pembayaran silahkan untuk mengirimkan bukti pembayaran ke nomor 081234567890';
+            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, ',', '.') . ' telah disetujui, silahkan untuk melakukan pembayaran ke rekening BCA 1234567890 a/n PT. Wisata Indah Madura, setelah melakukan pembayaran silahkan untuk mengirimkan bukti pembayaran ke nomor 081234567890';
             $url = 'https://connect.labelin.co/send-message';
             $client->post($url, [
                 'json' => [
@@ -68,7 +67,7 @@ class OrderController extends Controller
             $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
             $waSender = "6285230648617";
 
-            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, '.', '0') . ' telah ditolak, silahkan untuk menghubungi admin untuk informasi lebih lanjut';
+            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, ',', '.') . ' telah ditolak, silahkan untuk menghubungi admin untuk informasi lebih lanjut';
             $url = 'https://connect.labelin.co/send-message';
             $client->post($url, [
                 'json' => [
@@ -103,7 +102,7 @@ class OrderController extends Controller
             $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
             $waSender = "6285230648617";
 
-            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, '.', '0') . ' telah dibatalkan, silahkan untuk menghubungi admin untuk informasi lebih lanjut';
+            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, ',', '.') . ' telah dibatalkan, silahkan untuk menghubungi admin untuk informasi lebih lanjut';
             $url = 'https://connect.labelin.co/send-message';
             $client->post($url, [
                 'json' => [

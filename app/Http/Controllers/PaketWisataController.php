@@ -8,15 +8,12 @@ use App\Models\TourPacket;
 use App\Models\TourPacketDetail;
 use App\Models\TourPacketGalleries;
 use App\Models\Transaction;
-use App\Models\TypeTour;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
-// use guzzlehttp\guzzle\src\Client;
-use GuzzleHttp\Client;
 use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class PaketWisataController extends Controller
