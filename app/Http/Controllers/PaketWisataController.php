@@ -301,8 +301,8 @@ class PaketWisataController extends Controller
             foreach ($user as $value) {
                 $client = new \GuzzleHttp\Client();
                 $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
-                $waSender = "6285230648517";
-                $message = 'Halo Admin, ada pesanan baru dari ' . $request->name . ' dengan total harga Rp. ' . number_format($request->total_price, 0, '.', '0') . ' Silahkan untuk memvalidasi, untuk memvalidasi silahkan cek di admin > pemesanan paket wisata';
+                $waSender = "6285230648617";
+                $message = 'Halo Admin, ada pesanan baru dari ' . $request->name . ' dengan total harga Rp. ' . number_format($request->total_price, 0, ',', '.') . ' Silahkan untuk memvalidasi, untuk memvalidasi silahkan cek di admin > pemesanan paket wisata';
 
                 $url = 'https://connect.labelin.co/send-message';
                 $client->post($url, [
