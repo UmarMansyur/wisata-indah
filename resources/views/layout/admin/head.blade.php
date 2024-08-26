@@ -10,7 +10,25 @@
   <link rel="stylesheet" href="/assets/vendor/sweetalert2/dist/sweetalert2.min.css">
   <script src="/assets/vendor/jquery/dist/jquery.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeavA9iJqGwuiJSNrIq-1OA5gdo9KlmE8"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeavA9iJqGwuiJSNrIq-1OA5gdo9KlmE8&callback=gmNoop&loading=async"
+    async defer></script>
+  <script>
+    async function gmNoop() { 
+      // get current location
+      if (navigator.geolocation) {
+        await navigator.geolocation.getCurrentPosition(function (position) {
+          let pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          new google.maps.Map(document.getElementById('map'), {
+            zoom: 13,
+            center: pos
+          });
+        });
+      }
+     }
+  </script>
 
   <style>
     #layer {

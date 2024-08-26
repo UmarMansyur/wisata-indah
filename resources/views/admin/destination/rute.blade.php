@@ -3,7 +3,8 @@
 <div class="row">
   <div class="col-12">
     <div class="alert alert-danger">
-      <p class="mb-0">Pilih minimal 3 destinasi</p>
+      <p class="mb-0">Pilih minimal 3 destinasi. Anda secara otomatis akan diarahkan ke destinasi terdekat dari lokasi
+        sekarang.</p>
     </div>
   </div>
 </div>
@@ -21,16 +22,16 @@
     </button>
   </div>
 </div>
-<div class="row my-3">
+<div class="row my-2">
   <div class="col-12">
     <h6>Total Jarak: <span id="total-distance">0</span> km</h6>
   </div>
   <div class="col-12 my-2">
     {{-- Rutenya dari title pariwisata --}}
-   <div id="rute"></div>
+    <div id="rute"></div>
   </div>
 </div>
-<div class="row mt-3">
+<div class="row mt-2 mb-5">
   <div class="col-md-12">
     <div id="map" style="height: 50vh; width: 100%;"></div>
   </div>
@@ -41,7 +42,16 @@
   async function updateMap() {
     const locations = $('#type_tour_id').val();
 
-    const coordinates = locations.map(function (location) {
+    if(locations.length < 3 && locations.length > 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Pilih minimal 3 destinasi!',
+      });
+      return;
+    }
+
+    let coordinates = locations.map(function (location) {
       const url = extractUrlFromIframe(location);
       if (url) {
         const result = extractLatLng(url);
@@ -53,8 +63,6 @@
 
     if (coordinates.length > 0) {
       await initMap(coordinates);
-    } else {
-      console.error('Tidak ada koordinat yang valid ditemukan.');
     }
   }
 
@@ -70,7 +78,6 @@
   }
 
   function extractLatLng(url) {
-
     const lat = url.toString().split('!3d')[1].split('!2m3!')[0];
     const lng = url.toString().split('!2d')[1].split('!3d')[0];
     return {
@@ -80,22 +87,48 @@
   }
 
   async function initMap(coordinates) {
-    var map = new google.maps.Map(document.getElementById('map'), {
+    var currentLocation = null;
+    var coordinates2 = coordinates;
+      if (navigator.geolocation) {
+        await Promise.all([
+          new Promise((resolve) => {
+            navigator.geolocation.getCurrentPosition(function (position) {
+              currentLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+              coordinates2.unshift(currentLocation);
+              resolve();
+            });
+          })
+        ]);
+      }
+    const { Map } = await google.maps.importLibrary("maps");
+
+    var map = new Map(document.getElementById('map'), {
       zoom: 13,
-      center: coordinates[0],
-      mapTypeId: 'roadmap'
+      center:coordinates2[0],
+      mapId: 'roadmap'
     });
 
+
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
     // Menambahkan marker untuk setiap node
-    coordinates.forEach(function (coord, index) {
-      new google.maps.Marker({
+    coordinates2.forEach(function (coord, index) {
+      // first current location is mark
+      new AdvancedMarkerElement({
         position: coord,
         map: map,
-        label: (index + 1).toString()
+        title: (index + 1).toString(),
+        zIndex: index + 1,
       });
     });
 
     try {
+      // Mengirimkan data lokasi sekarang ke server
+      
+
       const response = await fetch("http://localhost:3000/optimize", {
         method: 'POST',
         headers: {
@@ -103,7 +136,7 @@
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          locations: coordinates.map(function (coord) {
+          locations: coordinates2.map(function (coord) {
             return {
               lat: coord.lat,
               lon: coord.lng
@@ -120,7 +153,7 @@
       var bestPath = data.best_path;
 
       var pathCoordinates = bestPath.map(function (index) {
-        return coordinates[index];
+        return coordinates2[index];
       });
 
       // Menambahkan polyline untuk jalur terbaik
