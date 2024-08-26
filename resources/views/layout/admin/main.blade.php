@@ -70,7 +70,7 @@
     });
   </script>
   @endif
-  @if(Request::is('admin/pariwisata/tambah') || Request::is('admin/pariwisata/*'))
+  @if(Request::is('admin/pariwisata/tambah') || Request::is('admin/pariwisata/*') || Request::is('admin/rute-terbaik') || Request::is('admin/rute-terbaik/*'))
   <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
   <script src="/assets/js/ckeditor.init.js"></script>
   <script>

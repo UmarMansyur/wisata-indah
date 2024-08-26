@@ -97,6 +97,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
         Route::get('/detail/approve/{id}', [OrderController::class, 'approve']);
         Route::get('/detail/cancel/{id}', [OrderController::class, 'cancel']);
     });
+
+    Route::group(['prefix' => 'rute-terbaik'], function() {
+        Route::get('/', [DestinationController::class, 'ruteTerbaik'])->name('Rute Terbaik');
+    });
+
     Route::group(['prefix' => 'pariwisata'], function () {
         Route::get('/', [DestinationController::class, 'index'])->name('Pariwisata');
         Route::get('/tambah', [DestinationController::class, 'create'])->name('Tambah Pariwisata');

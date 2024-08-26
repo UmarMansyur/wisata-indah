@@ -21,13 +21,39 @@ use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class DestinationController extends Controller
 {
+
+    public function ruteTerbaik()
+    {
+        $tours = Tour::with(['detailTour', 'detailTour.typeTour'])->get();
+
+        return view('admin.destination.rute', compact('tours'));
+    }
+
+    public function getLatAndLong($url)
+    {
+        $pattern = '/!3d(-?\d+\.\d+)!2d(-?\d+\.\d+)/';
+        if (preg_match($pattern, $url, $matches)) {
+            $latitude = $matches[1];
+            $longitude = $matches[2];
+
+            return [
+                'latitude' => $latitude,
+                'longitude' => $longitude
+            ];
+        } else {
+            echo "Latitude dan Longitude tidak ditemukan di URL.";
+        }
+    }
+
+    public function checkRute() {}
+
     public function getData()
     {
         $tours = Tour::with(['detailTour', 'detailTour.typeTour'])->get();
         return FacadesDataTables::of($tours)
             ->addIndexColumn()
             ->editColumn('type_tour_id', function ($tour) {
-               return $tour->detailTour->map(function ($item) {
+                return $tour->detailTour->map(function ($item) {
                     return $item->typeTour->name;
                 })->implode(', ');
             })
@@ -94,7 +120,7 @@ class DestinationController extends Controller
                 ]);
             }
 
-            foreach($request->type_tour_id as $value){
+            foreach ($request->type_tour_id as $value) {
                 DetailTour::create([
                     'tour_id' => $tour->id,
                     'type_tour_id' => $value
@@ -131,7 +157,7 @@ class DestinationController extends Controller
     {
         try {
             $request->validate([
-                
+
                 'title' => 'required',
                 'type_tour_id' => 'required',
                 'map_location' => 'required',
@@ -174,7 +200,7 @@ class DestinationController extends Controller
 
             DetailTour::where('tour_id', $tour->id)->delete();
 
-            foreach($request->type_tour_id as $value){
+            foreach ($request->type_tour_id as $value) {
                 DetailTour::create([
                     'tour_id' => $tour->id,
                     'type_tour_id' => $value
@@ -274,5 +300,4 @@ class DestinationController extends Controller
             throw $th;
         }
     }
-
 }
