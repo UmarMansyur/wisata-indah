@@ -69,29 +69,46 @@ function antColonyOptimization(distFw, pheromone, n, alpha = 1, beta = 2, rho = 
     let bestPath = null;
     let bestLength = Infinity;
 
-    for (let _ = 0; _ < 100; _++) {
-        for (let _ = 0; _ < 10; _++) {
+    const result = [];
+
+    for (let iter = 0; iter < 100; iter++) {
+        const iterationResult = {
+            paths: [],
+            pheromoneUpdates: []
+        };
+
+        for (let ant = 0; ant < 10; ant++) {
             const path = [0];
             const visited = new Set(path);
-            for (let _ = 0; _ < n - 1; _++) {
+            for (let step = 0; step < n - 1; step++) {
                 const nextNode = selectNextNode(path[path.length - 1], visited, n, pheromone, distFw, alpha, beta);
                 path.push(nextNode);
                 visited.add(nextNode);
             }
+
             const pathLength = path.slice(0, -1).reduce((sum, node, i) => sum + distFw[node][path[i + 1]], 0);
+            iterationResult.paths.push({ path, pathLength });
+
             if (pathLength < bestLength) {
                 bestLength = pathLength;
                 bestPath = path;
             }
         }
+
         for (let i = 0; i < pheromone.length; i++) {
             for (let j = 0; j < pheromone[i].length; j++) {
                 pheromone[i][j] *= (1 - rho);
             }
         }
+
+        const pheromoneUpdate = [];
         for (let i = 0; i < bestPath.length - 1; i++) {
-            pheromone[bestPath[i]][bestPath[i + 1]] += Q / bestLength;
+            const increase = Q / bestLength;
+            pheromone[bestPath[i]][bestPath[i + 1]] += increase;
+            pheromoneUpdate.push({ edge: [bestPath[i], bestPath[i + 1]], increase });
         }
+        iterationResult.pheromoneUpdates = pheromoneUpdate;
+        result.push(iterationResult);
     }
 
     let total_jarak = 0;
@@ -103,9 +120,7 @@ function antColonyOptimization(distFw, pheromone, n, alpha = 1, beta = 2, rho = 
         jarak.push(distFw[bestPath[i]][bestPath[i + 1]]);
     }
 
-
-
-    return { bestPath, bestLength, total_jarak, jarak };
+    return { bestPath, bestLength, total_jarak, jarak, result };
 }
 
 app.post('/optimize', (req, res) => {
@@ -126,10 +141,10 @@ app.post('/optimize', (req, res) => {
 
         const distFw = floydWarshall(distanceMatrix);
         let pheromone = Array.from({ length: numLocations }, () => Array(numLocations).fill(1 / numLocations));
-        const { bestPath, bestLength, total_jarak, jarak } = antColonyOptimization(distFw, pheromone, numLocations);
+        const { bestPath, bestLength, total_jarak, jarak, result } = antColonyOptimization(distFw, pheromone, numLocations);
 
 
-        res.json({ best_path: bestPath, best_length: bestLength , total_jarak: total_jarak.toFixed(2), jarak: jarak.map(j => j.toFixed(2)) });
+        res.json({ best_path: bestPath, best_length: bestLength , total_jarak: total_jarak.toFixed(2), jarak: jarak.map(j => j.toFixed(2)), distanceMatrix, floyd_warshal: distFw, aco: result });
     } catch (e) {
         res.status(400).json({ error: e.message });
     }
