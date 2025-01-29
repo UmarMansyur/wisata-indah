@@ -58,7 +58,7 @@
         return result ? { lat: parseFloat(result.latitude), lng: parseFloat(result.longitude) } : null;
       }
       return null;
-    }).filter(Boolean); // Hanya ambil koordinat yang valid (tidak null)
+    }).filter(Boolean);
 
 
     if (coordinates.length > 0) {

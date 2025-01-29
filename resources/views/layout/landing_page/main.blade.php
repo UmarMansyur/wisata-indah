@@ -54,7 +54,7 @@
   <script src="/js/jquery-ui.min.js"></script>
   <script src="/js/custom.js"></script>
   <script src="/assets/vendor/sweetalert2/dist/sweetalert2.min.js"></script>
-
+  @stack('script')
 </body>
 
 </html>

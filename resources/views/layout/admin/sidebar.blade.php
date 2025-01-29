@@ -40,6 +40,14 @@
             <span class="hide-menu">Pemasanan</span>
           </a>
         </li>
+        <li class="sidebar-item {{ request()->is('admin/laporan-pemesanan/*') ? 'selected' : '' }}">
+          <a class="sidebar-link {{ request()->is('admin/laporan-pemesanan/*') ? 'active' : '' }}" href="/admin/laporan-pemesanan" aria-expanded="false">
+            <span>
+              <i class="ti ti-report"></i>
+            </span>
+            <span class="hide-menu">Laporan Pemesanan</span>
+          </a>
+        </li>
         <li class="sidebar-item {{ request()->is('admin/paket-pariwisata/*') ? 'selected' : '' }}">
           <a class="sidebar-link {{ request()->is('admin/paket-pariwisata/*') ? 'active' : '' }}" href="/admin/paket-pariwisata" aria-expanded="false">
             <span>

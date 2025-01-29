@@ -104,6 +104,7 @@
   </script>
   @endif
   <script src="/assets/js/main.js"></script>
+  @stack('script')
 </body>
 
 </html>

@@ -33,8 +33,8 @@ Route::get('/', function () {
         ->limit(10)
         ->get();
     $tour = [];
-   foreach ($packet_destination as $key => $value) {
-      $tour= Tour::join('detail_packet_destinations', 'detail_packet_destinations.tour_id', '=', 'tours.id')
+    foreach ($packet_destination as $key => $value) {
+        $tour = Tour::join('detail_packet_destinations', 'detail_packet_destinations.tour_id', '=', 'tours.id')
             ->where('detail_packet_destinations.packet_destination_id', $value->destination_packet_id)->get();
     }
     $tours = Tour::with(['detailTour', 'detailTour', 'detailTour.typeTour'])->orderBy('id', 'desc')->paginate(10);
@@ -55,7 +55,6 @@ Route::get('/paket-wisata', [PaketWisataController::class, 'index'])->name('Pake
 Route::get('/paket-wisata/{id}', [PaketWisataController::class, 'show'])->name('Detail Paket Wisata');
 Route::get('/keranjang', [PaketWisataController::class, 'cart'])->name('Keranjang');
 Route::post('/pesan', [PaketWisataController::class, 'checkout'])->name('Pesan');
-
 
 Route::get('/about', function () {
     $team = Team::orderBy('id', 'desc')->paginate(10);
@@ -89,6 +88,8 @@ Route::post('/login/admin', [AuthenticationController::class, 'authenticate'])->
 
 Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/laporan-pemesanan', [OrderController::class, 'laporan'])->name('Laporan Pemesanan');
+
     Route::group(['prefix' => 'pemesanan'], function () {
         Route::get('/', [OrderController::class, 'index'])->name('Pemesanan');
         Route::get('/detail/{id}', [OrderController::class, 'show'])->name('Detail Pemesanan');
@@ -96,9 +97,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
         Route::get('/detail/reject/{id}', [OrderController::class, 'reject']);
         Route::get('/detail/approve/{id}', [OrderController::class, 'approve']);
         Route::get('/detail/cancel/{id}', [OrderController::class, 'cancel']);
+        Route::post('/detail/update-price/{id}', [OrderController::class, 'updatePrice'])->name('updatePrice');
+        Route::get('/detail/complete/{id}', [OrderController::class, 'complete'])->name('Selesai Pemesanan');
+        Route::get('/stats', [OrderController::class, 'getStats'])->name('get.stats');
     });
 
-    Route::group(['prefix' => 'rute-terbaik'], function() {
+    Route::group(['prefix' => 'rute-terbaik'], function () {
         Route::get('/', [DestinationController::class, 'ruteTerbaik'])->name('Rute Terbaik');
     });
 

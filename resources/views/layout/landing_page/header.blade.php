@@ -33,7 +33,9 @@
                 </li>
                 <li class="{{ request()->is('contact') ? 'active' : '' }}"><a href="/contact">Contact</a>
                 </li>
-                <li class="{{ request()->is('/keranjang') ? 'active' : '' }}"><a href="{{ route('Keranjang') }}">Keranjang</a></li>
+                {{-- berikan tanda jika ada item --}}
+                <li class="{{ request()->is('/keranjang') ? 'active' : '' }}"><a
+                    href="{{ route('Keranjang') }}">Keranjang <sup class="text-danger" id="jumlah-item"></sup></a></li>
               </ul>
             </nav>
           </div>
@@ -95,3 +97,16 @@
   </div>
 </div>
 <div class="body-overlay"></div>
+
+@push('script')
+<script>
+  let cartAmount = JSON.parse(localStorage.getItem('cart'));
+  if(cartAmount === null) {
+    document.getElementById('jumlah-item').innerHTML = '';
+  } else if(cartAmount.length > 0) {
+    document.getElementById('jumlah-item').innerHTML = cartAmount.length;
+  } else {
+    document.getElementById('jumlah-item').innerHTML = '';
+  }
+</script>
+@endpush

@@ -294,23 +294,24 @@ class PaketWisataController extends Controller
                 ]);
             }
 
-            $user = User::where('role', 'admin')->get();
-            foreach ($user as $value) {
-                $client = new \GuzzleHttp\Client();
-                $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
-                $waSender = "6285230648617";
-                $message = 'Halo Admin, ada pesanan baru dari ' . $request->name . ' dengan total harga Rp. ' . number_format($request->total_price, 0, ',', '.') . ' Silahkan untuk memvalidasi, untuk memvalidasi silahkan cek di admin > pemesanan paket wisata';
+            // $user = User::where('role', 'admin')->get();
+            // $result = sendNotifications($user, $request->all());
+            // foreach ($user as $value) {
+            //     $client = new \GuzzleHttp\Client();
+            //     $message = 'Halo Admin, ada pesanan baru dari ' . $request->name . ' dengan total harga Rp. ' . number_format($request->total_price, 0, ',', '.') . ' Silahkan untuk memvalidasi, untuk memvalidasi silahkan cek di admin > pemesanan paket wisata';
 
-                $url = 'https://connect.labelin.co/send-message';
-                $client->post($url, [
-                    'json' => [
-                        'api_key' => $apiKey,
-                        'sender' => $waSender,
-                        'number' => $value->phone,
-                        'message' => $message,
-                    ],
-                ]);
-            }
+            //     $url = 'https://api.fonnte.com/send';
+            //     $client->post($url, [
+            //         'json' => [
+            //             'target' => $value->phone,
+            //             'message' => $message,
+            //             'countryCode' => '62'
+            //         ],
+            //         'headers' => [
+            //             'Authorization' => 'KSiXWUmGcwampvrnHrhXD'
+            //         ]
+            //     ]);
+            // }
 
 
 
@@ -324,4 +325,46 @@ class PaketWisataController extends Controller
             return redirect()->back();
         }
     }
+}
+
+function sendNotifications($users, $orderDetails) {
+    $client = new \GuzzleHttp\Client();
+    $errors = [];
+    
+    foreach ($users as $user) {
+        try {
+            $message = sprintf(
+                'Halo Admin, ada pesanan baru dari %s dengan total harga Rp. %s. ' .
+                'Silahkan untuk memvalidasi di admin > pemesanan paket wisata',
+                $orderDetails['name'],
+                number_format($orderDetails['total_price'], 0, ',', '.')
+            );
+
+            $response = $client->post('https://api.fonnte.com/send', [
+                'json' => [
+                    'target' => $user->phone,
+                    'message' => $message,
+                    'countryCode' => '62'
+                ],
+                'headers' => [
+                    'Authorization' => config('services.fonnte.token') // Store token in config
+                ],
+                'timeout' => 10 // Add timeout
+            ]);
+
+
+        } catch (\Exception $e) {
+            $errors[] = [
+                'phone' => $user->phone,
+                'error' => $e->getMessage()
+            ];
+        }
+
+        usleep(200000); // 200ms delay
+    }
+
+    return [
+        'success' => count($users) - count($errors),
+        'failures' => $errors
+    ];
 }

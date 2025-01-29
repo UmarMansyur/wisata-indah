@@ -21,6 +21,76 @@ class OrderController extends Controller
         return view('admin.order.index');
     }
 
+    public function laporan(Request $request)
+    {
+        // Ambil data tahun dari transaksi
+        $tahun = Transaction::select(DB::raw('YEAR(created_at) as year'))
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->get();
+
+        // Hitung total pemasukan per bulan untuk tahun yang dipilih
+        $monthlyStats = Transaction::select(
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('SUM(total_price) as total'),
+                DB::raw('COUNT(*) as count')
+            )
+            ->whereYear('created_at', $request->tahun ?? date('Y'))
+            ->where('status', 'Selesai')
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->get();
+
+        // Inisialisasi array untuk data chart
+        $monthlyData = array_fill(1, 12, [
+            'total' => 0,
+            'count' => 0
+        ]);
+
+        // Isi data sesuai hasil query
+        foreach ($monthlyStats as $stat) {
+            $monthlyData[$stat->month] = [
+                'total' => $stat->total,
+                'count' => $stat->count
+            ];
+        }
+
+        return view('admin.order.laporan', compact('tahun', 'monthlyData'));
+    }
+
+    function sendNotifications($phone, $message) {
+        $client = new \GuzzleHttp\Client();
+        $errors = [];
+        
+  
+            try {
+
+                // ubah ke formData
+                $formData = [
+                    'form_params' => [
+                        'target' => $phone,
+                        'message' => $message,
+                        'countryCode' => '62',
+                        'delay' => 2
+                    ]
+                ];
+
+                $response = $client->post('https://api.fonnte.com/send', array_merge($formData, [
+                    'headers' => [
+                        'Authorization' => 'j7wYEa8AQDsthdYD9S2Z'
+                    ],
+                ]));
+               
+            } catch (\Exception $e) {
+                throw $e;
+            }
+    
+        return [
+            'success' => 1,
+            'failures' => $errors
+        ];
+    }
+
+
     public function approve($id)
     {
         try {
@@ -29,21 +99,9 @@ class OrderController extends Controller
                 'status' => 'Disetujui',
             ]);
 
+            
             $transaction = Transaction::where('id', $id)->first();
-            $client = new \GuzzleHttp\Client();
-            $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
-            $waSender = "6285230648617";
-            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, ',', '.') . ' telah disetujui, silahkan untuk melakukan pembayaran ke rekening BCA 1234567890 a/n PT. Wisata Indah Madura, setelah melakukan pembayaran silahkan untuk mengirimkan bukti pembayaran ke nomor 081234567890';
-            $url = 'https://connect.labelin.co/send-message';
-            $client->post($url, [
-                'json' => [
-                    'api_key' => $apiKey,
-                    'sender' => $waSender,
-                    'number' => $transaction->phone,
-                    'message' => $message,
-                ],
-            ]);
-
+            $this->sendNotifications($transaction->phone, 'Terimakasih ' . $transaction->name . ', pesanan anda telah disetujui oleh administrator. ');
             DB::commit();
             Alert::success('Berhasil', 'Pemesanan berhasil disetujui');
             return redirect()->route('Pemesanan');
@@ -63,20 +121,7 @@ class OrderController extends Controller
             ]);
 
             $transaction = Transaction::where('id', $id)->first();
-            $client = new \GuzzleHttp\Client();
-            $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
-            $waSender = "6285230648617";
-
-            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, ',', '.') . ' telah ditolak, silahkan untuk menghubungi admin untuk informasi lebih lanjut';
-            $url = 'https://connect.labelin.co/send-message';
-            $client->post($url, [
-                'json' => [
-                    'api_key' => $apiKey,
-                    'sender' => $waSender,
-                    'number' => $transaction->phone,
-                    'message' => $message,
-                ],
-            ]);
+            $this->sendNotifications($transaction->phone, 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, ',', '.') . ' telah ditolak, silahkan untuk menghubungi admin untuk informasi lebih lanjut');
 
             DB::commit();
             Alert::success('Berhasil', 'Pemesanan berhasil ditolak');
@@ -98,23 +143,10 @@ class OrderController extends Controller
             ]);
 
             $transaction = Transaction::where('id', $id)->first();
-            $client = new \GuzzleHttp\Client();
-            $apiKey = 'i4AFN5ChzavLsz7dUs9pbAnvPTG3fr';
-            $waSender = "6285230648617";
-
-            $message = 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, ',', '.') . ' telah dibatalkan, silahkan untuk menghubungi admin untuk informasi lebih lanjut';
-            $url = 'https://connect.labelin.co/send-message';
-            $client->post($url, [
-                'json' => [
-                    'api_key' => $apiKey,
-                    'sender' => $waSender,
-                    'number' => $transaction->phone,
-                    'message' => $message,
-                ],
-            ]);
+            $this->sendNotifications($transaction->phone, 'Halo ' . $transaction->name . ', pesanan anda dengan total harga Rp. ' . number_format($transaction->total_price, 0, ',', '.') . ' telah dibatalkan, silahkan untuk menghubungi admin untuk informasi lebih lanjut');
 
             DB::commit();
-            Alert::success('Berhasil', 'Pemesanan berhasil disetujui');
+            Alert::success('Berhasil', 'Pemesanan berhasil dibatalkan');
             return redirect()->route('Pemesanan');
         } catch (\Throwable $th) {
             DB::rollback();
@@ -124,9 +156,35 @@ class OrderController extends Controller
         }
     }
 
-    public function getData()
+    public function complete($id)
     {
-        $data = Transaction::with(['detailTransaction', 'detailTransaction.destination_packet'])->get();
+        try {
+            DB::beginTransaction();
+            Transaction::where('id', $id)->update([
+                'status' => 'Selesai',
+            ]);
+
+            $transaction = Transaction::where('id', $id)->first();
+            $this->sendNotifications($transaction->phone, 'Terimakasih ' . $transaction->name . ', pesanan anda telah diselesaikan oleh administrator. ');
+
+            DB::commit();
+            Alert::success('Berhasil', 'Pemesanan berhasil diselesaikan');
+            return redirect()->route('Pemesanan');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            Alert::error('Error', $th->getMessage());
+            throw $th;
+            return redirect()->back();
+        }
+    }
+
+    public function getData(Request $request)
+    {
+        if ($request->bulan && $request->tahun) {
+            $data = Transaction::with(['detailTransaction', 'detailTransaction.destination_packet'])->whereMonth('created_at', $request->bulan)->whereYear('created_at', $request->tahun)->get();
+        } else {
+            $data = Transaction::with(['detailTransaction', 'detailTransaction.destination_packet'])->get();
+        }
 
         return FacadesDataTables::of($data)
             ->addColumn('action', function ($data) {
@@ -145,13 +203,16 @@ class OrderController extends Controller
                     return '<span class="badge bg-warning" style="font-size: 10px;">Menunggu Konfirmasi</span>';
                 }
                 if ($data->status == 'Disetujui') {
-                    return '<span class="badge bg-success" style="font-size: 10px;">Disetujui</span>';
+                    return '<span class="badge bg-info" style="font-size: 10px;">Disetujui</span>';
                 }
                 if ($data->status == 'Dibatalkan') {
                     return '<span class="badge bg-danger" style="font-size: 10px;">Dibatalkan</span>';
                 }
                 if ($data->status == 'Ditolak') {
                     return '<span class="badge bg-danger" style="font-size: 10px;">Ditolak</span>';
+                }
+                if ($data->status == 'Selesai') {
+                    return '<span class="badge bg-success" style="font-size: 10px;">Selesai</span>';
                 }
             })
             ->editColumn('date', function ($data) {
@@ -300,5 +361,66 @@ class OrderController extends Controller
             throw $th;
             return redirect()->back();
         }
+    }
+
+    public function updatePrice(Request $request, $id)
+    {
+        try {
+            $detail = DetailTransaction::findOrFail($id);
+            $detail->price = $request->price;
+            $detail->save();
+
+            // Update total price in main transaction
+            $transaction = $detail->transaction;
+            $transaction->total_price = $transaction->detailTransaction->sum('price');
+            $transaction->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Harga berhasil diupdate'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    public function getStats(Request $request)
+    {
+        // Hitung total pemasukan
+        // bulan rubah ke bulan sekarang dan tahun sekarang
+        $bulan = date('m');
+        $tahun = date('Y');
+        $total = Transaction::when($request->bulan && $request->tahun, function($query) use ($request) {
+                return $query->whereMonth('created_at', $request->bulan)
+                            ->whereYear('created_at', $request->tahun);
+            })
+            ->where('status', 'Selesai')
+            ->sum('total_price');
+
+        // Hitung jumlah transaksi
+        $jumlahTransaksi = Transaction::when($request->bulan && $request->tahun, function($query) use ($request) {
+                return $query->whereMonth('created_at', $request->bulan)
+                            ->whereYear('created_at', $request->tahun);
+            })
+            ->where('status', 'Selesai')
+            ->count();
+
+        // Ambil data statistik status
+        $statusStats = Transaction::when($request->bulan && $request->tahun, function($query) use ($request) {
+                return $query->whereMonth('created_at', $request->bulan)
+                            ->whereYear('created_at', $request->tahun);
+            })
+            ->select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->get();
+
+        return response()->json([
+            'total' => 'Rp. ' . number_format($total, 0, ',', '.'),
+            'jumlahTransaksi' => $jumlahTransaksi,
+            'statusStats' => $statusStats
+        ]);
     }
 }

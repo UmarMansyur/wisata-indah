@@ -46,6 +46,12 @@
                     Setujui</span>
                 </button>
                 @endif
+                @if ($data->status == 'Disetujui')
+                <button class="btn btn-info print-page" type="button" onclick="complete()">
+                  <span><i class="ti ti-check-double fs-5"></i>
+                    Selesai</span>
+                </button>
+                @endif
                 <button class="btn btn-primary btn-default print-page" type="button" onclick="printDiv()">
                   <span><i class="ti ti-printer fs-5"></i>
                   </span>
@@ -71,7 +77,20 @@
                       <td class="text-center">{{ $loop->iteration }}</td>
                       <td>{{ $item->destination_packet->name }}</td>
                       <td class="text-end">{{ $item->qty }} Orang</td>
-                      <td class="text-end">Rp. {{ number_format($item->price, 0, ',', '.') }}</td>
+                      <td class="text-end">
+                        <div class="d-flex justify-content-end align-items-center">
+                          <span class="me-2">Rp.</span>
+                          @if($data->status == 'Menunggu Konfirmasi')
+                            <input type="number" class="form-control text-end price-input" 
+                              style="width: 150px" 
+                              value="{{ $item->price }}" 
+                              data-id="{{ $item->id }}"
+                              onchange="updatePrice(this)">
+                          @else
+                            <span>{{ number_format($item->price, 0, ',', '.') }}</span>
+                          @endif
+                        </div>
+                      </td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -80,14 +99,16 @@
             </div>
             <div class="col-md-12">
               <div class="pull-right mt-4 text-end">
-                <h3><b>Total :</b> Rp. {{ number_format($data->total_price, 0, ',', '.') }}</h3>
+                <h3><b>Total :</b> Rp. <span id="totalPrice">{{ number_format($data->total_price, 0, ',', '.') }}</span></h3>
               </div>
               <div class="clearfix"></div>
               <hr>
+              @if($data->status == 'Menunggu Konfirmasi')
               <button class="btn btn-warning print-page float-end" type="button" onclick="cancel()">
                 <span><i class="ti ti-x fs-5"></i>
                   Batalkan</span>
               </button>
+              @endif
             </div>
           </div>
         </div>
@@ -96,6 +117,9 @@
   </div>
 </div>
 
+@endsection
+@push('script')
+<meta name="csrf-token" content="{{ csrf_token() }}" id="csrf-token">
 <script>
   function printDiv() {
     var printContents = document.getElementById("printableArea").innerHTML;
@@ -117,7 +141,7 @@
       cancelButtonText: 'Batal'
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location = "/admin/pemesanan/detail/approve/" + {{ $data->id }};
+        window.location = "/admin/pemesanan/detail/approve/" + {{ $data->id }}
       }
     })
   }
@@ -156,6 +180,78 @@
     })
   }
 
+  function updatePrice(element) {
+    const id = element.dataset.id;
+    const newPrice = element.value;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    // Hitung total baru
+    let total = 0;
+    document.querySelectorAll('.price-input').forEach(input => {
+        total += parseInt(input.value) * parseInt(input.closest('tr').querySelector('td:nth-child(3)').textContent.replace(' Orang', ''));
+    });
+    
+    // Update tampilan total
+    document.getElementById('totalPrice').textContent = new Intl.NumberFormat('id-ID').format(total);
+    
+    Swal.fire({
+        title: 'Apakah anda yakin?',
+        text: "Anda akan mengubah harga pemesanan ini!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#536de6',
+        cancelButtonColor: '#fc544b',
+        confirmButtonText: 'Ya!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/admin/pemesanan/detail/update-price/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({
+                    price: newPrice
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    Swal.fire(
+                        'Berhasil!',
+                        'Harga berhasil diubah.',
+                        'success'
+                    ).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire(
+                        'Gagal!',
+                        'Terjadi kesalahan saat mengubah harga.',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+  }
 
+  function complete() {
+    Swal.fire({
+      title: 'Apakah anda yakin?',
+      text: "Anda akan menyelesaikan pemesanan ini!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#536de6',
+      cancelButtonColor: '#fc544b',
+      confirmButtonText: 'Ya!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location = "/admin/pemesanan/detail/complete/" + {{ $data->id }};
+      }
+    })
+  }
 </script>
-@endsection
+@endpush

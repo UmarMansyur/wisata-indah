@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->date('departure_date');
-            $table->enum('status', ['Menunggu Konfirmasi', 'Dibatalkan', 'Disetujui', 'Ditolak']);
+            $table->enum('status', ['Menunggu Konfirmasi', 'Dibatalkan', 'Disetujui', 'Ditolak', 'Selesai']);
             $table->integer('total_price');
             $table->timestamps();
         });
