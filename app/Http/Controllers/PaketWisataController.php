@@ -294,24 +294,11 @@ class PaketWisataController extends Controller
                 ]);
             }
 
-            // $user = User::where('role', 'admin')->get();
-            // $result = sendNotifications($user, $request->all());
-            // foreach ($user as $value) {
-            //     $client = new \GuzzleHttp\Client();
-            //     $message = 'Halo Admin, ada pesanan baru dari ' . $request->name . ' dengan total harga Rp. ' . number_format($request->total_price, 0, ',', '.') . ' Silahkan untuk memvalidasi, untuk memvalidasi silahkan cek di admin > pemesanan paket wisata';
-
-            //     $url = 'https://api.fonnte.com/send';
-            //     $client->post($url, [
-            //         'json' => [
-            //             'target' => $value->phone,
-            //             'message' => $message,
-            //             'countryCode' => '62'
-            //         ],
-            //         'headers' => [
-            //             'Authorization' => 'KSiXWUmGcwampvrnHrhXD'
-            //         ]
-            //     ]);
-            // }
+            $user = User::where('role', 'admin')->get();
+            foreach ($user as $value) {
+                $result = sendNotifications($value->phone, 'Halo Admin, ada pesanan baru dari ' . $request->name . ' dengan total harga Rp. ' . number_format($request->total_price, 0, ',', '.') . ' Silahkan untuk memvalidasi, untuk memvalidasi silahkan cek di admin > pemesanan paket wisata');
+            }
+            
 
 
 
@@ -327,44 +314,35 @@ class PaketWisataController extends Controller
     }
 }
 
-function sendNotifications($users, $orderDetails) {
+function sendNotifications($phone, $message) {
     $client = new \GuzzleHttp\Client();
     $errors = [];
     
-    foreach ($users as $user) {
+
         try {
-            $message = sprintf(
-                'Halo Admin, ada pesanan baru dari %s dengan total harga Rp. %s. ' .
-                'Silahkan untuk memvalidasi di admin > pemesanan paket wisata',
-                $orderDetails['name'],
-                number_format($orderDetails['total_price'], 0, ',', '.')
-            );
 
-            $response = $client->post('https://api.fonnte.com/send', [
-                'json' => [
-                    'target' => $user->phone,
+            // ubah ke formData
+            $formData = [
+                'form_params' => [
+                    'target' => $phone,
                     'message' => $message,
-                    'countryCode' => '62'
-                ],
-                'headers' => [
-                    'Authorization' => config('services.fonnte.token') // Store token in config
-                ],
-                'timeout' => 10 // Add timeout
-            ]);
-
-
-        } catch (\Exception $e) {
-            $errors[] = [
-                'phone' => $user->phone,
-                'error' => $e->getMessage()
+                    'countryCode' => '62',
+                    'delay' => 2
+                ]
             ];
+
+            $response = $client->post('https://api.fonnte.com/send', array_merge($formData, [
+                'headers' => [
+                    'Authorization' => 'j7wYEa8AQDsthdYD9S2Z'
+                ],
+            ]));
+           
+        } catch (\Exception $e) {
+            throw $e;
         }
 
-        usleep(200000); // 200ms delay
-    }
-
     return [
-        'success' => count($users) - count($errors),
+        'success' => 1,
         'failures' => $errors
     ];
 }
