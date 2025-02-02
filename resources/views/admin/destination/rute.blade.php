@@ -42,27 +42,104 @@
   async function updateMap() {
     const locations = $('#type_tour_id').val();
 
-    if(locations.length < 3 && locations.length > 0) {
+    if (!locations || locations.length === 0) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Pilih minimal 3 destinasi!',
+        icon: 'warning',
+        title: 'Perhatian',
+        text: 'Silakan pilih destinasi wisata terlebih dahulu!',
       });
       return;
     }
 
-    let coordinates = locations.map(function (location) {
-      const url = extractUrlFromIframe(location);
-      if (url) {
-        const result = extractLatLng(url);
-        return result ? { lat: parseFloat(result.latitude), lng: parseFloat(result.longitude) } : null;
+    if (locations.length < 3) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Pilih minimal 3 destinasi wisata untuk mendapatkan rute terbaik!',
+      });
+      return;
+    }
+
+    try {
+      // Tampilkan loading state
+      Swal.fire({
+        title: 'Sedang memproses...',
+        html: 'Mohon tunggu sebentar, sedang menghitung rute terbaik',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      // Ekstrak koordinat dari lokasi
+      let coordinates = locations.map(function (location) {
+        const url = extractUrlFromIframe(location);
+        if (url) {
+          const result = extractLatLng(url);
+          return result ? { lat: parseFloat(result.latitude), lng: parseFloat(result.longitude) } : null;
+        }
+        return null;
+      }).filter(Boolean);
+
+      // Dapatkan lokasi pengguna
+      let currentLocation = await getCurrentLocation();
+      let allCoordinates = [currentLocation, ...coordinates];
+
+      // Inisialisasi peta
+      const { Map } = await google.maps.importLibrary("maps");
+      const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+      var map = new Map(document.getElementById('map'), {
+        zoom: 13,
+        center: currentLocation,
+        mapId: 'roadmap'
+      });
+
+      // Tambahkan marker untuk setiap lokasi
+      allCoordinates.forEach((coord, index) => {
+        new AdvancedMarkerElement({
+          position: coord,
+          map: map,
+          title: (index + 1).toString(),
+          zIndex: index + 1,
+        });
+      });
+
+      // Kirim data ke API optimasi
+      const response = await fetch("http://localhost:3000/optimize", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          locations: allCoordinates.map(coord => ({
+            lat: coord.lat,
+            lon: coord.lng
+          }))
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Gagal mendapatkan data optimasi dari server');
       }
-      return null;
-    }).filter(Boolean);
 
+      const data = await response.json();
+      
+      // Gambar rute optimal
+      drawOptimalRoute(map, allCoordinates, data, locations);
+      
+      // Update informasi rute
+      updateRouteInfo(data, locations);
 
-    if (coordinates.length > 0) {
-      await initMap(coordinates);
+      Swal.close();
+    } catch (error) {
+      console.error('Error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Terjadi Kesalahan',
+        text: error.message
+      });
     }
   }
 
@@ -86,119 +163,106 @@
     };
   }
 
-  async function initMap(coordinates) {
-    var currentLocation = null;
-    var coordinates2 = coordinates;
-      if (navigator.geolocation) {
-        await Promise.all([
-          new Promise((resolve) => {
-            navigator.geolocation.getCurrentPosition(function (position) {
-              currentLocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-              };
-              coordinates2.unshift(currentLocation);
-              resolve();
-            });
-          })
-        ]);
+  // Fungsi helper untuk mendapatkan lokasi pengguna
+  function getCurrentLocation() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject(new Error('Browser tidak mendukung geolocation'));
+        return;
       }
-    const { Map } = await google.maps.importLibrary("maps");
 
-    var map = new Map(document.getElementById('map'), {
-      zoom: 13,
-      center:coordinates2[0],
-      mapId: 'roadmap'
-    });
-
-
-    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
-    // Menambahkan marker untuk setiap node
-    coordinates2.forEach(function (coord, index) {
-      // first current location is mark
-      new AdvancedMarkerElement({
-        position: coord,
-        map: map,
-        title: (index + 1).toString(),
-        zIndex: index + 1,
-      });
-    });
-
-    try {
-      // Mengirimkan data lokasi sekarang ke server
-      
-
-      const response = await fetch("http://localhost:3000/optimize", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
         },
-        body: JSON.stringify({
-          locations: coordinates2.map(function (coord) {
-            return {
-              lat: coord.lat,
-              lon: coord.lng
-            };
-          })
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Gagal mendapatkan data optimasi dari server');
-      }
-
-      const data = await response.json();
-      var bestPath = data.best_path;
-
-      var pathCoordinates = bestPath.map(function (index) {
-        return coordinates2[index];
-      });
-
-      // Menambahkan polyline untuk jalur terbaik
-      var bestPathLine = new google.maps.Polyline({
-        path: pathCoordinates,
-        geodesic: true,
-        strokeColor: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
-        strokeOpacity: 1.0,
-        strokeWeight: 2,
-        name: 'Best Path',
-        icons: [{
-          icon: {
-            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-            scale: 2,
-            strokeColor: '#0000FF',
-            strokeOpacity: 0.8
-          },
-          offset: '100%',
-          repeat: '100px'
-        }]
-      });
-
-      document.getElementById('total-distance').innerText = data.total_jarak;
-      let rute = "";
-      // best path merupakan index
-      // dari lokasi yang sudah diurutkan tolong tampilkan title dari lokasi tersebut
-      bestPath.forEach(function (index) {
-        if(index > 0) {
-          rute += `<p>${index + 1}. ${$('#type_tour_id option').eq(index).text()} - Jarak: ${data.jarak[index - 1]} km</p>`;
-        } else {
-          rute += `<p>${index + 1}. ${$('#type_tour_id option').eq(index).text()}</p>`;
+        (error) => {
+          let errorMessage = 'Mohon izinkan akses lokasi untuk mendapatkan rute terbaik.';
+          switch(error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage = 'Anda menolak permintaan akses lokasi. Mohon izinkan akses lokasi di browser Anda.';
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage = 'Informasi lokasi tidak tersedia.';
+              break;
+            case error.TIMEOUT:
+              errorMessage = 'Waktu permintaan untuk mendapatkan lokasi habis.';
+              break;
+          }
+          reject(new Error(errorMessage));
+        },
+        { 
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
         }
-      });
-      document.getElementById('rute').innerHTML = rute;
-
-      bestPathLine.setMap(map);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+      );
+    });
   }
 
-  // Panggil fungsi updateMap ketika data lokasi diperbarui
+  // Fungsi untuk menggambar rute optimal
+  function drawOptimalRoute(map, coordinates, data, locations) {
+    const pathCoordinates = data.best_path.map(index => coordinates[index]);
+    
+    new google.maps.Polyline({
+      path: pathCoordinates,
+      geodesic: true,
+      strokeColor: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+      map: map,
+      icons: [{
+        icon: {
+          path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+          scale: 2,
+          strokeColor: '#0000FF',
+          strokeOpacity: 0.8
+        },
+        offset: '100%',
+        repeat: '100px'
+      }]
+    });
+  }
+
+  // Fungsi untuk memperbarui informasi rute
+  function updateRouteInfo(data, locations) {
+    let rute = "<div class='list-group'>";
+    
+    data.best_path.forEach((index, i) => {
+        const isCurrentLocation = index === 0;
+        const distance = i > 0 ? `<span class="badge bg-primary">${data.jarak[i - 1]} km</span>` : '';
+        
+        // Perbaikan cara mengambil title
+        let title;
+        if (isCurrentLocation) {
+            title = 'Lokasi Anda';
+        } else {
+            const selectedOption = document.querySelector(`#type_tour_id option[value="${CSS.escape(locations[index - 1])}"]`);
+            title = selectedOption ? selectedOption.textContent : 'Destinasi tidak ditemukan';
+        }
+        
+        rute += `
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>${i + 1}.</strong> ${title}
+                    </div>
+                    ${distance}
+                </div>
+            </div>
+        `;
+    });
+    
+    rute += "</div>";
+    
+    document.getElementById('rute').innerHTML = rute;
+    document.getElementById('total-distance').innerText = data.total_jarak;
+  }
+
   document.getElementById('type_tour_id').addEventListener('change', updateMap);
 
-  // Memanggil updateMap saat halaman pertama kali dimuat
   window.onload = updateMap;
 </script>
 
